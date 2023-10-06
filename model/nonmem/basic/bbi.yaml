@@ -1,0 +1,17 @@
+clean_lvl: 1
+git: yes
+local:
+  create_child_dirs: yes
+mpi_exec_path: /usr/local/mpich3/bin/mpiexec
+nmfe_options:
+  maxlim: 2
+nonmem:
+  nm74g64:
+    default: yes
+    executable: nmfe74.bat
+    home: C:\nm74g64
+output_dir: '{{ .Name }}'
+parallel: no
+parallel_timeout: 2147483647
+save_config: yes
+threads: 12

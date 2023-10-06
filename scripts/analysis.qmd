@@ -1,0 +1,333 @@
+---
+title: "Pharmacokinetics of sufentanil after epidural administration"
+author:   
+  - Pawel Wiczling
+  - Agnieszka Bienert
+date: today
+date-format: long
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+# Introduction
+
+Pharmacokinetics of sufentanil after epidural administration:
+
+```{r lib, message=FALSE}
+
+library(pracma)
+library(bbr)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(mrgsolve)
+library(vpc)
+library(pmplots)
+library(scales)
+library(data.table)
+library(tidyverse)
+library(glue)
+library(whisker)
+library(here)
+
+library(pmtables)
+
+# library(mrgmisc)
+source("functions/resampling_functions.R") # from mrgmisc
+
+options(bbr.bbi_exe_path = "C:/Users/pawel/AppData/Roaming/bbi/bbi.exe")
+```
+
+Some settings:
+
+```{r settings}
+data_dir <- "../data/derived" 
+model_dir <- "../model/nonmem/basic"  
+figure_dir <- "../deliv/figures" 
+
+bbi_init(.dir = model_dir,            # the directory to create the bbi.yaml in
+         .nonmem_dir = "C:/",         # location of NONMEM installation
+         .nonmem_version = "nm74g64")  # default NONMEM version to use
+```
+
+# Data
+
+```{r load-data}
+
+xdata <- read.csv(paste0(data_dir, "/", "nonmem_data_v02.csv"), na.strings='.')
+
+```
+
+Plot raw data:
+
+```{r plotrawdata}
+#' Some plots
+#' 
+
+xdata$outliers = xdata$OUT;
+xdata$infusion = xdata$TIMEh<xdata$TINFS;
+xdata$timepostinf = xdata$TIMEh-xdata$TINFS;
+
+plot1<-ggplot(data = subset(xdata, EVID == 0 & outliers==0 & infusion==1), aes(x = TIMEh, y = DV, group = ID)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_point(data = subset(xdata, EVID == 0 & outliers==1 & infusion==1), aes(x = TIMEh, y = DV, group = ID),colour = "red") + 
+scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time after infusion start, h") + 
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+
+plot2<-ggplot(data = subset(xdata, EVID == 0 & outliers==0 & infusion==0), aes(x = timepostinf, y = DV, group = ID)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_point(data = subset(xdata, EVID == 0 & outliers==1 & infusion==0), aes(x = timepostinf, y = DV, group = ID),colour = "red") + 
+scale_y_continuous(limits = c(0.1, 100),
+                   trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+ ylab(element_blank()) +
+  xlab("Time after infusion end, h")+
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+
+plot12 <-plot1+plot2
+
+ggsave(filename = paste0(figure_dir, "/EDA/", "rawdata1.png"),plot = plot12, width=12, height=10, dpi=600, units="cm")
+
+
+plot2<-ggplot(data = subset(xdata, EVID==0 & outliers==0), aes(x = TIMEh, y = DV, color = factor(ID)),shape=21) + 
+  geom_point() +
+  geom_line()+ 
+scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time after infusion start, days") + 
+  labs(color = "ID")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6)) + 
+  geom_segment(aes(x = 0, y = 100, xend = TINFS, yend = 100))+
+  facet_wrap(.~factor(ID),nrow = 3)+
+  theme(legend.position="none")
+
+
+ggsave(filename = paste0(figure_dir, "/EDA/", "rawdata2.png"),plot = plot2, width=12, height=10, dpi=600, units="cm")
+
+print(plot12)
+print(plot2)
+
+```
+
+# Run NONMEM using bbi
+
+First model:
+
+```{r model1, eval = FALSE}
+mod1 <- new_model(file.path(model_dir, 1),  .overwrite = TRUE)
+submit_model(mod1, .mode = "local")
+mod1 <- mod1 %>% add_tags(" ")
+mod1 <- mod1 %>% add_notes(" ")
+```
+
+Compare models:
+
+```{r compare, eval = FALSE}
+log_df <- run_log(model_dir)
+log_df%>%
+  select(-c(absolute_model_path,yaml_md5))%>%
+  kableExtra::kable()
+```
+
+
+```{r select-model}
+mod_to_plot <- read_model(file.path(model_dir, 1))
+```
+
+## Models summary
+
+```{r model-summary}
+label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr=round(stderr, 3))
+
+report_df  %>% knitr::kable()
+
+```
+
+```{r ofv-summary}
+summary_log(model_dir, .include = 1:2) %>%
+  select(run, ofv, condition_number, any_heuristics) %>% knitr::kable()
+```
+
+## Plot model fits
+
+```{r data-to-plot}
+join_df <- nm_join(mod_to_plot) 
+```
+
+Model predictions:
+
+```{r model-fits}
+# Individual and population fits
+fig_model_fits<-ggplot(data = subset(join_df, EVID==0), aes(x = TIME, y = DV)) + 
+  geom_point(size=1) + 
+  geom_line(data = subset(join_df,EVID!=1) , aes(x = TIME, y = IPRED), linetype=1) +
+  geom_line(data = subset(join_df,EVID!=1) , aes(x = TIME, y = PRED), linetype=2) + 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time, h") + 
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")),
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))+
+  facet_wrap(.~ID,nrow = 3)
+
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "model_fits" , ".png"),
+         plot=fig_model_fits, width=12, height=10, dpi=600, units="cm")
+
+print(fig_model_fits)
+
+```
+
+Some GOF plots:
+
+```{r gof}
+
+p1<-ggplot(subset(join_df,MDV==0),aes(x=IPRED,y=DV))+
+  geom_point()+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="gray")+
+  labs( x="IPRED", y="DV")+ 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+p2<-ggplot(subset(join_df,MDV==0),aes(x=PRED,y=DV))+
+  geom_point()+
+  geom_abline(intercept = 0, slope =1, linetype=2, color="gray")+
+  labs( x="PRED", y="DV")+ 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+p3<-ggplot(subset(join_df,MDV==0),aes(x=TIME,y=CWRES))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype=2, color="gray") + 
+  labs( x="Time (h)", y="CWRES")
+
+p4<-ggplot(subset(join_df,MDV==0),aes(x=PRED,y=CWRES))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype=2, color="gray")+
+  labs( x="PRED", y="CWRES")+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+fig_gof<-(p1+p2)/(p3+p4)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "gof" , ".png"),
+         plot=fig_gof, width=12, height=10, dpi=600, units="cm")
+
+print(fig_gof)
+
+```
+
+## Covariate relationships
+
+```{r cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) 
+
+idata<-idata %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<-eta_cat(idata, c("SEXC//Sex"), etas)
+p_cont1<-eta_cont(idata, c("AGE//Age, y"), etas)
+p_cont2<-eta_cont(idata, c("WT//Weight, kg"), etas)
+cov_sex<-(p_cat[[1]]+p_cat[[2]])/(p_cat[[3]]+p_cat[[4]])/(p_cat[[5]]+plot_spacer())
+cov_age<-(p_cont1[[1]]+p_cont1[[2]])/(p_cont1[[3]]+p_cont1[[4]])/(p_cont1[[5]]+plot_spacer())
+cov_wt <-(p_cont2[[1]]+p_cont2[[2]])/(p_cont2[[3]]+p_cont2[[4]])/(p_cont2[[5]]+plot_spacer())
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_sex" , ".png"),
+         plot=cov_sex, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_age" , ".png"),
+         plot=cov_age, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_wt" , ".png"),
+         plot=cov_wt, width=12, height=10, dpi=600, units="cm")
+
+print(cov_sex)
+print(cov_age)
+print(cov_wt)
+```
+
+# Session
+
+```{r sessioninfo}
+sessionInfo()
+```

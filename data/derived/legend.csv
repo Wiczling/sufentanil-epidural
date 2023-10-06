@@ -1,0 +1,19 @@
+﻿TIME,h,
+AMT ,SFN,mcg
+,ROPI,mg
+,BUPI,mg
+RATE,SFN,mcg/h
+,ROPI,mg/h
+CMT,1,Conc. SFN [pg/ml]
+,11,Dose SFN
+,22,Dose ROPI
+,33,Dose BUPI
+DV,Conc SFN ,
+SEX,,1 -male 2 - female
+AGE,,years
+WT,,kg
+HEIGHT,,cm
+TINFS,Time of infusion of SFN,h
+TINFR,Time of infusion of ROPI,h
+DOSES,total dose of SFN, mcg
+DOSER,total dose of ROPI,mg
