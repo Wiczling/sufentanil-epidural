@@ -1,5 +1,6 @@
 model_type: nonmem
 tags:
-- ' '
+- '2 cmp disposition model F=1, ABS: 1-st order'
+- Etas fixed to zero except CL
 notes:
 - ' '

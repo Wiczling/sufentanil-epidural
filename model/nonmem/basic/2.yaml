@@ -1,0 +1,6 @@
+model_type: nonmem
+tags:
+- '2 cmp disposition model (fixed), F estimated, ABS: simple'
+- Eta for ka estimated, fixed for other to 0.1
+notes:
+- ' '

@@ -6,7 +6,7 @@ git: true
 bbi_binary: ""
 save_config: true
 output_dir: '{{ .Name }}'
-threads: 12
+threads: 4
 debug: false
 local:
   create_child_dirs: true
@@ -16,7 +16,7 @@ nonmem:
     executable: nmfe74.bat
     nmqual: false
     default: true
-parallel: false
+parallel: true
 delay: 0
 nmqual: false
 json: false
@@ -30,9 +30,9 @@ nmfe_options:
   tprdefault: false
   nobuild: false
   maxlim: 2
-mpi_exec_path: /usr/local/mpich3/bin/mpiexec
+mpi_exec_path: C:/nm74g64/run/psexec
 parallel_timeout: 2147483647
-parafile: ""
+parafile: C:/nm74g64/run/fpiwini8.pnm
 post_work_executable: ""
 additional_post_work_envs: []
 grid_name_prefix: ""

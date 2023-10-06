@@ -14,7 +14,6 @@ $MODEL
   COMP  = (ABS)
   COMP  = (CENTRAL)
   COMP  = (PERIPHERAL)
-  COMP  = (ABS2)
 
 $PK
 ;PK PARAMETERS
@@ -23,8 +22,6 @@ $PK
  Q  = THETA(3)*EXP(ETA(3))
  V2 = THETA(4)*EXP(ETA(4))
  KA = THETA(5)*EXP(ETA(5))
- K14= THETA(6)*EXP(ETA(6))
- K41= THETA(7)*EXP(ETA(7))
 
 ;SECONDARY PARAMETERS 
  K20 = CL/V1;
@@ -32,10 +29,9 @@ $PK
  K32 = Q/V2;
  
 $DES
- DADT(1) = -KA*A(1)-K14*A(1)+K41*A(4)
+ DADT(1) = -KA*A(1)
  DADT(2) =  KA*A(1)-K23*A(2)+K32*A(3)-K20*A(2)
  DADT(3) =          K23*A(2)-K32*A(3)
- DADT(4) =          K14*A(1)-K41*A(4)
  
 $ERROR
 
@@ -44,24 +40,19 @@ Y=IPRED*(1+EPS(2))+EPS(1)
 
 
 $THETA  
-; https://pubmed.ncbi.nlm.nih.gov/26105145/
-; VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
-45.3 FIX    ;[L/h] CL
-7.90 FIX    ;[L] V1
-38.3 FIX    ;[L/h] Q
-481 FIX     ;[L] V2
-(0.1)       ;[1/h] KA
-(0,0.01)    ;[1/h] K14
-(0,0.1)     ;[1/h] K41
+
+(0,45.3)      ;[L/h] CL/F
+(0,7.90)      ;[L] V1/F
+(0,38.3)      ;[L/h] Q/F
+(0,481)       ;[L] V2/F
+(0,0.1)     ;[1/h] KA
 
 $OMEGA     
-0.1 FIX ;[P] ETA-CL
-0.1 FIX ;[P] ETA-V1
-0.1 FIX ;[P] ETA-Q
-0.1 FIX ;[P] ETA-V2
-0.1     ;[P] ETA-KA
-0 FIX   ;[P] ETA-K14
-0 FIX   ;[P] ETA-K41
+0.1  ;[P] ETA-CL
+0 FIX  ;[P] ETA-V1
+0 FIX  ;[P] ETA-Q
+0 FIX  ;[P] ETA-V2
+0 FIX  ;[P] ETA-KA
 
 $SIGMA
 (0.01 FIX)  ;[P] ADD pg/ml
@@ -72,5 +63,5 @@ $COV PRINT=E MATRIX=R
 
 $TABLE NUM ID TIME EVID MDV CMT PRED IPRED CWRES WRES NPDE NOPRINT NOAPPEND ONEHEADERALL
 FILE=sdtab1.tab
-$TABLE NUM ID ETAS(1:LAST) KA CL V1 Q V2 K14 K41 NOPRINT NOAPPEND ONEHEADERALL
+$TABLE NUM ID ETAS(1:LAST) KA CL V1 Q V2 NOPRINT NOAPPEND ONEHEADERALL
 FILE=patab1.tab

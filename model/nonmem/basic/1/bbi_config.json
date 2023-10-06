@@ -5,7 +5,7 @@
     "model_path": "C:/Users/pawel/Documents/PKPDProjects/sufentanil_epidural/model/nonmem/basic/1.ctl",
     "data_path": "..\\..\\..\\..\\data\\derived\\nonmem_data_v02.csv",
     "data_md5": "0849c215e8d5ad09db7f79fa46ce1595",
-    "model_md5": "811122320c01b69135a931196b78fad0",
+    "model_md5": "1d8c15e2338d29363b6077eba8a4f4cd",
     "model_filename": "1",
     "model_extension": "ctl",
     "original_path": "C:/Users/pawel/Documents/PKPDProjects/sufentanil_epidural/model/nonmem/basic",
@@ -15,7 +15,7 @@
         "git": true,
         "save_config": true,
         "output_dir": "{{ .Name }}",
-        "threads": 12,
+        "threads": 4,
         "local": {
             "create_child_dirs": true
         },
@@ -26,12 +26,13 @@
                 "default": true
             }
         },
-        "parallel": false,
+        "parallel": true,
         "nmfe_options": {
             "maxlim": 2
         },
-        "mpi_exec_path": "/usr/local/mpich3/bin/mpiexec",
-        "parallel_timeout": 2147483647
+        "mpi_exec_path": "C:/nm74g64/run/psexec",
+        "parallel_timeout": 2147483647,
+        "parafile": "C:/nm74g64/run/fpiwini8.pnm"
     },
     "error": null
 }
