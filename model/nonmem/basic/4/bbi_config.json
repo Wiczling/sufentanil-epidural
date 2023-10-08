@@ -1,0 +1,38 @@
+{
+    "bbi_version": "v3.2.3",
+    "model_name": "4.ctl",
+    "original_model": "4.ctl",
+    "model_path": "C:/Users/pawel/Documents/PKPDProjects/sufentanil_epidural/model/nonmem/basic/4.ctl",
+    "data_path": "..\\..\\..\\..\\data\\derived\\nonmem_data_v02.csv",
+    "data_md5": "0849c215e8d5ad09db7f79fa46ce1595",
+    "model_md5": "828104e6118b00e70beb962214e512f0",
+    "model_filename": "4",
+    "model_extension": "ctl",
+    "original_path": "C:/Users/pawel/Documents/PKPDProjects/sufentanil_epidural/model/nonmem/basic",
+    "output_dir": "C:/Users/pawel/Documents/PKPDProjects/sufentanil_epidural/model/nonmem/basic/4",
+    "configuration": {
+        "clean_lvl": 1,
+        "git": true,
+        "save_config": true,
+        "output_dir": "{{ .Name }}",
+        "threads": 4,
+        "local": {
+            "create_child_dirs": true
+        },
+        "nonmem": {
+            "nm74g64": {
+                "home": "C:\\nm74g64",
+                "executable": "nmfe74.bat",
+                "default": true
+            }
+        },
+        "parallel": true,
+        "nmfe_options": {
+            "maxlim": 2
+        },
+        "mpi_exec_path": "C:/nm74g64/run/psexec",
+        "parallel_timeout": 2147483647,
+        "parafile": "C:/nm74g64/run/fpiwini8.pnm"
+    },
+    "error": null
+}

@@ -50,18 +50,18 @@ $THETA
 7.90 FIX    ;[L] V1
 38.3 FIX    ;[L/h] Q
 481 FIX     ;[L] V2
-(0.1)       ;[1/h] KA
-(0,0.01)    ;[1/h] K14
-(0,0.1)     ;[1/h] K41
+(0,1)       ;[1/h] KA
+(0,0.1)    ;[1/h] K14
+(0,0.01)     ;[1/h] K41
 
 $OMEGA     
-0.1 FIX ;[P] ETA-CL
-0.1 FIX ;[P] ETA-V1
-0.1 FIX ;[P] ETA-Q
-0.1 FIX ;[P] ETA-V2
+0.1  ;[P] ETA-CL
+0 FIX ;[P] ETA-V1
+0 FIX ;[P] ETA-Q
+0 FIX ;[P] ETA-V2
 0 FIX   ;[P] ETA-KA
 0 FIX   ;[P] ETA-K14
-0.1     ;[P] ETA-K41
+0 FIX     ;[P] ETA-K41
 
 $SIGMA
 (0.01 FIX)  ;[P] ADD pg/ml

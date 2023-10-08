@@ -45,14 +45,14 @@ $THETA
 (0,7.90)      ;[L] V1/F
 (0,38.3)      ;[L/h] Q/F
 (0,481)       ;[L] V2/F
-(0,0.1)     ;[1/h] KA
+(0,1)       ;[1/h] KA
 
 $OMEGA     
-0.1  ;[P] ETA-CL
-0 FIX  ;[P] ETA-V1
-0 FIX  ;[P] ETA-Q
-0 FIX  ;[P] ETA-V2
-0 FIX  ;[P] ETA-KA
+0.1  ;[P] ETA-CL/F
+0 FIX ;[P] ETA-V1/F
+0 FIX ;[P] ETA-Q/F
+0 FIX ;[P] ETA-V2/F
+0 FIX ;[P] ETA-KA/F
 
 $SIGMA
 (0.01 FIX)  ;[P] ADD pg/ml

@@ -46,15 +46,15 @@ $THETA
 7.90 FIX    ;[L] V1
 38.3 FIX    ;[L/h] Q
 481 FIX     ;[L] V2
-(0.1)       ;[1/h] KA
+(0,1)       ;[1/h] KA
 (0,0.8,1)    ;[] BIO
 
 $OMEGA     
-0.1 FIX ;[P] ETA-CL
-0.1 FIX ;[P] ETA-V1
-0.1 FIX ;[P] ETA-Q
-0.1 FIX ;[P] ETA-V2
-0.1     ;[P] ETA-KA
+0.1 ;[P] ETA-CL
+0 FIX ;[P] ETA-V1
+0 FIX ;[P] ETA-Q
+0 FIX ;[P] ETA-V2
+0 FIX     ;[P] ETA-KA
 
 $SIGMA
 (0.01 FIX)  ;[P] ADD pg/ml

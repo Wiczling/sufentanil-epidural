@@ -1,6 +1,4 @@
 model_type: nonmem
 tags:
-- '2 cmp disposition model (fixed), F=1, ABS: 2 cmp model'
-- Eta for k41 estimated, fixed for other to 0.1/0
-notes:
-- ' '
+- 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1
+- etas estiamted for CL/F

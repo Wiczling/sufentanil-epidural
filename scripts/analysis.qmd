@@ -151,7 +151,7 @@ print(plot2)
 
 ```
 
-Summary:
+Patients demographics:
 
 ```{r summary-tbl}
 xdata %>% 
@@ -240,15 +240,15 @@ return(fig_gof)
 ```
 
 
-First model:
+First model (classical 2 cmp. model, 1-st order absorption):
 
 ```{r model1, eval = FALSE}
 mod1 <- new_model(file.path(model_dir, 1),  .overwrite = TRUE)
 submit_model(mod1, .mode = "local")
 mod1 <- mod1 %>% 
-  add_tags("2 cmp disposition model F=1, ABS: 1-st order")%>% 
-  add_tags("Etas fixed to zero except CL")
-mod1 <- mod1 %>% add_notes(" ")
+  add_tags("2 cmp dispos. model, 1-st order abs.")%>% 
+  add_tags("etas estiamted for CL/F") 
+#mod1 <- mod1 %>% add_notes(" ")
 ```
 
 Model 2
@@ -257,9 +257,9 @@ Model 2
 mod2 <- new_model(file.path(model_dir, 2),  .overwrite = TRUE)
 submit_model(mod2, .mode = "local")
 mod2 <- mod2 %>% 
-  add_tags("2 cmp disposition model (fixed), F estimated, ABS: simple")%>% 
-  add_tags("Eta for ka estimated, fixed for other to 0.1")
-mod2 <- mod2 %>% add_notes(" ")
+  add_tags("2 cmp dispos. model (fixed), 1-st order abs., F estimated")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod2 <- mod2 %>% add_notes(" ")
 ```
 Model 3
 
@@ -267,9 +267,31 @@ Model 3
 mod3 <- new_model(file.path(model_dir, 3),  .overwrite = TRUE)
 submit_model(mod3, .mode = "local")
 mod3 <- mod3 %>% 
-  add_tags("2 cmp disposition model (fixed), F=1, ABS: 2 cmp model")%>% 
-  add_tags("Eta for k41 estimated, fixed for other to 0.1/0")
-mod3 <- mod3 %>% add_notes(" ")
+  add_tags("2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod3 <- mod3 %>% add_notes(" ")
+```
+Model 4
+
+```{r model4, eval = FALSE}
+mod4 <- new_model(file.path(model_dir, 4),  .overwrite = TRUE)
+submit_model(mod4, .mode = "local")
+mod4 <- mod4 %>% 
+  add_tags("2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod4 <- mod4 %>% add_notes(" ")
+
+```
+
+```{r model5, eval = FALSE}
+
+mod5 <- new_model(file.path(model_dir, 5),  .overwrite = TRUE)
+submit_model(mod5, .mode = "local")
+mod5 <- mod5 %>% 
+  add_tags("3 cmp dispos. model (fixed), 1-st order abs., F estimated")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod5 <- mod5 %>% add_notes(" ")
+
 ```
 
 Compare models:
@@ -282,7 +304,7 @@ log_df%>%
 ```
 
 ```{r ofv-summary}
-summary_log(model_dir, .include = 1:3) %>%
+summary_log(model_dir, .include = 1:5) %>%
   select(run, ofv, condition_number, any_heuristics) %>% 
   knitr::kable()
 ```
@@ -290,7 +312,7 @@ summary_log(model_dir, .include = 1:3) %>%
 # Visualise key modeling steps
 
 ```{r select-model}
-mod_to_plot <- read_model(file.path(model_dir, 1))
+mod_to_plot <- read_model(file.path(model_dir, 5))
 join_df <- nm_join(mod_to_plot) 
 ```
 
@@ -312,7 +334,7 @@ report_df <- inner_join(
   mutate(estimate=round(estimate, 3)) %>%
   mutate(stderr= case_when(
              stderr == 1.00e+10 ~ NA,
-             .default = stderr))%>%
+             .default = stderr)) %>%
   mutate(stderr=round(stderr, 3))
 
 report_df  %>% knitr::kable()
