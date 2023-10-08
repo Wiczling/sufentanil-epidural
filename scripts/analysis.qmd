@@ -59,12 +59,11 @@ bbi_init(.dir = model_dir,            # the directory to create the bbi.yaml in
       threads = 4
     )
 )
-
-
-
 ```
 
 # Data
+
+Load data:
 
 ```{r load-data}
 xdata <- read.csv(paste0(data_dir, "/", "nonmem_data_v02.csv"), na.strings='.')
@@ -152,8 +151,9 @@ print(plot2)
 
 ```
 
+Summary:
 
-```{r}
+```{r summary-tbl}
 xdata %>% 
   distinct(ID,.keep_all = TRUE) %>%
  mutate(SEX=case_when(
@@ -161,9 +161,84 @@ xdata %>%
              SEX == "2" ~ "Female",
              .default = NA)) %>%
   select(ID, WT, AGE, SEX) %>%
+  rename("Body Weigh, kg" = WT, "Age, y" = AGE, "Sex" = SEX) %>%
   kableExtra::kable()
 ```
 # Run NONMEM using bbi
+
+
+```{r functions}
+#' Functions
+fig_model_fits_fun <- function(df){
+  ggplot(data = subset(df, EVID==0), aes(x = TIME, y = DV)) + 
+  geom_point(size=1) + 
+  geom_line(data = subset(df,EVID!=1) , aes(x = TIME, y = IPRED), linetype=1) +
+  geom_line(data = subset(df,EVID!=1) , aes(x = TIME, y = PRED), linetype=2) + 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time, h") + 
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")),
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))+
+  facet_wrap(.~ID,nrow = 3)
+}
+
+fig_gof_fun <- function(df){
+  
+p1<-ggplot(subset(df,MDV==0),aes(x=IPRED,y=DV))+
+  geom_point()+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="gray")+
+  labs( x="IPRED", y="DV")+ 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+p2<-ggplot(subset(df,MDV==0),aes(x=PRED,y=DV))+
+  geom_point()+
+  geom_abline(intercept = 0, slope =1, linetype=2, color="gray")+
+  labs( x="PRED", y="DV")+ 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+p3<-ggplot(subset(df,MDV==0),aes(x=TIME,y=CWRES))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype=2, color="gray") + 
+  labs( x="Time (h)", y="CWRES")
+
+p4<-ggplot(subset(df,MDV==0),aes(x=PRED,y=CWRES))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype=2, color="gray")+
+  labs( x="PRED", y="CWRES")+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+fig_gof<-(p1+p2)/(p3+p4)
+
+return(fig_gof)
+}
+
+```
+
 
 First model:
 
@@ -176,6 +251,7 @@ mod1 <- mod1 %>%
 mod1 <- mod1 %>% add_notes(" ")
 ```
 
+Model 2
 
 ```{r model2, eval = FALSE}
 mod2 <- new_model(file.path(model_dir, 2),  .overwrite = TRUE)
@@ -185,6 +261,8 @@ mod2 <- mod2 %>%
   add_tags("Eta for ka estimated, fixed for other to 0.1")
 mod2 <- mod2 %>% add_notes(" ")
 ```
+Model 3
+
 ```{r model3, eval = FALSE}
 mod3 <- new_model(file.path(model_dir, 3),  .overwrite = TRUE)
 submit_model(mod3, .mode = "local")
@@ -199,15 +277,24 @@ Compare models:
 ```{r compare, eval = FALSE}
 log_df <- run_log(model_dir)
 log_df%>%
-  select(-c(absolute_model_path,yaml_md5))%>%
+  select(-c(absolute_model_path,yaml_md5,bbi_args,based_on, star,model_type, description))%>%
   kableExtra::kable()
 ```
 
-```{r select-model}
-mod_to_plot <- read_model(file.path(model_dir, 1))
+```{r ofv-summary}
+summary_log(model_dir, .include = 1:3) %>%
+  select(run, ofv, condition_number, any_heuristics) %>% 
+  knitr::kable()
 ```
 
-## Models summary
+# Visualise key modeling steps
+
+```{r select-model}
+mod_to_plot <- read_model(file.path(model_dir, 1))
+join_df <- nm_join(mod_to_plot) 
+```
+
+## Model summary
 
 ```{r model-summary}
 label_df <- mod_to_plot %>% 
@@ -232,40 +319,13 @@ report_df  %>% knitr::kable()
 
 ```
 
-```{r ofv-summary}
-summary_log(model_dir, .include = 1:3) %>%
-  select(run, ofv, condition_number, any_heuristics) %>% knitr::kable()
-```
-
 ## Plot model fits
-
-```{r data-to-plot}
-join_df <- nm_join(mod_to_plot) 
-```
 
 Model predictions:
 
 ```{r model-fits}
 # Individual and population fits
-fig_model_fits<-ggplot(data = subset(join_df, EVID==0), aes(x = TIME, y = DV)) + 
-  geom_point(size=1) + 
-  geom_line(data = subset(join_df,EVID!=1) , aes(x = TIME, y = IPRED), linetype=1) +
-  geom_line(data = subset(join_df,EVID!=1) , aes(x = TIME, y = PRED), linetype=2) + 
-  scale_y_continuous(limits = c(0.1, 100),
-                      trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
-                      labels=trans_format('log10', math_format(10^.x)))+
-  ylab("Sufentanil concentrations, pg/ml") +
-  xlab("Time, h") + 
-  theme(axis.text.x = element_text(size=6),
-        axis.text.y = element_text(size=6),
-        axis.text = element_text(size=10),
-        axis.title=element_text(size=10),
-        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")),
-        legend.text=element_text(size=6),
-        legend.title =element_text(size=6))+
-  facet_wrap(.~ID,nrow = 3)
-
+fig_model_fits<- fig_model_fits_fun(join_df)
 
 ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
               "model_fits" , ".png"),
@@ -279,53 +339,12 @@ Some GOF plots:
 
 ```{r gof}
 
-p1<-ggplot(subset(join_df,MDV==0),aes(x=IPRED,y=DV))+
-  geom_point()+
-  geom_abline(intercept = 0, slope = 1, linetype=2, color="gray")+
-  labs( x="IPRED", y="DV")+ 
-  scale_y_continuous(limits = c(0.1, 100),
-                      trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
-                      labels=trans_format('log10', math_format(10^.x)))+ 
-  scale_x_continuous(limits = c(0.1, 100),
-                      trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
-                      labels=trans_format('log10', math_format(10^.x)))
+fig_gof<-fig_gof_fun(join_df)
 
-p2<-ggplot(subset(join_df,MDV==0),aes(x=PRED,y=DV))+
-  geom_point()+
-  geom_abline(intercept = 0, slope =1, linetype=2, color="gray")+
-  labs( x="PRED", y="DV")+ 
-  scale_y_continuous(limits = c(0.1, 100),
-                      trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
-                      labels=trans_format('log10', math_format(10^.x)))+ 
-  scale_x_continuous(limits = c(0.1, 100),
-                      trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
-                      labels=trans_format('log10', math_format(10^.x)))
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" , "gof" , ".png"),
+      plot=fig_gof, width=12, height=10, dpi=600, units="cm")
 
-p3<-ggplot(subset(join_df,MDV==0),aes(x=TIME,y=CWRES))+
-  geom_point()+
-  geom_hline(yintercept = 0, linetype=2, color="gray") + 
-  labs( x="Time (h)", y="CWRES")
-
-p4<-ggplot(subset(join_df,MDV==0),aes(x=PRED,y=CWRES))+
-  geom_point()+
-  geom_hline(yintercept = 0, linetype=2, color="gray")+
-  labs( x="PRED", y="CWRES")+ 
-  scale_x_continuous(limits = c(0.1, 100),
-                      trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
-                      labels=trans_format('log10', math_format(10^.x)))
-
-fig_gof<-(p1+p2)/(p3+p4)
-
-ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
-              "gof" , ".png"),
-         plot=fig_gof, width=12, height=10, dpi=600, units="cm")
-
-print(fig_gof)
+print(fig_gof) 
 
 ```
 
