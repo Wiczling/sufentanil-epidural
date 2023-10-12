@@ -1,5 +1,5 @@
-08.10.2023 
-16:31
+12.10.2023 
+12:39
 $PROBLEM sufentanil_epidural
 
 $INPUT ID TIME AMT RATE DV CMT MDV EVID SEX AGE WT HEIGHT TINFS TINFR DOSES DOSER OUT NUM
@@ -77,8 +77,8 @@ NM-TRAN MESSAGES
   
 License Registered to: Medical University of Gdansk
 Expiration Date:    14 JUL 2024
-Current Date:        8 OCT 2023
-Days until program expires : 281
+Current Date:       12 OCT 2023
+Days until program expires : 277
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.4.4
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -538,9 +538,9 @@ Days until program expires : 281
  TOTAL EFFECTIVE ETAS (NIND*NETA):                            18
   
  #TERE:
- Elapsed estimation  time in seconds:   173.31
- Elapsed covariance  time in seconds:    58.96
- Elapsed postprocess time in seconds:    12.31
+ Elapsed estimation  time in seconds:   174.37
+ Elapsed covariance  time in seconds:    52.82
+ Elapsed postprocess time in seconds:    12.05
 1
  
  
@@ -1075,8 +1075,8 @@ Days until program expires : 281
  
          2.41E-01  4.84E-01  7.44E-01  7.54E-01  1.39E+00  1.56E+00  1.83E+00
  
- Elapsed finaloutput time in seconds:     2.59
- #CPUT: Total CPU Time in Seconds,      140.063
+ Elapsed finaloutput time in seconds:     1.90
+ #CPUT: Total CPU Time in Seconds,      147.328
 Stop Time: 
-08.10.2023 
-16:35
+12.10.2023 
+12:43

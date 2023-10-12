@@ -1,0 +1,21 @@
+---
+title: "Pharmacokinetics of sufentanil after epidural administration"
+author:   
+  - Pawel Wiczling
+  - Agnieszka Bienert
+  - Paulina Okuńska
+  - Agnieszka Borsuk-de Moor
+  - Justyna Ber
+date: today
+date-format: long
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+---
+
+# Preliminary results: 12/10/2023
+
+[Preliminary results](/analysis.html "Preliminary results")

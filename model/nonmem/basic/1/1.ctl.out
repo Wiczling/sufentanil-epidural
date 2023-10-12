@@ -19,8 +19,8 @@ Building NONMEM Executable
 Starting nonmem execution ...
 License Registered to: Medical University of Gdansk
 Expiration Date:    14 JUL 2024
-Current Date:        8 OCT 2023
-Days until program expires : 281
+Current Date:       12 OCT 2023
+Days until program expires : 277
 
 
  First Order Conditional Estimation with Interaction
@@ -230,8 +230,8 @@ Days until program expires : 281
  NPARAMETR:  6.7160E+01  7.7846E+00  5.1948E+02  3.1974E+03  1.3244E+02  6.0062E-01  2.5152E-01
  PARAMETER:  4.9378E-01  8.5291E-02  2.7074E+00  1.9942E+00  4.9861E+00  9.9640E-01 -1.3197E-01
  GRADIENT:  -4.7873E-02 -1.3187E-01  1.3192E-01  1.1686E-01  6.8304E-02  4.9552E-02 -2.2016E-02
- Elapsed estimation  time in seconds:   173.31
- Elapsed covariance  time in seconds:    58.96
- Elapsed postprocess time in seconds:    12.31
- Elapsed finaloutput time in seconds:     2.59
+ Elapsed estimation  time in seconds:   174.37
+ Elapsed covariance  time in seconds:    52.82
+ Elapsed postprocess time in seconds:    12.05
+ Elapsed finaloutput time in seconds:     1.90
 Done with nonmem execution

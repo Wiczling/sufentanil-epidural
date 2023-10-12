@@ -3,12 +3,17 @@ title: "Pharmacokinetics of sufentanil after epidural administration"
 author:   
   - Pawel Wiczling
   - Agnieszka Bienert
+  - Paulina Okuńska
+  - Agnieszka Borsuk-de Moor
+  - Justyna Ber
 date: today
 date-format: long
 format:
   html:
     toc: true
     code-fold: true
+execute:
+  warning: false
 ---
 
 # Introduction
@@ -69,7 +74,7 @@ Load data:
 xdata <- read.csv(paste0(data_dir, "/", "nonmem_data_v02.csv"), na.strings='.')
 ```
 
-Plot raw data:
+## Plot raw data:
 
 ```{r plotrawdata}
 #' Some plots
@@ -146,12 +151,15 @@ scale_y_continuous(limits = c(0.1, 100),
 
 ggsave(filename = paste0(figure_dir, "/EDA/", "rawdata2.png"),plot = plot2, width=12, height=10, dpi=600, units="cm")
 
+
 print(plot12)
+
+cat("by individual")
 print(plot2)
 
 ```
 
-Patients demographics:
+## Patients demographics
 
 ```{r summary-tbl}
 xdata %>% 
@@ -164,11 +172,15 @@ xdata %>%
   rename("Body Weigh, kg" = WT, "Age, y" = AGE, "Sex" = SEX) %>%
   kableExtra::kable()
 ```
-# Run NONMEM using bbi
 
+# Run NONMEM
+
+Define few functions used later to visualize results:
 
 ```{r functions}
 #' Functions
+
+
 fig_model_fits_fun <- function(df){
   ggplot(data = subset(df, EVID==0), aes(x = TIME, y = DV)) + 
   geom_point(size=1) + 
@@ -239,8 +251,7 @@ return(fig_gof)
 
 ```
 
-
-First model (classical 2 cmp. model, 1-st order absorption):
+Model 1. Classical 2 cmp. model, 1-st order absorption.
 
 ```{r model1, eval = FALSE}
 mod1 <- new_model(file.path(model_dir, 1),  .overwrite = TRUE)
@@ -251,7 +262,9 @@ mod1 <- mod1 %>%
 #mod1 <- mod1 %>% add_notes(" ")
 ```
 
-Model 2
+Model 2. 2 cmp dispos. model (fixed), 1-st order abs., F estimated.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
 
 ```{r model2, eval = FALSE}
 mod2 <- new_model(file.path(model_dir, 2),  .overwrite = TRUE)
@@ -261,7 +274,10 @@ mod2 <- mod2 %>%
   add_tags("etas estiamted for CL/F")
 #mod2 <- mod2 %>% add_notes(" ")
 ```
-Model 3
+
+Model 3. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
 
 ```{r model3, eval = FALSE}
 mod3 <- new_model(file.path(model_dir, 3),  .overwrite = TRUE)
@@ -271,7 +287,11 @@ mod3 <- mod3 %>%
   add_tags("etas estiamted for CL/F")
 #mod3 <- mod3 %>% add_notes(" ")
 ```
-Model 4
+
+Model 4. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
 
 ```{r model4, eval = FALSE}
 mod4 <- new_model(file.path(model_dir, 4),  .overwrite = TRUE)
@@ -282,6 +302,10 @@ mod4 <- mod4 %>%
 #mod4 <- mod4 %>% add_notes(" ")
 
 ```
+
+Model 5. 3 cmp dispos. model (fixed), 1-st order abs., F estimated.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/8533912/>:
+VC = 14.6, VP1 = 66, VP2 = 608, Cl = 52.8 L/h, and Q = 102 L/h i 40.8 L/h
 
 ```{r model5, eval = FALSE}
 
@@ -294,9 +318,9 @@ mod5 <- mod5 %>%
 
 ```
 
-Compare models:
+# Compare models:
 
-```{r compare, eval = FALSE}
+```{r compare}
 log_df <- run_log(model_dir)
 log_df%>%
   select(-c(absolute_model_path,yaml_md5,bbi_args,based_on, star,model_type, description))%>%
@@ -311,15 +335,20 @@ summary_log(model_dir, .include = 1:5) %>%
 
 # Visualise key modeling steps
 
-```{r select-model}
-mod_to_plot <- read_model(file.path(model_dir, 5))
+## Model 1
+
+2 cmp dispos. model, 1-st order abs., etas estiamted for CL/F
+
+```{r select-model1}
+mod_to_plot <- read_model(file.path(model_dir, 1))
 join_df <- nm_join(mod_to_plot) 
+
 ```
 
-## Model summary
+### Model summary
 
-```{r model-summary}
-label_df <- mod_to_plot %>% 
+```{r mod1-summary}
+ label_df <- mod_to_plot %>% 
   param_labels() %>% 
   apply_indices() 
 
@@ -335,17 +364,15 @@ report_df <- inner_join(
   mutate(stderr= case_when(
              stderr == 1.00e+10 ~ NA,
              .default = stderr)) %>%
-  mutate(stderr=round(stderr, 3))
+  mutate(stderr=round(stderr, 3)) 
 
-report_df  %>% knitr::kable()
-
+report_df%>% knitr::kable()
 ```
 
-## Plot model fits
+### Plot model fits
 
-Model predictions:
 
-```{r model-fits}
+```{r model1-fits}
 # Individual and population fits
 fig_model_fits<- fig_model_fits_fun(join_df)
 
@@ -357,9 +384,9 @@ print(fig_model_fits)
 
 ```
 
-Some GOF plots:
+### Plot GOF fits
 
-```{r gof}
+```{r model1-gof}
 
 fig_gof<-fig_gof_fun(join_df)
 
@@ -370,9 +397,9 @@ print(fig_gof)
 
 ```
 
-## Covariate relationships
+### Covariate relationships
 
-```{r cov}
+```{r model1-cov}
 
 idata <- distinct(join_df,ID,.keep_all = TRUE) 
 
@@ -391,9 +418,449 @@ etas <- c("ETA1//Eta for CL",
 p_cat<-eta_cat(idata, c("SEXC//Sex"), etas)
 p_cont1<-eta_cont(idata, c("AGE//Age, y"), etas)
 p_cont2<-eta_cont(idata, c("WT//Weight, kg"), etas)
-cov_sex<-(p_cat[[1]]+p_cat[[2]])/(p_cat[[3]]+p_cat[[4]])/(p_cat[[5]]+plot_spacer())
-cov_age<-(p_cont1[[1]]+p_cont1[[2]])/(p_cont1[[3]]+p_cont1[[4]])/(p_cont1[[5]]+plot_spacer())
-cov_wt <-(p_cont2[[1]]+p_cont2[[2]])/(p_cont2[[3]]+p_cont2[[4]])/(p_cont2[[5]]+plot_spacer())
+# cov_sex<-(p_cat[[1]]+p_cat[[2]])/(p_cat[[3]]+p_cat[[4]])/(p_cat[[5]]+plot_spacer())
+# cov_age<-(p_cont1[[1]]+p_cont1[[2]])/(p_cont1[[3]]+p_cont1[[4]])/(p_cont1[[5]]+plot_spacer())
+# cov_wt <-(p_cont2[[1]]+p_cont2[[2]])/(p_cont2[[3]]+p_cont2[[4]])/(p_cont2[[5]]+plot_spacer())
+
+cov_sex<-p_cat[[1]]
+cov_age<-p_cont1[[1]]
+cov_wt <-p_cont2[[1]]
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_sex" , ".png"),
+         plot=cov_sex, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_age" , ".png"),
+         plot=cov_age, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_wt" , ".png"),
+         plot=cov_wt, width=12, height=10, dpi=600, units="cm")
+
+print(cov_sex)
+print(cov_age)
+print(cov_wt)
+```
+
+## Model 2
+
+2 cmp dispos. model (fixed), 1-st order abs., F estimated, etas estiamted for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+```{r select-model2}
+mod_to_plot <- read_model(file.path(model_dir, 2))
+join_df <- nm_join(mod_to_plot) 
+
+```
+
+### Model summary
+
+```{r mod2-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model2-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "model_fits" , ".png"),
+         plot=fig_model_fits, width=12, height=10, dpi=600, units="cm")
+
+print(fig_model_fits)
+
+```
+
+### Plot GOF fits
+
+```{r model2-gof}
+
+fig_gof<-fig_gof_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" , "gof" , ".png"),
+      plot=fig_gof, width=12, height=10, dpi=600, units="cm")
+
+print(fig_gof) 
+
+```
+
+### Covariate relationships
+
+```{r model2-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) 
+
+idata<-idata %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<-eta_cat(idata, c("SEXC//Sex"), etas)
+p_cont1<-eta_cont(idata, c("AGE//Age, y"), etas)
+p_cont2<-eta_cont(idata, c("WT//Weight, kg"), etas)
+# cov_sex<-(p_cat[[1]]+p_cat[[2]])/(p_cat[[3]]+p_cat[[4]])/(p_cat[[5]]+plot_spacer())
+# cov_age<-(p_cont1[[1]]+p_cont1[[2]])/(p_cont1[[3]]+p_cont1[[4]])/(p_cont1[[5]]+plot_spacer())
+# cov_wt <-(p_cont2[[1]]+p_cont2[[2]])/(p_cont2[[3]]+p_cont2[[4]])/(p_cont2[[5]]+plot_spacer())
+
+cov_sex<-p_cat[[1]]
+cov_age<-p_cont1[[1]]
+cov_wt <-p_cont2[[1]]
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_sex" , ".png"),
+         plot=cov_sex, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_age" , ".png"),
+         plot=cov_age, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_wt" , ".png"),
+         plot=cov_wt, width=12, height=10, dpi=600, units="cm")
+
+print(cov_sex)
+print(cov_age)
+print(cov_wt)
+```
+
+## Model 3
+
+2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1, etas estiamted for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+```{r select-model3}
+mod_to_plot <- read_model(file.path(model_dir, 3))
+join_df <- nm_join(mod_to_plot) 
+
+```
+
+### Model summary
+
+```{r mod3-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model3-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "model_fits" , ".png"),
+         plot=fig_model_fits, width=12, height=10, dpi=600, units="cm")
+
+print(fig_model_fits)
+
+```
+
+### Plot GOF fits
+
+```{r model3-gof}
+
+fig_gof<-fig_gof_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" , "gof" , ".png"),
+      plot=fig_gof, width=12, height=10, dpi=600, units="cm")
+
+print(fig_gof) 
+
+```
+
+### Covariate relationships
+
+```{r model3-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) 
+
+idata<-idata %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<-eta_cat(idata, c("SEXC//Sex"), etas)
+p_cont1<-eta_cont(idata, c("AGE//Age, y"), etas)
+p_cont2<-eta_cont(idata, c("WT//Weight, kg"), etas)
+# cov_sex<-(p_cat[[1]]+p_cat[[2]])/(p_cat[[3]]+p_cat[[4]])/(p_cat[[5]]+plot_spacer())
+# cov_age<-(p_cont1[[1]]+p_cont1[[2]])/(p_cont1[[3]]+p_cont1[[4]])/(p_cont1[[5]]+plot_spacer())
+# cov_wt <-(p_cont2[[1]]+p_cont2[[2]])/(p_cont2[[3]]+p_cont2[[4]])/(p_cont2[[5]]+plot_spacer())
+
+cov_sex<-p_cat[[1]]
+cov_age<-p_cont1[[1]]
+cov_wt <-p_cont2[[1]]
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_sex" , ".png"),
+         plot=cov_sex, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_age" , ".png"),
+         plot=cov_age, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_wt" , ".png"),
+         plot=cov_wt, width=12, height=10, dpi=600, units="cm")
+
+print(cov_sex)
+print(cov_age)
+print(cov_wt)
+```
+
+## Model 4
+
+2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated, etas estiamted for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+
+```{r select-model4}
+mod_to_plot <- read_model(file.path(model_dir, 4))
+join_df <- nm_join(mod_to_plot) 
+
+```
+
+### Model summary
+
+```{r mod4-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model4-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "model_fits" , ".png"),
+         plot=fig_model_fits, width=12, height=10, dpi=600, units="cm")
+
+print(fig_model_fits)
+
+```
+
+### Plot GOF fits
+
+```{r model4-gof}
+
+fig_gof<-fig_gof_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" , "gof" , ".png"),
+      plot=fig_gof, width=12, height=10, dpi=600, units="cm")
+
+print(fig_gof) 
+
+```
+
+### Covariate relationships
+
+```{r model4-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) 
+
+idata<-idata %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<-eta_cat(idata, c("SEXC//Sex"), etas)
+p_cont1<-eta_cont(idata, c("AGE//Age, y"), etas)
+p_cont2<-eta_cont(idata, c("WT//Weight, kg"), etas)
+# cov_sex<-(p_cat[[1]]+p_cat[[2]])/(p_cat[[3]]+p_cat[[4]])/(p_cat[[5]]+plot_spacer())
+# cov_age<-(p_cont1[[1]]+p_cont1[[2]])/(p_cont1[[3]]+p_cont1[[4]])/(p_cont1[[5]]+plot_spacer())
+# cov_wt <-(p_cont2[[1]]+p_cont2[[2]])/(p_cont2[[3]]+p_cont2[[4]])/(p_cont2[[5]]+plot_spacer())
+
+cov_sex<-p_cat[[1]]
+cov_age<-p_cont1[[1]]
+cov_wt <-p_cont2[[1]]
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_sex" , ".png"),
+         plot=cov_sex, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_age" , ".png"),
+         plot=cov_age, width=12, height=10, dpi=600, units="cm")
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "cov_wt" , ".png"),
+         plot=cov_wt, width=12, height=10, dpi=600, units="cm")
+
+print(cov_sex)
+print(cov_age)
+print(cov_wt)
+```
+
+## Model 5
+
+3 cmp dispos. model (fixed), 1-st order abs., F estimated, etas estimated for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/8533912/>:
+VC = 14.6, VP1 = 66, VP2 = 608, Cl = 52.8 L/h, and Q = 102 L/h i 40.8 L/h
+
+```{r select-model}
+mod_to_plot <- read_model(file.path(model_dir, 5))
+join_df <- nm_join(mod_to_plot) 
+
+```
+
+### Model summary
+
+```{r mod5-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model5-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
+              "model_fits" , ".png"),
+         plot=fig_model_fits, width=12, height=10, dpi=600, units="cm")
+
+print(fig_model_fits)
+
+```
+
+### Plot GOF fits
+
+```{r model5-gof}
+
+fig_gof<-fig_gof_fun(join_df)
+
+ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" , "gof" , ".png"),
+      plot=fig_gof, width=12, height=10, dpi=600, units="cm")
+
+print(fig_gof) 
+
+```
+
+### Covariate relationships
+
+```{r model5-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) 
+
+idata<-idata %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<-eta_cat(idata, c("SEXC//Sex"), etas)
+p_cont1<-eta_cont(idata, c("AGE//Age, y"), etas)
+p_cont2<-eta_cont(idata, c("WT//Weight, kg"), etas)
+# cov_sex<-(p_cat[[1]]+p_cat[[2]])/(p_cat[[3]]+p_cat[[4]])/(p_cat[[5]]+plot_spacer())
+# cov_age<-(p_cont1[[1]]+p_cont1[[2]])/(p_cont1[[3]]+p_cont1[[4]])/(p_cont1[[5]]+plot_spacer())
+# cov_wt <-(p_cont2[[1]]+p_cont2[[2]])/(p_cont2[[3]]+p_cont2[[4]])/(p_cont2[[5]]+plot_spacer())
+
+cov_sex<-p_cat[[1]]
+cov_age<-p_cont1[[1]]
+cov_wt <-p_cont2[[1]]
 
 ggsave(paste0(figure_dir, "/model", basename(mod_to_plot$absolute_model_path), "/" ,
               "cov_sex" , ".png"),

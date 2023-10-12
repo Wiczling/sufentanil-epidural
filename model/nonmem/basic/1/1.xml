@@ -5,7 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://namespaces.oreilly.com/xmlnut/address output.xsd"
 xmlns:nm="http://namespaces.oreilly.com/xmlnut/address"
 >
-<nm:start_datetime>2023-10-08T16:31:38.749</nm:start_datetime>
+<nm:start_datetime>2023-10-12T12:39:48.080</nm:start_datetime>
 <nm:control_stream><![CDATA[
 $PROBLEM sufentanil_epidural
 
@@ -87,8 +87,8 @@ FILE=patab1.tab
 <nm:license_information><![CDATA[
 License Registered to: Medical University of Gdansk
 Expiration Date:    14 JUL 2024
-Current Date:        8 OCT 2023
-Days until program expires : 281
+Current Date:       12 OCT 2023
+Days until program expires : 277
 ]]></nm:license_information>
 <nm:program_information><![CDATA[
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.4.4
@@ -390,7 +390,7 @@ Days until program expires : 281
 </nm:termination_txtmsg>
 <nm:etabar>
 <nm:row nm:rname='SUBPOP1'>
-<nm:col nm:cname='ETA1'>3.17063274326253933E-002</nm:col>
+<nm:col nm:cname='ETA1'>3.17063274326254210E-002</nm:col>
 <nm:col nm:cname='ETA2'>0.0000000000000000</nm:col>
 <nm:col nm:cname='ETA3'>0.0000000000000000</nm:col>
 <nm:col nm:cname='ETA4'>0.0000000000000000</nm:col>
@@ -426,7 +426,7 @@ Days until program expires : 281
 </nm:etabarpval>
 <nm:etashrinksd>
 <nm:row nm:rname='SUBPOP1'>
-<nm:col nm:cname='ETA1'>5.8113795487195414</nm:col>
+<nm:col nm:cname='ETA1'>5.8113795487195645</nm:col>
 <nm:col nm:cname='ETA2'>100.00000000000000</nm:col>
 <nm:col nm:cname='ETA3'>100.00000000000000</nm:col>
 <nm:col nm:cname='ETA4'>100.00000000000000</nm:col>
@@ -435,7 +435,7 @@ Days until program expires : 281
 </nm:etashrinksd>
 <nm:etashrinkvr>
 <nm:row nm:rname='SUBPOP1'>
-<nm:col nm:cname='ETA1'>11.285037774846330</nm:col>
+<nm:col nm:cname='ETA1'>11.285037774846362</nm:col>
 <nm:col nm:cname='ETA2'>100.00000000000000</nm:col>
 <nm:col nm:cname='ETA3'>100.00000000000000</nm:col>
 <nm:col nm:cname='ETA4'>100.00000000000000</nm:col>
@@ -472,12 +472,12 @@ Days until program expires : 281
 <nm:col nm:cname='EPS2'>2.1598908570550912</nm:col>
 </nm:row>
 </nm:epsshrinkvr>
-<nm:estimation_elapsed_time>173.31</nm:estimation_elapsed_time>
+<nm:estimation_elapsed_time>174.37</nm:estimation_elapsed_time>
 <nm:parallel_cov nm:parafile='1.pnm' nm:protocol='FPI' nm:nodes='4'/>
 <nm:covariance_information><![CDATA[
 ]]></nm:covariance_information>
 <nm:covariance_status nm:error='0' nm:numnegeigenvalues='-1' nm:mineigenvalue='0.0000000000000000' nm:maxeigenvalue='0.0000000000000000' nm:rms='0.0000000000000000'/>
-<nm:covariance_elapsed_time>58.96</nm:covariance_elapsed_time>
+<nm:covariance_elapsed_time>52.82</nm:covariance_elapsed_time>
 <nm:parallel_fnleta nm:parafile='1.pnm' nm:protocol='FPI' nm:nodes='4'/>
 <nm:parallel_wres nm:parafile='1.pnm' nm:protocol='FPI' nm:nodes='4'/>
 <nm:final_objective_function_text>MINIMUM VALUE OF OBJECTIVE FUNCTION</nm:final_objective_function_text>
@@ -1623,11 +1623,11 @@ Days until program expires : 281
 </nm:eigenvalues>
 </nm:estimation>
 <nm:post_process_times>
-<nm:post_elapsed_time>12.31</nm:post_elapsed_time>
-<nm:finaloutput_elapsed_time>2.59</nm:finaloutput_elapsed_time>
+<nm:post_elapsed_time>12.05</nm:post_elapsed_time>
+<nm:finaloutput_elapsed_time>1.90</nm:finaloutput_elapsed_time>
 </nm:post_process_times>
 </nm:problem>
 </nm:nonmem>
-<nm:stop_datetime>2023-10-08T16:35:48.565</nm:stop_datetime>
-<nm:total_cputime>140.063</nm:total_cputime>
+<nm:stop_datetime>2023-10-12T12:43:51.931</nm:stop_datetime>
+<nm:total_cputime>147.328</nm:total_cputime>
 </nm:output>
