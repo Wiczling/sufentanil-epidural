@@ -16,6 +16,6 @@ execute:
   warning: false
 ---
 
-# Preliminary results: 12/10/2023
+# Preliminary results:
 
-[Preliminary results](/analysis.html "Preliminary results")
+[Preliminary results](/preliminary-analysis.html "Preliminary results")
