@@ -170,17 +170,16 @@ xdata %>%
              SEX == "2" ~ "Female",
              .default = NA)) %>%
   select(ID, WT, AGE, SEX) %>%
-  rename("Body Weigh, kg" = WT, "Age, y" = AGE, "Sex" = SEX) %>%
-  kableExtra::kable()
+  rename("Body Weigh, kg" = WT, "Age, y" = AGE, "Sex" = SEX) %>% kableExtra::kable()
   
-xdata %>% 
+tab1<-xdata %>% 
   distinct(ID,.keep_all = TRUE) %>%
   pt_cont_long(
     cols = c("Body Weight, kg" = "WT", "Age, y" = "AGE" )
   ) %>% 
   st_new()
 
-xdata %>% 
+tab2<-xdata %>% 
   distinct(ID,.keep_all = TRUE) %>%
  mutate(SEX=case_when(
              SEX == "1" ~ "Male",
@@ -191,6 +190,8 @@ xdata %>%
   ) %>% 
   st_new()
 
+tab1$data%>% kableExtra::kable()
+tab2$data%>% kableExtra::kable()
 ```
 
 # Run NONMEM
@@ -272,7 +273,7 @@ return(fig_gof)
 ```
 
 
-Model 3. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
+Model 31. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
 Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
 VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
 
@@ -288,14 +289,14 @@ mod3 <- mod3 %>%
 Model 31. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
 Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
 VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
-Added ETAS
+Added ETAS. ETAS for VC, VT, Cl and Q = 38.3 fixed based on the above article. Estimated for K41.
 
 ```{r model31, eval = FALSE}
 mod31 <- new_model(file.path(model_dir, 31),  .overwrite = TRUE)
 submit_model(mod31, .mode = "local")
 mod31 <- mod31 %>% 
   add_tags("2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1")%>% 
-  add_tags("etas for disposition parameters fixed. Estiamted for K41")
+  add_tags("etas for disposition parameters fixed. Estimated for K41")
 #mod31 <- mod31 %>% add_notes(" ")
 ```
 Model 32. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
@@ -336,6 +337,8 @@ summary_log(model_dir, .include = c(3,31,32)) %>%
 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1, etas estiamted for CL/F.
 Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
 VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+
 ```{r select-model3}
 mod_to_plot <- read_model(file.path(model_dir, 3))
 join_df <- nm_join(mod_to_plot) 
@@ -444,9 +447,9 @@ print(cov_wt)
 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated, etas estiamted for CL/F.
 Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
 VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+Added ETAS
 
-
-```{r select-model4}
+```{r select-model31}
 mod_to_plot <- read_model(file.path(model_dir, 31))
 join_df <- nm_join(mod_to_plot) 
 
@@ -551,10 +554,11 @@ print(cov_wt)
 
 ## Model 32
 
-2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated, etas estiamted for CL/F.
+2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated
 Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
 VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
-
+Added ETAS
+F esitmated
 
 ```{r select-model32}
 mod_to_plot <- read_model(file.path(model_dir, 32))
