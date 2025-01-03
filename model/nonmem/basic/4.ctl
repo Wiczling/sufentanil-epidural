@@ -57,13 +57,13 @@ $THETA
 (0,0.9,1)     ;[] BIO
 
 $OMEGA     
-0.1  ;[P] ETA-CL
+0.1   ;[P] ETA-CL
 0 FIX ;[P] ETA-V1
 0 FIX ;[P] ETA-Q
 0 FIX ;[P] ETA-V2
-0 FIX   ;[P] ETA-KA
-0 FIX   ;[P] ETA-K14
-0 FIX     ;[P] ETA-K41
+0 FIX ;[P] ETA-KA
+0 FIX ;[P] ETA-K14
+0 FIX ;[P] ETA-K41
 
 $SIGMA
 (0.01 FIX)  ;[P] ADD pg/ml
