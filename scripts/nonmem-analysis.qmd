@@ -1,0 +1,1023 @@
+---
+title: "Pharmacokinetics of sufentanil after epidural administration"
+author:   
+  - Pawel Wiczling
+  - Agnieszka Bienert
+  - Paulina Okuńska
+  - Agnieszka Borsuk-de Moor
+  - Justyna Ber
+date: today
+date-format: long
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+---
+
+# Introduction
+
+Pharmacokinetics of sufentanil after epidural administration.
+
+```{r lib, message=FALSE}
+
+library(pracma)
+library(bbr)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(mrgsolve)
+library(vpc)
+library(pmplots)
+library(scales)
+library(data.table)
+library(tidyverse)
+library(glue)
+library(whisker)
+library(here)
+
+library(pmtables)
+
+# library(mrgmisc)
+source("functions/resampling_functions.R") # from mrgmisc
+```
+
+# Settings
+```{r settings}
+data_dir <- here::here("data","derived") 
+model_dir <- here::here("model","nonmem","basic")  
+figures_dir <- here::here("deliv","figures", "nonmem")
+tables_dir <- here::here("deliv","tables", "nonmem")
+
+options(bbr.bbi_exe_path = "C:/Users/GUMed/AppData/Roaming/bbi/bbi.exe")
+
+bbr::use_bbi()
+
+bbi_init(.dir = model_dir,
+         .nonmem_dir = "C:/",         
+         .nonmem_version = "nm75g64",  
+.bbi_args = list(
+      parallel = T,
+      mpi_exec_path ="C:/nm75g64/run/psexec",
+      parafile = "C:/nm75g64/run/fpiwini8.pnm",
+      threads = 4))
+```
+
+# Load data
+# EDA
+```{r load-data}
+eda_figures_dir <- here::here(figures_dir, "EDA")
+eda_tables_dir <- here::here(tables_dir,"EDA")
+dir.create(eda_figures_dir, recursive = T)
+dir.create(eda_tables_dir, recursive = T)
+
+xdata <- read.csv(here::here(data_dir, "nonmem_data_v02.csv"), na.strings='.')
+
+xdata <- xdata %>%
+  mutate(outliers = OUT,
+         infusion = TIMEh<TINFS,
+         timepostinf = TIMEh-TINFS)
+```
+
+## Plot raw data
+```{r plot-raw-data}
+#' Some plots
+#' 
+
+plot1<-ggplot(data = subset(xdata, EVID == 0 & outliers==0 & infusion==1), aes(x = TIMEh, y = DV, group = ID)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_point(data = subset(xdata, EVID == 0 & outliers==1 & infusion==1), aes(x = TIMEh, y = DV, group = ID),colour = "red") + 
+scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time after infusion start, h") + 
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+
+plot2<-ggplot(data = subset(xdata, EVID == 0 & outliers==0 & infusion==0), aes(x = timepostinf, y = DV, group = ID)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_point(data = subset(xdata, EVID == 0 & outliers==1 & infusion==0), aes(x = timepostinf, y = DV, group = ID),colour = "red") + 
+scale_y_continuous(limits = c(0.1, 100),
+                   trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+ ylab(element_blank()) +
+  xlab("Time after infusion end, h")+
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+
+plot12 <-plot1+plot2
+
+
+plot2<-ggplot(data = subset(xdata, EVID==0 & outliers==0), aes(x = TIMEh, y = DV, color = factor(ID)),shape=21) + 
+  geom_point() +
+  geom_line()+ 
+scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time after infusion start, days") + 
+  labs(color = "ID")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6)) + 
+  geom_segment(aes(x = 0, y = 100, xend = TINFS, yend = 100))+
+  facet_wrap(.~factor(ID),nrow = 3)+
+  theme(legend.position="none")
+
+
+ggsave(filename = here::here(eda_figures_dir, "rawdata1.png"),plot = plot12, width=12, height=10, dpi=600, units="cm")
+
+ggsave(filename = here::here(eda_figures_dir, "rawdata2.png"),plot = plot2, width=12, height=10, dpi=600, units="cm")
+
+print(plot12)
+print(plot2)
+```
+
+## Patients demographics
+```{r summary-tbl}
+tab1<-xdata %>% 
+  distinct(ID,.keep_all = TRUE) %>%
+ mutate(SEX=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA)) %>%
+  select(ID, WT, AGE, SEX) %>%
+  rename("Body Weigh, kg" = WT, "Age, y" = AGE, "Sex" = SEX) 
+  
+tab2<-xdata %>% 
+  distinct(ID,.keep_all = TRUE) %>%
+  pt_cont_long(cols = c("Body Weight, kg" = "WT", "Age, y" = "AGE" )) %>% 
+  st_new()
+
+tab3<-xdata %>% 
+  distinct(ID,.keep_all = TRUE) %>%
+ mutate(SEX=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA)) %>%
+  pt_cat_long(cols = c("Sex" = "SEX")) %>% 
+  st_new()
+
+write.csv(tab1, file = here::here(eda_tables_dir, "icov.csv"))
+
+tab1%>%kableExtra::kable()
+tab2$data%>% kableExtra::kable()
+tab3$data%>% kableExtra::kable()
+```
+
+
+# Plotting functions
+
+Define few functions used later to visualize results:
+
+```{r functions}
+#' Functions
+
+fig_model_fits_fun <- function(df){
+  ggplot(data = subset(df, EVID==0), aes(x = TIME, y = DV)) + 
+  geom_point(size=1) + 
+  geom_line(data = subset(df,EVID!=1) , aes(x = TIME, y = IPRED), linetype=1) +
+  geom_line(data = subset(df,EVID!=1) , aes(x = TIME, y = PRED), linetype=2) + 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time, h") + 
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")),
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))+
+  facet_wrap(.~ID,nrow = 3)
+}
+
+fig_gof_fun <- function(df){
+  
+p1<-ggplot(subset(df,MDV==0),aes(x=IPRED,y=DV))+
+  geom_point()+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="gray")+
+  labs( x="IPRED", y="DV")+ 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+p2<-ggplot(subset(df,MDV==0),aes(x=PRED,y=DV))+
+  geom_point()+
+  geom_abline(intercept = 0, slope =1, linetype=2, color="gray")+
+  labs( x="PRED", y="DV")+ 
+  scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+p3<-ggplot(subset(df,MDV==0),aes(x=TIME,y=CWRES))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype=2, color="gray") + 
+  labs( x="Time (h)", y="CWRES")
+
+p4<-ggplot(subset(df,MDV==0),aes(x=PRED,y=CWRES))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype=2, color="gray")+
+  labs( x="PRED", y="CWRES")+ 
+  scale_x_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))
+
+fig_gof<-(p1+p2)/(p3+p4)
+
+return(fig_gof)
+}
+
+```
+
+# Nonmem Runs
+
+## Model 1. Classical 2 cmp. model, 1-st order absorption.
+```{r model1, eval = FALSE}
+mod1 <- new_model(file.path(model_dir, 1),  .overwrite = TRUE)
+submit_model(mod1, .mode = "local")
+mod1 <- mod1 %>% 
+  add_tags("2 cmp dispos. model, 1-st order abs.")%>% 
+  add_tags("etas estiamted for CL/F") 
+#mod1 <- mod1 %>% add_notes(" ")
+```
+
+## Model 2. 2 cmp dispos. model (fixed), 1-st order abs., F estimated.
+
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+```{r model2, eval = FALSE}
+mod2 <- new_model(file.path(model_dir, 2),  .overwrite = TRUE)
+submit_model(mod2, .mode = "local")
+mod2 <- mod2 %>% 
+  add_tags("2 cmp dispos. model (fixed), 1-st order abs., F estimated")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod2 <- mod2 %>% add_notes(" ")
+```
+
+## Model 3. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
+
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+```{r model3, eval = FALSE}
+mod3 <- new_model(file.path(model_dir, 3),  .overwrite = TRUE)
+submit_model(mod3, .mode = "local")
+mod3 <- mod3 %>% 
+  add_tags("2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod3 <- mod3 %>% add_notes(" ")
+```
+
+
+## Model 31. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
+
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+Added ETAS. ETAS for VC, VT, Cl and Q = 38.3 fixed based on the above article. Estimated for K41.
+
+```{r model31, eval = FALSE}
+mod31 <- new_model(file.path(model_dir, 31),  .overwrite = TRUE)
+submit_model(mod31, .mode = "local")
+mod31 <- mod31 %>% 
+  add_tags("2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1")%>% 
+  add_tags("etas for disposition parameters fixed. Estimated for K41")
+#mod31 <- mod31 %>% add_notes(" ")
+```
+
+## Model 32. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1.
+
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+Added ETAS Added F
+
+```{r model32, eval = FALSE}
+mod32 <- new_model(file.path(model_dir, 32),  .overwrite = TRUE)
+submit_model(mod32, .mode = "local")
+mod32 <- mod32 %>% 
+  add_tags("2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estiamted")%>% 
+  add_tags("etas for disposition parameters fixed. Estiamted for K41")
+#mod32 <- mod32 %>% add_notes(" ")
+```
+
+## Model 4. 2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+```{r model4, eval = FALSE}
+mod4 <- new_model(file.path(model_dir, 4),  .overwrite = TRUE)
+submit_model(mod4, .mode = "local")
+mod4 <- mod4 %>% 
+  add_tags("2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod4 <- mod4 %>% add_notes(" ")
+
+```
+
+## Model 5. 3 cmp dispos. model (fixed), 1-st order abs., F estimated.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/8533912/>:
+VC = 14.6, VP1 = 66, VP2 = 608, Cl = 52.8 L/h, and Q = 102 L/h i 40.8 L/h
+
+```{r model5, eval = FALSE}
+mod5 <- new_model(file.path(model_dir, 5),  .overwrite = TRUE)
+submit_model(mod5, .mode = "local")
+mod5 <- mod5 %>% 
+  add_tags("3 cmp dispos. model (fixed), 1-st order abs., F estimated")%>% 
+  add_tags("etas estiamted for CL/F")
+#mod5 <- mod5 %>% add_notes(" ")
+```
+
+# Compare models:
+
+```{r compare}
+log_df <- run_log(model_dir)
+log_df%>%
+  select(-c(absolute_model_path,yaml_md5,bbi_args,based_on, star,model_type, description))%>%
+  kableExtra::kable()
+```
+
+```{r ofv-summary}
+summary_log(model_dir, .include = c(1:5,31,32)) %>%
+  select(run, ofv, condition_number, any_heuristics) %>% 
+  knitr::kable()
+```
+
+# Visualise key modeling steps
+
+## Model 1
+
+2 cmp dispos. model, 1-st order abs., etas estimated for CL/F
+
+```{r select-model1}
+model_name = "1"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod_to_plot <- read_model(file.path(model_dir, model_name))
+join_df <- nm_join(mod_to_plot) 
+```
+
+### Model summary
+
+```{r mod1-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+```{r model1-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+fig_model_fits
+
+ggsave(filename = here::here(model_figures_dir, "model-fits.png"),plot = fig_model_fits, width=12, height=10, dpi=600, units="cm")
+```
+
+### Plot GOF fits
+```{r model1-gof}
+fig_gof<-fig_gof_fun(join_df)
+fig_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = fig_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+### Covariate relationships
+
+```{r model1-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) 
+
+idata<-idata %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<-eta_cat(idata, c("SEXC//Sex"), etas)
+p_cont1<-eta_cont(idata, c("AGE//Age, y"), etas)
+p_cont2<-eta_cont(idata, c("WT//Weight, kg"), etas)
+
+plot_all<-p_cont1[[1]]/p_cont2[[1]]/p_cat[[1]]
+
+plot_all
+ggsave(filename = here::here(model_figures_dir, "cov.png"),plot = plot_all, width=12, height=10, dpi=600, units="cm")
+
+```
+
+## Model 2
+
+2 cmp dispos. model (fixed), 1-st order abs., F estimated, etas estiamted for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+```{r select-model2}
+model_name = "2"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod_to_plot <- read_model(file.path(model_dir, model_name))
+join_df <- nm_join(mod_to_plot) 
+```
+
+### Model summary
+
+```{r mod2-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+```{r model2-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+fig_model_fits
+
+ggsave(filename = here::here(model_figures_dir, "model-fits.png"),plot = fig_model_fits, width=12, height=10, dpi=600, units="cm")
+```
+
+### Plot GOF fits
+
+```{r model2-gof}
+fig_gof<-fig_gof_fun(join_df)
+fig_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = fig_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+### Covariate relationships
+
+```{r model2-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE)  %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<- patchwork::wrap_plots(eta_cat(idata, c("SEXC//Sex"), etas))
+p_cont1<-patchwork::wrap_plots(eta_cont(idata, c("AGE//Age, y"), etas))
+p_cont2<-patchwork::wrap_plots(eta_cont(idata, c("WT//Weight, kg"), etas))
+
+ggsave(filename = here::here(model_figures_dir, "cov1.png"),plot = p_cont1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov2.png"),plot = p_cont2, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov3.png"),plot = p_cat, width=12, height=10, dpi=600, units="cm")
+
+p_cat
+p_cont1
+p_cont2
+```
+
+## Model 3
+
+2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F=1, etas estiamted for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+```{r select-model3}
+model_name = "3"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod_to_plot <- read_model(file.path(model_dir, model_name))
+join_df <- nm_join(mod_to_plot) 
+```
+
+### Model summary
+
+```{r mod3-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model3-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+fig_model_fits
+
+ggsave(filename = here::here(model_figures_dir, "model-fits.png"),plot = fig_model_fits, width=12, height=10, dpi=600, units="cm")
+```
+
+### Plot GOF fits
+
+```{r model3-gof}
+fig_gof<-fig_gof_fun(join_df)
+fig_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = fig_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+### Covariate relationships
+
+```{r model3-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE)  %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<- patchwork::wrap_plots(eta_cat(idata, c("SEXC//Sex"), etas))
+p_cont1<-patchwork::wrap_plots(eta_cont(idata, c("AGE//Age, y"), etas))
+p_cont2<-patchwork::wrap_plots(eta_cont(idata, c("WT//Weight, kg"), etas))
+
+ggsave(filename = here::here(model_figures_dir, "cov1.png"),plot = p_cont1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov2.png"),plot = p_cont2, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov3.png"),plot = p_cat, width=12, height=10, dpi=600, units="cm")
+
+p_cat
+p_cont1
+p_cont2
+```
+
+## Model 4
+
+2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated, etas estiamted for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+
+```{r select-model4}
+model_name = "4"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod_to_plot <- read_model(file.path(model_dir, model_name))
+join_df <- nm_join(mod_to_plot) 
+```
+
+### Model summary
+```{r mod4-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+```{r model4-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+fig_model_fits
+
+ggsave(filename = here::here(model_figures_dir, "model-fits.png"),plot = fig_model_fits, width=12, height=10, dpi=600, units="cm")
+```
+
+### Plot GOF fits
+```{r model4-gof}
+fig_gof<-fig_gof_fun(join_df)
+fig_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = fig_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+### Covariate relationships
+```{r model4-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE)  %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+p_cat<- patchwork::wrap_plots(eta_cat(idata, c("SEXC//Sex"), etas))
+p_cont1<-patchwork::wrap_plots(eta_cont(idata, c("AGE//Age, y"), etas))
+p_cont2<-patchwork::wrap_plots(eta_cont(idata, c("WT//Weight, kg"), etas))
+
+ggsave(filename = here::here(model_figures_dir, "cov1.png"),plot = p_cont1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov2.png"),plot = p_cont2, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov3.png"),plot = p_cat, width=12, height=10, dpi=600, units="cm")
+
+p_cat
+p_cont1
+p_cont2
+```
+
+## Model 5
+
+3 cmp dispos. model (fixed), 1-st order abs., F estimated, etas estimated for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/8533912/>:
+VC = 14.6, VP1 = 66, VP2 = 608, Cl = 52.8 L/h, and Q = 102 L/h i 40.8 L/h
+
+```{r select-model}
+model_name = "5"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod_to_plot <- read_model(file.path(model_dir, model_name))
+join_df <- nm_join(mod_to_plot) 
+
+```
+
+### Model summary
+
+```{r mod5-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model5-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+fig_model_fits
+
+ggsave(filename = here::here(model_figures_dir, "model-fits.png"),plot = fig_model_fits, width=12, height=10, dpi=600, units="cm")
+```
+
+### Plot GOF fits
+
+```{r model5-gof}
+fig_gof<-fig_gof_fun(join_df)
+fig_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = fig_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+### Covariate relationships
+
+```{r model5-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA5//Eta for KA")
+
+p_cat<- patchwork::wrap_plots(eta_cat(idata, c("SEXC//Sex"), etas))
+p_cont1<-patchwork::wrap_plots(eta_cont(idata, c("AGE//Age, y"), etas))
+p_cont2<-patchwork::wrap_plots(eta_cont(idata, c("WT//Weight, kg"), etas))
+
+ggsave(filename = here::here(model_figures_dir, "cov1.png"),plot = p_cont1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov2.png"),plot = p_cont2, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov3.png"),plot = p_cat, width=12, height=10, dpi=600, units="cm")
+
+p_cat
+p_cont1
+p_cont2
+```
+
+## Model 31
+
+2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated, etas estiamted for CL/F.
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+Added ETAS
+
+```{r select-model31}
+model_name = "31"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod_to_plot <- read_model(file.path(model_dir, model_name))
+join_df <- nm_join(mod_to_plot) 
+
+```
+
+### Model summary
+
+```{r mod31-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model31-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+fig_model_fits
+
+ggsave(filename = here::here(model_figures_dir, "model-fits.png"),plot = fig_model_fits, width=12, height=10, dpi=600, units="cm")
+```
+
+### Plot GOF fits
+
+```{r model31-gof}
+fig_gof<-fig_gof_fun(join_df)
+fig_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = fig_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+### Covariate relationships
+
+```{r model31-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA7//Eta for K41")
+
+p_cat<- patchwork::wrap_plots(eta_cat(idata, c("SEXC//Sex"), etas))
+p_cont1<-patchwork::wrap_plots(eta_cont(idata, c("AGE//Age, y"), etas))
+p_cont2<-patchwork::wrap_plots(eta_cont(idata, c("WT//Weight, kg"), etas))
+
+ggsave(filename = here::here(model_figures_dir, "cov1.png"),plot = p_cont1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov2.png"),plot = p_cont2, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov3.png"),plot = p_cat, width=12, height=10, dpi=600, units="cm")
+
+p_cat
+p_cont1
+p_cont2
+```
+
+## Model 32
+
+2 cmp dispos. model (fixed), 1-st order 2-cmp abs., F estimated
+Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/26105145/>:
+VC = 7.90 l, VT = 481 L, Cl = 45.3 L/h, and Q = 38.3 L/h
+Added ETAS
+F esitmated
+
+```{r select-model32}
+model_name = "32"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod_to_plot <- read_model(file.path(model_dir, model_name))
+join_df <- nm_join(mod_to_plot) 
+```
+
+### Model summary
+
+```{r mod32-summary}
+ label_df <- mod_to_plot %>% 
+  param_labels() %>% 
+  apply_indices() 
+
+param_df <- mod_to_plot %>% 
+  model_summary() %>% 
+  param_estimates()
+
+report_df <- inner_join(
+  label_df %>% select(-param_type),
+  param_df %>% select(parameter_names, estimate, stderr, fixed),
+  by = "parameter_names") %>%
+  mutate(estimate=round(estimate, 3)) %>%
+  mutate(stderr= case_when(
+             stderr == 1.00e+10 ~ NA,
+             .default = stderr)) %>%
+  mutate(stderr=round(stderr, 3)) 
+
+report_df%>% knitr::kable()
+```
+
+### Plot model fits
+
+Model predictions:
+
+```{r model32-fits}
+# Individual and population fits
+fig_model_fits<- fig_model_fits_fun(join_df)
+
+fig_model_fits
+
+ggsave(filename = here::here(model_figures_dir, "model-fits.png"),plot = fig_model_fits, width=12, height=10, dpi=600, units="cm")
+```
+
+### Plot GOF fits
+
+```{r model32-gof}
+fig_gof<-fig_gof_fun(join_df)
+fig_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = fig_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+### Covariate relationships
+
+```{r model32-cov}
+
+idata <- distinct(join_df,ID,.keep_all = TRUE) %>%
+ mutate(SEXC=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA))
+
+etas <- c("ETA1//Eta for CL",
+          "ETA2//Eta for V1",
+          "ETA3//Eta for Q",
+          "ETA4//Eta for V2",
+          "ETA7//Eta for KA41")
+
+p_cat<- patchwork::wrap_plots(eta_cat(idata, c("SEXC//Sex"), etas))
+p_cont1<-patchwork::wrap_plots(eta_cont(idata, c("AGE//Age, y"), etas))
+p_cont2<-patchwork::wrap_plots(eta_cont(idata, c("WT//Weight, kg"), etas))
+
+ggsave(filename = here::here(model_figures_dir, "cov1.png"),plot = p_cont1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov2.png"),plot = p_cont2, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "cov3.png"),plot = p_cat, width=12, height=10, dpi=600, units="cm")
+
+p_cat
+p_cont1
+p_cont2
+```
+
+
+# Session
+
+```{r sessioninfo}
+sessionInfo()
+```
