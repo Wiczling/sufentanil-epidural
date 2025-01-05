@@ -193,7 +193,7 @@ div.csl-indent {
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>Pharmacokinetics of sufentanil after epidural administration.</p>
-<div class="cell" data-hash="bayesian-analysis_cache/html/load-libraries_0be723670bc9815a0cf788687a79cfb3">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pracma)</span>
@@ -242,7 +242,7 @@ div.csl-indent {
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   timeout = 600)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-hash="bayesian-analysis_cache/html/unnamed-chunk-1_c2ccbb5294f5fe78267696ed3720bb2e">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
@@ -261,7 +261,7 @@ div.csl-indent {
 </section>
 <section id="settings" class="level1">
 <h1>Settings</h1>
-<div class="cell" data-hash="bayesian-analysis_cache/html/settings_1968e7e87f555a37811c5ddcacb8b7dd">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"derived"</span>) </span>
@@ -276,7 +276,7 @@ div.csl-indent {
 <h1>EDA</h1>
 <section id="load-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-data">Load data</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/load-data_4c1d030345d9137bd0c33695eaa5d7fc">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>eda_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, <span class="st">"EDA"</span>)</span>
@@ -295,7 +295,7 @@ div.csl-indent {
 </section>
 <section id="plot-raw-data" class="level2">
 <h2 class="anchored" data-anchor-id="plot-raw-data">Plot raw data</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/plot-raw-data_d5e77961ccb82e88a4c294c378ad9c61">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Some plots</span></span>
@@ -384,7 +384,7 @@ div.csl-indent {
 </section>
 <section id="patients-demographics" class="level2">
 <h2 class="anchored" data-anchor-id="patients-demographics">Patients demographics</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/summary-tbl_08caa4143500923356039d8c7cb23186">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tab1<span class="ot">&lt;-</span>xdata <span class="sc">%&gt;%</span> </span>
@@ -606,7 +606,7 @@ div.csl-indent {
 <h1>Stan</h1>
 <section id="plotting-functions" class="level2">
 <h2 class="anchored" data-anchor-id="plotting-functions">Plotting functions</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/ploting-functions_33c6a071f0d4925fbee7d94153ddeca5">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------------------------------------</span></span>
@@ -836,7 +836,7 @@ div.csl-indent {
 \end{aligned}
 \]</span></p>
 <p>LKJ(5) ensure that the density is uniform over correlation matrices of order 4</p>
-<div class="cell" data-hash="bayesian-analysis_cache/html/model0_fef4099ca3c543481a79e750aafd67b5">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">new_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"0"</span>), <span class="at">.model_type =</span> <span class="st">"stan"</span>)</span>
@@ -845,7 +845,7 @@ div.csl-indent {
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#mod0 &lt;- mod0 %&gt;% submit_model(.overwrite = TRUE) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-hash="bayesian-analysis_cache/html/model1_60cc753f477b57fe2df5dbfed6909749">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mod1  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"1"</span>))</span>
@@ -857,14 +857,14 @@ div.csl-indent {
 </section>
 <section id="run-stan" class="level2">
 <h2 class="anchored" data-anchor-id="run-stan">Run stan</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/load-stan-mod1_8f3411f7c783e0a41f3f7f0d55f5b043">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"1"</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, model_name)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,model_name)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>mod1  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, model_name))</span>
@@ -878,7 +878,7 @@ div.csl-indent {
 </section>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/table-mod1_3f0b924c3a5d98b09f7c24a6d0c15af7">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
@@ -1288,7 +1288,7 @@ div.csl-indent {
 </section>
 <section id="trace-plots" class="level2">
 <h2 class="anchored" data-anchor-id="trace-plots">Trace plots</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/trace-plots-mod1_18852e6eb678079ac56dde7dfc9409fb">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>,<span class="st">"omega"</span>, <span class="st">"sigma"</span>, <span class="st">"nu"</span>)</span>
@@ -1317,7 +1317,7 @@ div.csl-indent {
 </section>
 <section id="individual-and-population-predictions" class="level2">
 <h2 class="anchored" data-anchor-id="individual-and-population-predictions">Individual and population predictions</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/IPRED-PRED-mod1_514ce652f54b47eb1e0fe881682e74f4">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
@@ -1334,7 +1334,7 @@ div.csl-indent {
 </section>
 <section id="vpc" class="level2">
 <h2 class="anchored" data-anchor-id="vpc">VPC</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/VPC-mod1_d5077c4bfacfde2d9f6eb8b03840c192">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
@@ -1351,7 +1351,7 @@ div.csl-indent {
 </section>
 <section id="gof" class="level2">
 <h2 class="anchored" data-anchor-id="gof">GOF</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/GOF-mod1_e036fe474a9327cd595f327bdfa32772">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plot_gof <span class="ot">&lt;-</span><span class="fu">gof_fun</span>(mod_to_plot, xdata)</span>
@@ -1368,7 +1368,7 @@ div.csl-indent {
 </section>
 <section id="individual-parameters-vs.-covariates" class="level2">
 <h2 class="anchored" data-anchor-id="individual-parameters-vs.-covariates">Individual parameters vs.&nbsp;covariates</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/covariets-mod1_43022b68b81d7fe5d03ebfbe7aa6e7bc">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>etaM<span class="ot">&lt;-</span><span class="fu">extract_etas_fun</span>(mod_to_plot,xdata)</span>
@@ -1441,7 +1441,7 @@ div.csl-indent {
 &amp; \theta_{fr} \sim lognormal(log(1),0.25), \\
 \end{aligned}
 \]</span></p>
-<div class="cell" data-hash="bayesian-analysis_cache/html/model2_0c43a671120f527ad4d97e3fe329994d">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mod1  &lt;- read_model(file.path(model_dir, "1"))</span></span>
@@ -1454,14 +1454,14 @@ div.csl-indent {
 </section>
 <section id="run-stan-1" class="level2">
 <h2 class="anchored" data-anchor-id="run-stan-1">Run stan</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/load-stan-mod2_577e1712f835169b64bfd7d10b1ce82c">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"2"</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, model_name)</span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,model_name)</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
 <span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>mod2  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, model_name))</span>
@@ -1475,7 +1475,7 @@ div.csl-indent {
 </section>
 <section id="parameters-1" class="level2">
 <h2 class="anchored" data-anchor-id="parameters-1">Parameters</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/table-mod2_6390c48d34911489f16a8f0c720056d9">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
@@ -1931,7 +1931,7 @@ div.csl-indent {
 </section>
 <section id="parameters-figure" class="level2">
 <h2 class="anchored" data-anchor-id="parameters-figure">Parameters (figure)</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/param2-mod2_2c42a70ff1232f1eb75461ecbe9c94a9">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(<span class="st">"fr"</span>))</span>
@@ -1945,7 +1945,7 @@ div.csl-indent {
 </section>
 <section id="trace-plots-1" class="level2">
 <h2 class="anchored" data-anchor-id="trace-plots-1">Trace plots</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/trace-plots-mod2_28251d76697eeeb4405f427bad7a68e6">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>,<span class="st">"omega"</span>, <span class="st">"sigma"</span>, <span class="st">"fr"</span>, <span class="st">"nu"</span>)</span>
@@ -1974,7 +1974,7 @@ div.csl-indent {
 </section>
 <section id="individual-and-population-predictions-1" class="level2">
 <h2 class="anchored" data-anchor-id="individual-and-population-predictions-1">Individual and population predictions</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/IPRED-PRED-mod2_bc6de4616fcfeb1ac40b6d6cc82a57fe">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
@@ -1991,7 +1991,7 @@ div.csl-indent {
 </section>
 <section id="vpc-1" class="level2">
 <h2 class="anchored" data-anchor-id="vpc-1">VPC</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/VPC-mod2_e48d4af51fb9787ad58180f0d012fe7f">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
@@ -2008,7 +2008,7 @@ div.csl-indent {
 </section>
 <section id="gof-1" class="level2">
 <h2 class="anchored" data-anchor-id="gof-1">GOF</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/GOF-mod2_8f6763353b04e49b8e31337de16f20b1">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>plot_gof <span class="ot">&lt;-</span><span class="fu">gof_fun</span>(mod_to_plot, xdata)</span>
@@ -2025,7 +2025,7 @@ div.csl-indent {
 </section>
 <section id="individual-parameters-vs.-covariates-1" class="level2">
 <h2 class="anchored" data-anchor-id="individual-parameters-vs.-covariates-1">Individual parameters vs.&nbsp;covariates</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/covariets-mod2_5227b5f608fed9e7d4b0570b20ec0964">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>etaM<span class="ot">&lt;-</span><span class="fu">extract_etas_fun</span>(mod_to_plot,xdata)</span>
@@ -2082,7 +2082,7 @@ div.csl-indent {
 </section>
 <section id="model-3" class="level1">
 <h1>Model 3</h1>
-<div class="cell" data-hash="bayesian-analysis_cache/html/model3_7d1082c21c7dfdb0893b674737211151">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mod1  &lt;- read_model(file.path(model_dir, "1"))</span></span>
@@ -2094,14 +2094,14 @@ div.csl-indent {
 </div>
 <section id="run-stan-2" class="level2">
 <h2 class="anchored" data-anchor-id="run-stan-2">Run stan</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/load-stan-mod3_b17cd2d6030caa79a50af4ea61fb3d74">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"3"</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, model_name)</span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,model_name)</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
 <span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
 <span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>mod2  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, model_name))</span>
@@ -2115,7 +2115,7 @@ div.csl-indent {
 </section>
 <section id="parameters-2" class="level2">
 <h2 class="anchored" data-anchor-id="parameters-2">Parameters</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/table-mod3_a424b82735b51bc70a90c8a88b489217">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
@@ -2726,17 +2726,6 @@ div.csl-indent {
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">rho[6,6]</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">( 1, 1)</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">rho[7,6]</td>
 <td style="text-align: left;">0.0752</td>
 <td style="text-align: left;">0.0827</td>
@@ -2747,7 +2736,7 @@ div.csl-indent {
 <td style="text-align: left;">2.18e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">rho[1,7]</td>
 <td style="text-align: left;">0.214</td>
 <td style="text-align: left;">0.221</td>
@@ -2758,7 +2747,7 @@ div.csl-indent {
 <td style="text-align: left;">2.74e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">rho[2,7]</td>
 <td style="text-align: left;">0.133</td>
 <td style="text-align: left;">0.137</td>
@@ -2769,7 +2758,7 @@ div.csl-indent {
 <td style="text-align: left;">2.43e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">rho[3,7]</td>
 <td style="text-align: left;">0.099</td>
 <td style="text-align: left;">0.106</td>
@@ -2780,7 +2769,7 @@ div.csl-indent {
 <td style="text-align: left;">2.42e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">rho[4,7]</td>
 <td style="text-align: left;">-0.028</td>
 <td style="text-align: left;">-0.0309</td>
@@ -2791,7 +2780,7 @@ div.csl-indent {
 <td style="text-align: left;">2.81e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">rho[5,7]</td>
 <td style="text-align: left;">-0.165</td>
 <td style="text-align: left;">-0.176</td>
@@ -2802,7 +2791,7 @@ div.csl-indent {
 <td style="text-align: left;">2.8e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">rho[6,7]</td>
 <td style="text-align: left;">0.0752</td>
 <td style="text-align: left;">0.0827</td>
@@ -2812,17 +2801,6 @@ div.csl-indent {
 <td style="text-align: left;">2.14e+03</td>
 <td style="text-align: left;">2.18e+03</td>
 <td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,7]</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">( 1, 1)</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
 </tr>
 </tbody>
 </table>
@@ -2835,7 +2813,7 @@ div.csl-indent {
 </section>
 <section id="trace-plots-2" class="level2">
 <h2 class="anchored" data-anchor-id="trace-plots-2">Trace plots</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/trace-plots-mod3_c8c4b9c58f554e142887bcbc8250fb9b">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
@@ -2865,7 +2843,7 @@ div.csl-indent {
 </section>
 <section id="individual-and-population-predictions-2" class="level2">
 <h2 class="anchored" data-anchor-id="individual-and-population-predictions-2">Individual and population predictions</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/IPRED-PRED-mod3_13f8e28c29dede3c2e42e39f7de72ded">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
@@ -2882,7 +2860,7 @@ div.csl-indent {
 </section>
 <section id="vpc-2" class="level2">
 <h2 class="anchored" data-anchor-id="vpc-2">VPC</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/VPC-mod3_a7f145dc6d983ee11975e267fd5d1cc3">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
@@ -2899,7 +2877,7 @@ div.csl-indent {
 </section>
 <section id="gof-2" class="level2">
 <h2 class="anchored" data-anchor-id="gof-2">GOF</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/GOF-mod3_93f543773d3ec2641fafe49b6be9a881">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>plot_gof <span class="ot">&lt;-</span><span class="fu">gof_fun</span>(mod_to_plot, xdata)</span>
@@ -2916,7 +2894,7 @@ div.csl-indent {
 </section>
 <section id="individual-parameters-vs.-covariates-2" class="level2">
 <h2 class="anchored" data-anchor-id="individual-parameters-vs.-covariates-2">Individual parameters vs.&nbsp;covariates</h2>
-<div class="cell" data-hash="bayesian-analysis_cache/html/covariets-mod3_a6cef07ea55cafed348601750accbddc">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>etaM<span class="ot">&lt;-</span><span class="fu">extract_etas_fun</span>(mod_to_plot,xdata)</span>
@@ -2973,7 +2951,7 @@ div.csl-indent {
 </section>
 <section id="session" class="level1">
 <h1>Session</h1>
-<div class="cell" data-hash="bayesian-analysis_cache/html/sessioninfo_1d61cfe6b1dbd3d790587190865cba91">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3026,15 +3004,14 @@ loaded via a namespace (and not attached):
 [40] proxy_0.4-27         bayesplot_1.11.1     assertthat_0.2.1    
 [43] matrixStats_1.3.0    vctrs_0.6.5          jsonlite_1.8.8      
 [46] arrayhelpers_1.1-0   hms_1.1.3            visdat_0.6.0        
-[49] systemfonts_1.1.0    ggdist_3.3.2         codetools_0.2-19    
-[52] ps_1.7.6             distributional_0.4.0 stringi_1.8.4       
-[55] gtable_0.3.5         munsell_0.5.1        pillar_1.9.0        
-[58] htmltools_0.5.8.1    R6_2.5.1             textshaping_0.4.0   
-[61] rprojroot_2.0.4      lattice_0.21-8       evaluate_0.23       
-[64] kableExtra_1.4.0     backports_1.5.0      class_7.3-22        
-[67] Rcpp_1.0.12          coda_0.19-4.1        svglite_2.1.3       
-[70] checkmate_2.3.1      xfun_0.44            fs_1.6.4            
-[73] pkgconfig_2.0.3     </code></pre>
+[49] systemfonts_1.1.0    ggdist_3.3.2         ps_1.7.6            
+[52] distributional_0.4.0 stringi_1.8.4        gtable_0.3.5        
+[55] munsell_0.5.1        pillar_1.9.0         htmltools_0.5.8.1   
+[58] R6_2.5.1             textshaping_0.4.0    rprojroot_2.0.4     
+[61] lattice_0.21-8       evaluate_0.23        kableExtra_1.4.0    
+[64] backports_1.5.0      class_7.3-22         Rcpp_1.0.12         
+[67] coda_0.19-4.1        svglite_2.1.3        checkmate_2.3.1     
+[70] xfun_0.44            fs_1.6.4             pkgconfig_2.0.3     </code></pre>
 </div>
 </div>
 
