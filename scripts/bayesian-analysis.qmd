@@ -1,0 +1,781 @@
+---
+title: "Pharmacokinetics of sufentanil after epidural administration"
+author:   
+  - Pawel Wiczling
+  - Agnieszka Bienert
+  - Paulina Okuńska
+  - Agnieszka Borsuk-de Moor
+  - Justyna Ber
+date: today
+date-format: long
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, message=FALSE, error=FALSE, warning=FALSE, comment=NA, out.width='95%')
+```
+
+# Introduction
+
+Pharmacokinetics of sufentanil after epidural administration.
+
+```{r load-libraries}
+library(pracma)
+library(bbr)
+library(bbr.bayes)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(mrgsolve)
+library(vpc)
+library(pmplots)
+library(naniar)
+library(knitr)
+library(data.table)
+library(tidyverse)
+library(glue)
+library(whisker)
+library(here)
+library(scales)
+library(pmplots)
+library(pmtables)
+library(nmrec)
+library(cmdstanr)
+library(gridExtra)
+library(posterior)
+
+set_cmdstan_path("C:/Users/GUMed/Documents/.cmdstan/Torsten-0.91.0/cmdstan")
+
+#' helper functions
+source(here::here("scripts","functions","functions-tables.R"))
+
+# table summary 
+sigfun = function(.x){sig(.x,digits=3)}
+
+#for the future:
+#remotes::install_github("metrumresearchgroup/nmrec")
+#devtools::install_github("metrumresearchgroup/bbr", ref = "main")
+# https://github.com/metrumresearchgroup/NMBayesTutorial/tree/main
+thisScript <- "bayesian-analysis.qmd"
+
+# 
+# rebuild_cmdstan(
+#   dir = cmdstan_path(),
+#   cores = getOption("mc.cores", 16),
+#   quiet = FALSE,
+#   timeout = 600)
+```
+
+```{r}
+# 
+# file.dir <-"C:/Users/GUMed/Documents/.cmdstan/Torsten-0.91.0/example-models/pk2cpt"
+# file  <- file.path(file.dir, "pk2cpt.stan")
+# model <- cmdstan_model(file)
+# fit <- model$sample(data = file.path(file.dir, "pk2cpt.data.R"),
+#                     init = file.path(file.dir, "pk2cpt.init.R"),
+#                     seed = 123,
+#                     chains = 4,
+#                     parallel_chains = 2,
+#                     refresh = 500)
+# bayesplot::mcmc_dens_overlay(fit$draws("CL"))
+```
+
+# Settings
+```{r settings}
+data_dir <- here::here("data","derived") 
+model_dir <- here::here("model","torsten")  
+figures_dir <- here::here("deliv","figures")
+tables_dir <- here::here("deliv","tables")
+cmdstanr::check_cmdstan_toolchain()
+```
+   
+# EDA
+## Load data
+```{r load-data}
+eda_figures_dir <- here::here(figures_dir, "EDA")
+eda_tables_dir <- here::here(tables_dir,"EDA")
+dir.create(eda_figures_dir, recursive = T)
+dir.create(eda_tables_dir, recursive = T)
+
+xdata <- read.csv(here::here(data_dir, "nonmem_data_v02.csv"), na.strings='.')
+
+xdata <- xdata %>%
+  mutate(outliers = OUT,
+         infusion = TIMEh<TINFS,
+         timepostinf = TIMEh-TINFS)
+```
+
+## Plot raw data
+```{r plot-raw-data}
+#' Some plots
+#' 
+
+plot1<-ggplot(data = subset(xdata, EVID == 0 & outliers==0 & infusion==1), aes(x = TIMEh, y = DV, group = ID)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_point(data = subset(xdata, EVID == 0 & outliers==1 & infusion==1), aes(x = TIMEh, y = DV, group = ID),colour = "red") + 
+scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time after infusion start, h") + 
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+
+plot2<-ggplot(data = subset(xdata, EVID == 0 & outliers==0 & infusion==0), aes(x = timepostinf, y = DV, group = ID)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_point(data = subset(xdata, EVID == 0 & outliers==1 & infusion==0), aes(x = timepostinf, y = DV, group = ID),colour = "red") + 
+scale_y_continuous(limits = c(0.1, 100),
+                   trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+ ylab(element_blank()) +
+  xlab("Time after infusion end, h")+
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+
+plot12 <-plot1+plot2
+
+
+plot2<-ggplot(data = subset(xdata, EVID==0 & outliers==0), aes(x = TIMEh, y = DV, color = factor(ID)),shape=21) + 
+  geom_point() +
+  geom_line()+ 
+scale_y_continuous(limits = c(0.1, 100),
+                      trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x, n=4),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  ylab("Sufentanil concentrations, pg/ml") +
+  xlab("Time after infusion start, days") + 
+  labs(color = "ID")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6)) + 
+  geom_segment(aes(x = 0, y = 100, xend = TINFS, yend = 100))+
+  facet_wrap(.~factor(ID),nrow = 3)+
+  theme(legend.position="none")
+
+
+ggsave(filename = here::here(eda_figures_dir, "rawdata1.png"),plot = plot12, width=12, height=10, dpi=600, units="cm")
+
+ggsave(filename = here::here(eda_figures_dir, "rawdata2.png"),plot = plot2, width=12, height=10, dpi=600, units="cm")
+
+print(plot12)
+print(plot2)
+```
+## Patients demographics
+```{r summary-tbl}
+
+tab1<-xdata %>% 
+  distinct(ID,.keep_all = TRUE) %>%
+ mutate(SEX=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA)) %>%
+  select(ID, WT, AGE, SEX) %>%
+  rename("Body Weigh, kg" = WT, "Age, y" = AGE, "Sex" = SEX) 
+  
+tab2<-xdata %>% 
+  distinct(ID,.keep_all = TRUE) %>%
+  pt_cont_long(cols = c("Body Weight, kg" = "WT", "Age, y" = "AGE" )) %>% 
+  st_new()
+
+tab3<-xdata %>% 
+  distinct(ID,.keep_all = TRUE) %>%
+ mutate(SEX=case_when(
+             SEX == "1" ~ "Male",
+             SEX == "2" ~ "Female",
+             .default = NA)) %>%
+  pt_cat_long(cols = c("Sex" = "SEX")) %>% 
+  st_new()
+
+write.csv(tab1, file = here::here(eda_tables_dir, "icov.csv"))
+
+tab1%>%kableExtra::kable()
+tab2$data%>% kableExtra::kable()
+tab3$data%>% kableExtra::kable()
+```
+
+# Stan
+## Plotting functions
+```{r ploting-functions}
+#------------------------------------------------------------------------------
+plot_param_tables <-function(mod_to_plot, pars){ 
+  mod_to_plot$summary(c(pars)) %>%
+  mutate_if(is.numeric, ~formatC(., 3)) %>% 
+  rename(parameter = variable) %>%
+  mutate("90% CI" = paste("(", q5, ", ", q95, ")", sep = "")) %>%
+  select(parameter, mean, median, sd, mad, "90% CI", ess_bulk, ess_tail, rhat)%>%
+  filter(str_detect(parameter, 
+                    "\\[1,1\\]|\\[2,2\\]|\\[3,3\\]|\\[4,4\\]|\\[5,5\\]|\\[6,6\\]|\\[7,7\\]", negate = T))
+}
+
+#------------------------------------------------------------------------------
+pred_by_id_fun <- function(mod_to_plot, xdata){
+  
+  predInd <-  posterior::as_draws_df(mod_to_plot$draws("cCond")) %>%
+  pivot_longer(cols = starts_with("cCond"),
+               names_transform = list(name = forcats::fct_inorder)) %>%
+  group_by(name) %>%
+  summarize(lbInd = quantile(value, probs = 0.05, na.rm = TRUE),
+            medianInd = quantile(value, probs = 0.5, na.rm = TRUE),
+            ubInd = quantile(value, probs = 0.95, na.rm = TRUE))
+
+predPop <- posterior::as_draws_df(mod_to_plot$draws("cPred")) %>%
+  pivot_longer(cols = starts_with("cPred"),
+               names_transform = list(name = forcats::fct_inorder)) %>%
+  group_by(name) %>%
+  summarize(lbPop = quantile(value, probs = 0.05, na.rm = TRUE),
+            medianPop = quantile(value, probs = 0.5, na.rm = TRUE),
+            ubPop = quantile(value, probs = 0.95, na.rm = TRUE))
+
+predAll <- bind_cols(xdata, predInd, predPop) %>%
+  mutate(DV = if_else(EVID==0,DV, NA))
+
+plot <- ggplot(predAll, aes(x = TIMEh, y = DV)) +
+  geom_line(aes(x = TIMEh, y = medianPop, color = "population")) +
+  geom_ribbon(aes(ymin = lbPop, ymax = ubPop, fill = "population"), alpha = 0.25) +
+  geom_line(aes(x = TIMEh, y = medianInd, color = "individual")) +
+  geom_ribbon(aes(ymin = lbInd, ymax = ubInd, fill = "individual"), alpha = 0.25) +
+  scale_color_brewer(name  ="prediction",
+                     breaks=c("individual", "population"),
+                     palette = "Set1") +
+  scale_fill_brewer(name  ="prediction",
+                    breaks=c("individual", "population"),
+                    palette = "Set1") +
+  geom_point(na.rm = TRUE, size = 0.5) +
+  scale_y_log10() +
+  labs(x = "Time (h)",
+       y = "Sufentanil concentrations, pg/ml") +
+  theme(text = element_text(size = 8),
+        axis.text = element_text(size = 8),
+        legend.position = "bottom",
+        strip.text = element_text(size = 8)) +
+  coord_cartesian(ylim = c(0.1,200))+
+  facet_wrap(~ ID)
+  
+plot
+}
+
+#------------------------------------------------------------------------------
+vpc_fun <- function(mod_to_plot, xdata){
+
+nPost <- mod_to_plot$metadata()$iter_sampling / mod_to_plot$metadata()$thin
+n_chains <- 4
+
+inf_labs <- c("TRUE" = "During infusion",
+  "FALSE" = "Post infusion")
+predPop <- posterior::as_draws_df(mod_to_plot$draws("cPred")) %>%
+  pivot_longer(cols = starts_with("cPred"),
+               names_transform = list(name = forcats::fct_inorder)) %>%
+  mutate(ID = rep(xdata$ID, n_chains * nPost),
+         TIME = rep(xdata$TIME, n_chains * nPost),
+         CMT = rep(xdata$CMT, n_chains * nPost),
+         EVID = rep(xdata$EVID, n_chains * nPost),
+         infusion = rep(xdata$infusion, n_chains * nPost),
+         DV = rep(xdata$DV, n_chains * nPost)) %>%
+  filter(.iteration<=250)
+
+sim <-predPop %>% filter(!is.na(DV)) %>% filter(EVID==0) %>% mutate(infusion = as.factor(infusion))
+obs <- xdata %>% filter(!is.na(DV)) %>% filter(EVID==0) %>% mutate(infusion = as.factor(infusion))
+
+vpc_plot <- vpc(sim = sim,
+               obs = obs,
+               obs_cols = list(id = "ID", dv = "DV", idv = "TIME"),
+               sim_cols = list(is = "ID", dv = "value", idv = "TIME"),
+               ci = c(0.1, 0.9), pi = c(0.1, 0.9),
+               stratify = "infusion",
+               bins = "jenks",
+               log_y = T,
+               log_y_min = 0.04,
+               scales = "free_x",
+               labeller = labeller(infusion = inf_labs),
+               show = list(obs_dv = TRUE, obs_ci = TRUE, 
+                           pi = FALSE, pi_as_area = FALSE, pi_ci = TRUE, 
+                           obs_median = TRUE, sim_median = FALSE, sim_median_ci = TRUE),
+               vpc_theme = new_vpc_theme(update = list(
+                 sim_pi_fill = "snow4",
+                 sim_pi_alpha = 0.25,
+                 obs_ci_size = 1,
+                 obs_ci_color = "snow4",
+                 obs_median_color = "royalblue",
+                 obs_ci_linetype = 1,
+                 sim_median_fill = "royalblue",
+                 sim_median_alpha = 0.25)))
+
+vpc_plot <- vpc_plot +
+  labs(x = "Time after infusion start (h)                  Time after infusion end (h)",
+       y = "Sufentanil concentrations, pg/ml") 
+
+vpc_plot
+}
+
+#------------------------------------------------------------------------------
+gof_fun <- function(mod_to_plot, xdata){
+yrepCond <- as_draws_matrix(mod_to_plot$draws(variables = c("cCond")))
+yrepPred <- as_draws_matrix(mod_to_plot$draws(variables = c("cPred")))
+
+ yobs <- xdata$DV
+ ktore <- xdata$CMT==2 & xdata$EVID==0
+ p1 <- bayesplot::ppc_intervals(y = 1000+yobs[ktore], yrep = yrepCond[,ktore], x = yobs[ktore]) + 
+   xlab("Observed (ng/ml)") +
+   ylab("Individual predictions (ng/ml)") +
+   scale_y_log10(limits = c(0.1, 200)) + 
+   scale_x_log10(limits = c(0.1, 200)) +
+   theme(legend.position = "none") +
+   geom_abline(intercept = 0, slope = 1, color="grey", linetype="dotted")
+ p2 <-bayesplot::ppc_intervals(y = 1000+yobs[ktore], yrep = yrepPred[,ktore], x = yobs[ktore]) +
+  xlab("Observed (ng/ml)") + 
+   ylab("Population predictions (ng/ml)") +
+   scale_y_log10(limits = c(0.1, 200)) +
+   scale_x_log10(limits = c(0.1, 200)) +
+  theme(legend.position = "none") +
+  geom_abline(intercept = 0, slope = 1, color="grey", linetype="dotted")
+ 
+plot_all <- (p1+p2)
+plot_all
+}
+
+#------------------------------------------------------------------------------
+fun_cont_cov<-function(cov,etaM){
+p1<-ggplot(etaM, aes_string(x=gsub("//.*","",cov), y="medianInd")) + 
+  geom_point()+
+  geom_errorbar(aes(ymin=lbInd, ymax=ubInd), width=.2, position=position_dodge(0.05))+
+  geom_hline(yintercept = 0, color="gray", linetype="dotted", size=1) + 
+  labs(y="Etas",x=gsub(".*//","",cov))+
+  facet_wrap(~type, scales = "free_y")
+return(p1)
+}
+
+#------------------------------------------------------------------------------
+fun_cat_cov<-function(cov,etaM){
+p1<-ggplot(etaM, aes_string(x=gsub("//.*","",cov), y="medianInd")) + 
+  geom_boxplot()+
+    geom_jitter()+
+  geom_hline(yintercept = 0, color="gray", linetype="dotted", size=1) + 
+  labs(y="Etas",x=gsub(".*//","",cov))+
+  facet_wrap(~type, scales = "free_y")
+return(p1)
+}
+
+#------------------------------------------------------------------------------
+extract_etas_fun <- function(mod_to_plot,xdata){
+idata = xdata %>%
+  distinct(ID,.keep_all = T)%>%
+  select(ID,AGE,WT, SEX) %>% 
+  mutate(i = 1:n()) %>%
+  mutate(SEXF = if_else(SEX==1,"Male", "Female"))
+  
+etaM <-  posterior::as_draws_df(mod_to_plot$draws("etaM")) %>% 
+  tidybayes::spread_draws(etaM[i,type])%>%
+  group_by(i,type) %>%
+  mutate(etaM = log(etaM)) %>%
+  summarize(lbInd = quantile(etaM, probs = 0.05, na.rm = TRUE),
+            medianInd = quantile(etaM, probs = 0.5, na.rm = TRUE),
+            ubInd = quantile(etaM, probs = 0.95, na.rm = TRUE)) %>%
+  mutate(type = case_when(
+    type == "1" ~ "CL",
+    type == "2" ~ "Q",
+    type == "3" ~ "V1",
+    type == "4" ~ "V2",
+    type == "5" ~ "Ka",
+    type == "6" ~ "Ka14",
+    type == "7" ~ "Ka41"))%>%
+  mutate() %>%
+  left_join(idata)
+}
+```
+
+# Model 1
+The data was analyzed using a 2 comp. PK model.
+
+$$
+\begin{aligned}
+& \frac{dA}{dt} = - KA \cdot  A \\
+& V_1 \cdot \frac{dC_1}{dt} =  KA \cdot  A - CL \cdot  C_1 - Q \cdot  C_1 + Q \cdot  C_2 \\
+& V_2 \cdot \frac{dC_2}{dt} =  Q \cdot  C1 - Q \cdot  C_2
+\end{aligned}
+$$
+
+where $C_1$ and $C_2$ denote sufentanil concentrations in plasma and peripheral compartment. $KA$ denotes sufentanil absorption rate constant. The statistical model has the following structure (hierarchical model)
+
+$$ 
+\begin{aligned}
+& \log C_{Obs_{i,j}} \sim student\_t(\nu,f(P_{i},t_{i,j}),\sigma) \\
+& \log P_{i} \sim \text{MVN}(\log \theta_P , \Omega) \\
+\end{aligned}
+$$
+
+where $P_i=(CL_{i}, Q_{i}, V1_{i}, V2_{i}, KA_{i})$ is a vector of subject-specific parameters, $f(.)$ corresponds to the above ODE equations, $MVN$ is a multivariate normal distribution, $\theta_P$ is a vector of typical values of $P_i$. In turn, $\sigma$ is the scale and $\Omega$ is the scale matrix for the random effects related to the residual and unexplained between-subject variability. For convenience $\Omega$ was decomposed to:
+
+$$
+\Omega = diag(\omega) \cdot LL' \cdot diag(\omega) 
+$$
+
+where $\rho = LL'$ denotes correlation, $L$ is a lower triangular Cholesky factor for a correlation matrix and $\omega$ denotes standard deviation for between subject variability.
+
+## Priors
+
+The priors were specified based on parameter estimates provided by our previous work [@Bartkowska-Sniatkowska2016-hm]
+$$ 
+\begin{aligned}
+& \theta_{CL} \sim lognormal(log(45.3),0.25), \\
+& \theta_{Q}  \sim lognormal(log(38.3),0.25), \\
+& \theta_{V1} \sim lognormal(log(7.90),0.25), \\
+& \theta_{V2} \sim lognormal(log(481),0.25), \\
+& \theta_{KA} \sim lognormal(log(1),0.50), \\
+& \nu \sim gamma(2,0.1),\\
+& \omega_{P}\sim lognormal(log(0.4),0.25), \\
+& \sigma \sim lognormal(log(0.2),0.25), \\
+& L \sim  LKJ(5)
+\end{aligned}
+$$
+
+LKJ(5) ensure that the density is uniform over correlation matrices of order 4 
+
+```{r  model0, eval = FALSE}
+mod0 <- new_model(file.path(model_dir, "0"), .model_type = "stan")
+#open_standata_file(mod0)
+#check_stan_model(mod0)
+#mod0 <- mod0 %>% submit_model(.overwrite = TRUE) 
+```
+
+```{r  model1, eval = FALSE}
+mod1  <- read_model(file.path(model_dir, "1"))
+#open_standata_file(mod1)
+#check_stan_model(mod1)
+mod1_res <- mod1 %>% submit_model(.overwrite = TRUE) 
+```
+
+## Run stan
+```{r load-stan-mod1}
+model_name = "1"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_tables_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod1  <- read_model(here::here(model_dir, model_name))
+mod_to_plot <- read_fit_model(mod1)
+
+xdata <- xdata %>%
+    filter(OUT!=1, CMT!=22, CMT!=33) %>%
+  mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+```
+
+## Parameters
+```{r table-mod1, eval = TRUE}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat","omega", "sigma","nu","rho")
+
+ptable <-plot_param_tables(mod_to_plot, pars)
+ptable%>% knitr::kable()
+write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
+```
+
+## Trace plots
+```{r trace-plots-mod1}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat","KAHat","omega", "sigma", "nu")
+
+p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
+p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
+
+p1
+p2
+
+ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual and population predictions
+```{r IPRED-PRED-mod1}
+ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
+ppc1
+ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+
+```
+
+## VPC
+```{r VPC-mod1}
+vpc_plot<-vpc_fun(mod_to_plot, xdata)
+vpc_plot
+ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+```
+
+## GOF
+```{r GOF-mod1, include=TRUE}
+plot_gof <-gof_fun(mod_to_plot, xdata)
+plot_gof
+ 
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = plot_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual parameters vs. covariates
+```{r covariets-mod1, include=TRUE}
+
+etaM<-extract_etas_fun(mod_to_plot,xdata)
+
+cont_cov = c("AGE//Age,y","WT//Body Weight, kg")
+cat_cov = c("SEXF//Sex")
+
+p1<-map(cont_cov, \(x) fun_cont_cov(x,etaM))
+p2<-map(cat_cov, \(x) fun_cat_cov(x,etaM))
+
+plots <- c(p1,p2)
+
+plots
+
+map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir, 
+                                 glue::glue("cov-plots-{x}.png")),
+                                 plot = plots[[x]], 
+                                 width=12, height=10, 
+                                 dpi=600, units="cm"))
+```
+
+# Model 2
+
+The statistical model now allows for the between-study difference in PK parameters reflected vy $\theta_{fr}$
+
+$$ 
+\begin{aligned}
+& \log C_{Obs_{i,j}} \sim student\_t(\nu,f(P_{i},t_{i,j}),\sigma) \\
+& \log P_{i} \sim \text{MVN}(\log (\theta_P \cdot \theta_{fr})  , \Omega) \\
+\end{aligned}
+$$
+
+## Priors
+$fr$ is a form of a commensurate prior [@hobbs_commensurate_2012].
+
+$$ 
+\begin{aligned}
+& \theta_{fr} \sim lognormal(log(1),0.25), \\
+\end{aligned}
+$$
+```{r  model2, eval = FALSE}
+#mod1  <- read_model(file.path(model_dir, "1"))
+#mod2 <- copy_model_from(mod1, "2", "allow for the difference in pk parameters",.overwrite=T)
+
+mod2  <- read_model(file.path(model_dir, "2"))
+mod2_res <- mod2 %>% submit_model(.overwrite = TRUE) 
+```
+
+## Run stan
+```{r load-stan-mod2}
+model_name = "2"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_tables_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod2  <- read_model(here::here(model_dir, model_name))
+mod_to_plot <- read_fit_model(mod2)
+
+xdata <- xdata %>%
+    filter(OUT!=1, CMT!=22, CMT!=33) %>%
+  mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+```
+
+## Parameters
+```{r table-mod2, eval = TRUE}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "fr", "omega", "sigma","nu","rho")
+
+ptable <-plot_param_tables(mod_to_plot, pars)
+
+ptable%>%
+  knitr::kable()
+
+write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
+```
+
+## Parameters (figure)
+
+```{r param2-mod2}
+p1=bayesplot::mcmc_intervals(mod_to_plot$draws("fr"))
+ggsave(filename = here::here(model_figures_dir, "fr-values.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+p1
+```
+
+## Trace plots
+```{r trace-plots-mod2}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat","KAHat","omega", "sigma", "fr", "nu")
+
+p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
+p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
+
+p1
+p2
+
+ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual and population predictions
+```{r IPRED-PRED-mod2}
+ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
+ppc1
+ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+```
+
+## VPC
+```{r VPC-mod2}
+vpc_plot<-vpc_fun(mod_to_plot, xdata)
+vpc_plot
+
+ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+```
+
+## GOF
+```{r GOF-mod2, include=TRUE}
+plot_gof <-gof_fun(mod_to_plot, xdata)
+plot_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = plot_gof, width=12, height=10, dpi=600, units="cm")
+```
+## Individual parameters vs. covariates
+
+```{r covariets-mod2, include=TRUE}
+etaM<-extract_etas_fun(mod_to_plot,xdata)
+
+cont_cov = c("AGE//Age,y","WT//Body Weight, kg")
+cat_cov = c("SEXF//Sex")
+
+p1 <- map(cont_cov, \(x) fun_cont_cov(x,etaM))
+p2 <- map(cat_cov, \(x) fun_cat_cov(x,etaM))
+
+plots <- c(p1,p2)
+plots
+map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir, 
+                                 glue::glue("cov-plots-{x}.png")),
+                                 plot = plots[[x]], 
+                                 width=12, height=10, 
+                                 dpi=600, units="cm"))
+```
+
+# Model 3
+
+
+```{r  model3, eval = FALSE}
+#mod1  <- read_model(file.path(model_dir, "1"))
+#mod3 <- copy_model_from(mod1, "3", "absorption2",.overwrite=T)
+
+mod3  <- read_model(file.path(model_dir, "3"))
+mod3_res <- mod3 %>% submit_model(.overwrite = TRUE) 
+```
+
+## Run stan
+```{r load-stan-mod3}
+model_name = "3"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_tables_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod2  <- read_model(here::here(model_dir, model_name))
+mod_to_plot <- read_fit_model(mod2)
+
+xdata <- xdata %>%
+    filter(OUT!=1, CMT!=22, CMT!=33) %>%
+  mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+```
+
+## Parameters
+```{r table-mod3, eval = TRUE}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu","rho")
+
+ptable <-plot_param_tables(mod_to_plot, pars)
+
+ptable%>%
+  knitr::kable()
+
+write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
+```
+
+
+## Trace plots
+```{r trace-plots-mod3}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu")
+
+p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
+p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
+
+p1
+p2
+
+ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual and population predictions
+```{r IPRED-PRED-mod3}
+ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
+ppc1
+ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+```
+
+## VPC
+```{r VPC-mod3}
+vpc_plot<-vpc_fun(mod_to_plot, xdata)
+vpc_plot
+
+ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+```
+
+## GOF
+```{r GOF-mod3, include=TRUE}
+plot_gof <-gof_fun(mod_to_plot, xdata)
+plot_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = plot_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual parameters vs. covariates
+```{r covariets-mod3, include=TRUE}
+etaM<-extract_etas_fun(mod_to_plot,xdata)
+
+cont_cov = c("AGE//Age,y","WT//Body Weight, kg")
+cat_cov = c("SEXF//Sex")
+
+p1 <- map(cont_cov, \(x) fun_cont_cov(x,etaM))
+p2 <- map(cat_cov, \(x) fun_cat_cov(x,etaM))
+
+plots <- c(p1,p2)
+plots
+map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir, 
+                                 glue::glue("cov-plots-{x}.png")),
+                                 plot = plots[[x]], 
+                                 width=12, height=10, 
+                                 dpi=600, units="cm"))
+```
+
+
+# Session
+```{r sessioninfo}
+sessionInfo()
+```
+

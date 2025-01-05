@@ -42,3 +42,4 @@ rsconnect/
 ~$*.doc*
 ~$*.docx
 *.RData
+*-output/

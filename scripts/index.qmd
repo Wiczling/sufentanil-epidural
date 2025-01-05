@@ -16,6 +16,8 @@ execute:
   warning: false
 ---
 
-# Preliminary results:
+# Results:
 
-[Preliminary results](/preliminary-analysis.html "Preliminary results")
+* [Preliminary results](/preliminary-analysis.html "Preliminary results")
+* [Nonmem results](/model-development.html "Nonmem results")
+* [Stan results](/bayesian-analysis.html "Stan results")
