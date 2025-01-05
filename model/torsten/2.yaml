@@ -1,0 +1,4 @@
+model_type: stan
+description: allow for the differenc in pk parameters
+based_on:
+- '1'
