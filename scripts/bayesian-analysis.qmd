@@ -858,9 +858,8 @@ ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, widt
 
 # Compare
 ## Parameters (figure)
-
 ```{r prior-posterior}
-subdir = "compare"
+subdir = "3"
 
 model_figures_dir <- here::here(figures_dir, subdir)
 model_tables_dir <- here::here(tables_dir,subdir)
@@ -879,14 +878,57 @@ p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
 p1_data = p1$plot$data%>%mutate(type = "posterior")
 p2_data = p2$plot$data%>%mutate(type = "prior")
 
-plot = rbind(p1_data,p2_data)%>%
+plot1= rbind(p1_data,p2_data)%>%
   ggplot(aes(y=type, x=m))+
   geom_point(size=2)+
   geom_linerange(aes(xmin = l, xmax = h), size=1)+
   geom_linerange(aes(xmin = ll, xmax = hh))+
+  labs(x="",y="")+
   facet_wrap(~parameter, scales="free_x")
-plot
-ggsave(filename = here::here(model_figures_dir, "prior-posterior.png"),plot = plot, width=12, height=10, dpi=600, units="cm")
+plot1
+ggsave(filename = here::here(model_figures_dir, "prior-posterior-1.png"),plot = plot1, width=12, height=10, dpi=600, units="cm")
+
+pars = c("omega", "sigma", "nu")
+p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
+p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
+
+p1_data = p1$plot$data%>%mutate(type = "posterior")
+p2_data = p2$plot$data%>%mutate(type = "prior")
+
+plot2 = rbind(p1_data,p2_data)%>%
+  ggplot(aes(y=type, x=m))+
+  geom_point(size=2)+
+  geom_linerange(aes(xmin = l, xmax = h), size=1)+
+  geom_linerange(aes(xmin = ll, xmax = hh))+
+  labs(x="",y="")+
+  facet_wrap(~parameter, scales="free_x")
+plot2
+ggsave(filename = here::here(model_figures_dir, "prior-posterior-2.png"), plot = plot2, width=12, height=10, dpi=600, units="cm")
+
+pars = c("rho")
+p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
+p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
+
+p1_data = p1$plot$data%>%mutate(type = "posterior")
+p2_data = p2$plot$data%>%mutate(type = "prior")
+
+plot3 = rbind(p1_data,p2_data)%>%
+  ggplot(aes(y=type, x=m))+
+  geom_point(size=2)+
+  geom_linerange(aes(xmin = l, xmax = h), size=1)+
+  geom_linerange(aes(xmin = ll, xmax = hh))+
+  labs(x="",y="")+
+  facet_wrap(~parameter, scales="free_x")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+plot3
+ggsave(filename = here::here(model_figures_dir, "prior-posterior-3.png"), plot = plot3, width=12, height=10, dpi=600, units="cm")
+
 ```
 
 # Session

@@ -151,9 +151,14 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#run-stan-3" id="toc-run-stan-3" class="nav-link" data-scroll-target="#run-stan-3">Run stan</a></li>
   <li><a href="#parameters-3" id="toc-parameters-3" class="nav-link" data-scroll-target="#parameters-3">Parameters</a></li>
+  <li><a href="#parameters-figure-1" id="toc-parameters-figure-1" class="nav-link" data-scroll-target="#parameters-figure-1">Parameters (figure)</a></li>
   <li><a href="#trace-plots-3" id="toc-trace-plots-3" class="nav-link" data-scroll-target="#trace-plots-3">Trace plots</a></li>
-  <li><a href="#individual-and-population-predictions-3" id="toc-individual-and-population-predictions-3" class="nav-link" data-scroll-target="#individual-and-population-predictions-3">Individual and population predictions</a></li>
-  <li><a href="#vpc-3" id="toc-vpc-3" class="nav-link" data-scroll-target="#vpc-3">VPC</a></li>
+  <li><a href="#individual-and-population-predictions-prior-predictive-check" id="toc-individual-and-population-predictions-prior-predictive-check" class="nav-link" data-scroll-target="#individual-and-population-predictions-prior-predictive-check">Individual and population predictions (Prior predictive check)</a></li>
+  <li><a href="#vpc-prior-predictive-check" id="toc-vpc-prior-predictive-check" class="nav-link" data-scroll-target="#vpc-prior-predictive-check">VPC (Prior predictive check)</a></li>
+  </ul></li>
+  <li><a href="#compare" id="toc-compare" class="nav-link" data-scroll-target="#compare">Compare</a>
+  <ul class="collapse">
+  <li><a href="#parameters-figure-2" id="toc-parameters-figure-2" class="nav-link" data-scroll-target="#parameters-figure-2">Parameters (figure)</a></li>
   </ul></li>
   <li><a href="#session" id="toc-session" class="nav-link" data-scroll-target="#session">Session</a></li>
   </ul>
@@ -3675,67 +3680,180 @@ div.csl-indent {
 </details>
 </div>
 </section>
+<section id="parameters-figure-1" class="level2">
+<h2 class="anchored" data-anchor-id="parameters-figure-1">Parameters (figure)</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"fr-values.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/param2-mod3a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+</div>
+</section>
 <section id="trace-plots-3" class="level2">
 <h2 class="anchored" data-anchor-id="trace-plots-3">Trace plots</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>)</span>
-<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_dens_overlay</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>)</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_dens_overlay</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/trace-plots-mod3a-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/trace-plots-mod3a-2.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"trace-plots.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"dense-plots.png"</span>),<span class="at">plot =</span> p2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"trace-plots.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"dense-plots.png"</span>),<span class="at">plot =</span> p2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="individual-and-population-predictions-3" class="level2">
-<h2 class="anchored" data-anchor-id="individual-and-population-predictions-3">Individual and population predictions</h2>
+<section id="individual-and-population-predictions-prior-predictive-check" class="level2">
+<h2 class="anchored" data-anchor-id="individual-and-population-predictions-prior-predictive-check">Individual and population predictions (Prior predictive check)</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>ppc1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>ppc1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/IPRED-PRED-mod3a-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"pred-by-id.png"</span>),<span class="at">plot =</span> ppc1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"pred-by-id.png"</span>),<span class="at">plot =</span> ppc1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="vpc-3" class="level2">
-<h2 class="anchored" data-anchor-id="vpc-3">VPC</h2>
+<section id="vpc-prior-predictive-check" class="level2">
+<h2 class="anchored" data-anchor-id="vpc-prior-predictive-check">VPC (Prior predictive check)</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>vpc_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>vpc_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/VPC-mod3a-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"vpc.png"</span>),<span class="at">plot =</span> vpc_plot, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"vpc.png"</span>),<span class="at">plot =</span> vpc_plot, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="compare" class="level1">
+<h1>Compare</h1>
+<section id="parameters-figure-2" class="level2">
+<h2 class="anchored" data-anchor-id="parameters-figure-2">Parameters (figure)</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>subdir <span class="ot">=</span> <span class="st">"3"</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, subdir)</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,subdir)</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3"</span>))</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>mod_to_plot1 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3a"</span>))</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>mod_to_plot2 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb81-19"><a href="#cb81-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-20"><a href="#cb81-20" aria-hidden="true" tabindex="-1"></a>plot1<span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb81-21"><a href="#cb81-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb81-22"><a href="#cb81-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb81-23"><a href="#cb81-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb81-24"><a href="#cb81-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb81-25"><a href="#cb81-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb81-26"><a href="#cb81-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb81-27"><a href="#cb81-27" aria-hidden="true" tabindex="-1"></a>plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-1.png"</span>),<span class="at">plot =</span> plot1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"omega"</span>, <span class="st">"sigma"</span>, <span class="st">"nu"</span>)</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb82-13"><a href="#cb82-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb82-14"><a href="#cb82-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb82-15"><a href="#cb82-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb82-16"><a href="#cb82-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb82-17"><a href="#cb82-17" aria-hidden="true" tabindex="-1"></a>plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-2.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-2.png"</span>), <span class="at">plot =</span> plot2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"rho"</span>)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>plot3 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
+<span id="cb83-17"><a href="#cb83-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb83-18"><a href="#cb83-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb83-19"><a href="#cb83-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
+<span id="cb83-20"><a href="#cb83-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
+<span id="cb83-21"><a href="#cb83-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>,<span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="st">"cm"</span>)), </span>
+<span id="cb83-22"><a href="#cb83-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb83-23"><a href="#cb83-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>))</span>
+<span id="cb83-24"><a href="#cb83-24" aria-hidden="true" tabindex="-1"></a>plot3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-3.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-3.png"</span>), <span class="at">plot =</span> plot3, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -3745,7 +3863,7 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.3.1 (2023-06-16 ucrt)
