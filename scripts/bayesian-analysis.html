@@ -11,7 +11,7 @@
 <meta name="author" content="Paulina Okuńska">
 <meta name="author" content="Agnieszka Borsuk-de Moor">
 <meta name="author" content="Justyna Ber">
-<meta name="dcterms.date" content="2025-01-05">
+<meta name="dcterms.date" content="2025-01-06">
 
 <title>Pharmacokinetics of sufentanil after epidural administration</title>
 <style>
@@ -137,7 +137,7 @@ div.csl-indent {
   <li><a href="#gof-1" id="toc-gof-1" class="nav-link" data-scroll-target="#gof-1">GOF</a></li>
   <li><a href="#individual-parameters-vs.-covariates-1" id="toc-individual-parameters-vs.-covariates-1" class="nav-link" data-scroll-target="#individual-parameters-vs.-covariates-1">Individual parameters vs.&nbsp;covariates</a></li>
   </ul></li>
-  <li><a href="#m2-2cmp-model-2cmp-absorption" id="toc-m2-2cmp-model-2cmp-absorption" class="nav-link" data-scroll-target="#m2-2cmp-model-2cmp-absorption">M2: 2cmp model + 2cmp absorption</a>
+  <li><a href="#m3-2cmp-model-2cmp-absorption" id="toc-m3-2cmp-model-2cmp-absorption" class="nav-link" data-scroll-target="#m3-2cmp-model-2cmp-absorption">M3: 2cmp model + 2cmp absorption</a>
   <ul class="collapse">
   <li><a href="#run-stan-2" id="toc-run-stan-2" class="nav-link" data-scroll-target="#run-stan-2">Run stan</a></li>
   <li><a href="#parameters-2" id="toc-parameters-2" class="nav-link" data-scroll-target="#parameters-2">Parameters</a></li>
@@ -146,6 +146,14 @@ div.csl-indent {
   <li><a href="#vpc-2" id="toc-vpc-2" class="nav-link" data-scroll-target="#vpc-2">VPC</a></li>
   <li><a href="#gof-2" id="toc-gof-2" class="nav-link" data-scroll-target="#gof-2">GOF</a></li>
   <li><a href="#individual-parameters-vs.-covariates-2" id="toc-individual-parameters-vs.-covariates-2" class="nav-link" data-scroll-target="#individual-parameters-vs.-covariates-2">Individual parameters vs.&nbsp;covariates</a></li>
+  </ul></li>
+  <li><a href="#m3p-prior-predicitve-check.-2cmp-model-2cmp-absorption" id="toc-m3p-prior-predicitve-check.-2cmp-model-2cmp-absorption" class="nav-link" data-scroll-target="#m3p-prior-predicitve-check.-2cmp-model-2cmp-absorption">M3p: Prior predicitve check. 2cmp model + 2cmp absorption</a>
+  <ul class="collapse">
+  <li><a href="#run-stan-3" id="toc-run-stan-3" class="nav-link" data-scroll-target="#run-stan-3">Run stan</a></li>
+  <li><a href="#parameters-3" id="toc-parameters-3" class="nav-link" data-scroll-target="#parameters-3">Parameters</a></li>
+  <li><a href="#trace-plots-3" id="toc-trace-plots-3" class="nav-link" data-scroll-target="#trace-plots-3">Trace plots</a></li>
+  <li><a href="#individual-and-population-predictions-3" id="toc-individual-and-population-predictions-3" class="nav-link" data-scroll-target="#individual-and-population-predictions-3">Individual and population predictions</a></li>
+  <li><a href="#vpc-3" id="toc-vpc-3" class="nav-link" data-scroll-target="#vpc-3">VPC</a></li>
   </ul></li>
   <li><a href="#session" id="toc-session" class="nav-link" data-scroll-target="#session">Session</a></li>
   </ul>
@@ -176,7 +184,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 5, 2025</p>
+      <p class="date">January 6, 2025</p>
     </div>
   </div>
   
@@ -446,9 +454,6 @@ div.csl-indent {
 </section>
 <section id="load-data" class="level1">
 <h1>Load data</h1>
-</section>
-<section id="eda" class="level1">
-<h1>EDA</h1>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -465,6 +470,9 @@ div.csl-indent {
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">timepostinf =</span> TIMEh<span class="sc">-</span>TINFS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</section>
+<section id="eda" class="level1">
+<h1>EDA</h1>
 <section id="plot-raw-data" class="level2">
 <h2 class="anchored" data-anchor-id="plot-raw-data">Plot raw data</h2>
 <div class="cell">
@@ -2052,8 +2060,8 @@ div.csl-indent {
 </div>
 </section>
 </section>
-<section id="m2-2cmp-model-2cmp-absorption" class="level1">
-<h1>M2: 2cmp model + 2cmp absorption</h1>
+<section id="m3-2cmp-model-2cmp-absorption" class="level1">
+<h1>M3: 2cmp model + 2cmp absorption</h1>
 <p>A two compartment absorption model</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -2117,8 +2125,8 @@ div.csl-indent {
 <table class="table table-sm table-striped small">
 <colgroup>
 <col style="width: 12%">
-<col style="width: 10%">
-<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 9%">
 <col style="width: 8%">
 <col style="width: 8%">
 <col style="width: 20%">
@@ -2142,651 +2150,651 @@ div.csl-indent {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">lp__</td>
-<td style="text-align: left;">-143</td>
-<td style="text-align: left;">-142</td>
-<td style="text-align: left;">11.1</td>
-<td style="text-align: left;">11</td>
-<td style="text-align: left;">(-161, -125)</td>
-<td style="text-align: left;">919</td>
-<td style="text-align: left;">1.65e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CLHat</td>
-<td style="text-align: left;">68.3</td>
-<td style="text-align: left;">67.8</td>
-<td style="text-align: left;">8.41</td>
-<td style="text-align: left;">8.69</td>
-<td style="text-align: left;">(55.1, 82.7)</td>
+<td style="text-align: left;">-134</td>
+<td style="text-align: left;">-134</td>
+<td style="text-align: left;">10.6</td>
+<td style="text-align: left;">10.6</td>
+<td style="text-align: left;">(-152, -117)</td>
 <td style="text-align: left;">1.02e+03</td>
-<td style="text-align: left;">1.57e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">QHat</td>
-<td style="text-align: left;">49.3</td>
-<td style="text-align: left;">47.6</td>
-<td style="text-align: left;">12.4</td>
-<td style="text-align: left;">11.9</td>
-<td style="text-align: left;">(32.3, 71.5)</td>
-<td style="text-align: left;">1.59e+03</td>
-<td style="text-align: left;">2.29e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">V1Hat</td>
-<td style="text-align: left;">7.81</td>
-<td style="text-align: left;">7.57</td>
-<td style="text-align: left;">2.14</td>
-<td style="text-align: left;">2.03</td>
-<td style="text-align: left;">(4.75, 11.7)</td>
-<td style="text-align: left;">709</td>
-<td style="text-align: left;">1.84e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">V2Hat</td>
-<td style="text-align: left;">528</td>
-<td style="text-align: left;">514</td>
-<td style="text-align: left;">125</td>
-<td style="text-align: left;">118</td>
-<td style="text-align: left;">( 351, 760)</td>
-<td style="text-align: left;">2.25e+03</td>
-<td style="text-align: left;">2.85e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KAHat</td>
-<td style="text-align: left;">1.05</td>
-<td style="text-align: left;">0.985</td>
-<td style="text-align: left;">0.393</td>
-<td style="text-align: left;">0.41</td>
-<td style="text-align: left;">(0.519, 1.76)</td>
-<td style="text-align: left;">532</td>
-<td style="text-align: left;">2.06e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KA14Hat</td>
-<td style="text-align: left;">5.17</td>
-<td style="text-align: left;">4.98</td>
-<td style="text-align: left;">1.99</td>
-<td style="text-align: left;">2.26</td>
-<td style="text-align: left;">( 2.3, 8.73)</td>
-<td style="text-align: left;">489</td>
-<td style="text-align: left;">1.75e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KA41Hat</td>
-<td style="text-align: left;">0.165</td>
-<td style="text-align: left;">0.161</td>
-<td style="text-align: left;">0.0359</td>
-<td style="text-align: left;">0.0349</td>
-<td style="text-align: left;">(0.113, 0.23)</td>
-<td style="text-align: left;">1.99e+03</td>
-<td style="text-align: left;">2.46e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[1]</td>
-<td style="text-align: left;">0.489</td>
-<td style="text-align: left;">0.484</td>
-<td style="text-align: left;">0.0746</td>
-<td style="text-align: left;">0.0716</td>
-<td style="text-align: left;">(0.377, 0.621)</td>
-<td style="text-align: left;">1.44e+03</td>
-<td style="text-align: left;">2e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">omega[2]</td>
-<td style="text-align: left;">0.475</td>
-<td style="text-align: left;">0.448</td>
-<td style="text-align: left;">0.151</td>
-<td style="text-align: left;">0.128</td>
-<td style="text-align: left;">(0.287, 0.763)</td>
-<td style="text-align: left;">1.45e+03</td>
-<td style="text-align: left;">1.32e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[3]</td>
-<td style="text-align: left;">1.06</td>
-<td style="text-align: left;">1.09</td>
-<td style="text-align: left;">0.365</td>
-<td style="text-align: left;">0.422</td>
-<td style="text-align: left;">(0.482, 1.64)</td>
-<td style="text-align: left;">356</td>
-<td style="text-align: left;">1.22e+03</td>
-<td style="text-align: left;">1.02</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">omega[4]</td>
-<td style="text-align: left;">0.413</td>
-<td style="text-align: left;">0.4</td>
-<td style="text-align: left;">0.106</td>
-<td style="text-align: left;">0.0998</td>
-<td style="text-align: left;">(0.265, 0.603)</td>
-<td style="text-align: left;">3.72e+03</td>
-<td style="text-align: left;">2.62e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[5]</td>
-<td style="text-align: left;">0.46</td>
-<td style="text-align: left;">0.443</td>
-<td style="text-align: left;">0.129</td>
-<td style="text-align: left;">0.125</td>
-<td style="text-align: left;">(0.281, 0.696)</td>
-<td style="text-align: left;">717</td>
-<td style="text-align: left;">1.38e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">omega[6]</td>
-<td style="text-align: left;">0.456</td>
-<td style="text-align: left;">0.437</td>
-<td style="text-align: left;">0.127</td>
-<td style="text-align: left;">0.113</td>
-<td style="text-align: left;">(0.288, 0.694)</td>
-<td style="text-align: left;">829</td>
-<td style="text-align: left;">1.39e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[7]</td>
-<td style="text-align: left;">0.542</td>
-<td style="text-align: left;">0.532</td>
-<td style="text-align: left;">0.125</td>
-<td style="text-align: left;">0.123</td>
-<td style="text-align: left;">(0.353, 0.76)</td>
-<td style="text-align: left;">1.11e+03</td>
-<td style="text-align: left;">1.53e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sigma</td>
-<td style="text-align: left;">0.316</td>
-<td style="text-align: left;">0.314</td>
-<td style="text-align: left;">0.026</td>
-<td style="text-align: left;">0.0252</td>
-<td style="text-align: left;">(0.277, 0.362)</td>
-<td style="text-align: left;">2.51e+03</td>
-<td style="text-align: left;">2.99e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">nu</td>
-<td style="text-align: left;">3.58</td>
-<td style="text-align: left;">3.39</td>
-<td style="text-align: left;">0.595</td>
-<td style="text-align: left;">0.404</td>
-<td style="text-align: left;">(3.03, 4.71)</td>
-<td style="text-align: left;">2.32e+03</td>
 <td style="text-align: left;">1.87e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">CLHat</td>
+<td style="text-align: left;">66.3</td>
+<td style="text-align: left;">65.9</td>
+<td style="text-align: left;">8.35</td>
+<td style="text-align: left;">8.14</td>
+<td style="text-align: left;">(53.3, 80.5)</td>
+<td style="text-align: left;">1.41e+03</td>
+<td style="text-align: left;">1.73e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">QHat</td>
+<td style="text-align: left;">45.7</td>
+<td style="text-align: left;">44.7</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">10.7</td>
+<td style="text-align: left;">(29.7, 65.2)</td>
+<td style="text-align: left;">3.69e+03</td>
+<td style="text-align: left;">2.74e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">V1Hat</td>
+<td style="text-align: left;">9.09</td>
+<td style="text-align: left;">8.84</td>
+<td style="text-align: left;">2.15</td>
+<td style="text-align: left;">2.04</td>
+<td style="text-align: left;">(6.03, 12.9)</td>
+<td style="text-align: left;">2.85e+03</td>
+<td style="text-align: left;">2.31e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">V2Hat</td>
+<td style="text-align: left;">505</td>
+<td style="text-align: left;">492</td>
+<td style="text-align: left;">118</td>
+<td style="text-align: left;">109</td>
+<td style="text-align: left;">( 332, 719)</td>
+<td style="text-align: left;">3.92e+03</td>
+<td style="text-align: left;">2.55e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KAHat</td>
+<td style="text-align: left;">1.59</td>
+<td style="text-align: left;">1.57</td>
+<td style="text-align: left;">0.373</td>
+<td style="text-align: left;">0.368</td>
+<td style="text-align: left;">(1.01, 2.25)</td>
+<td style="text-align: left;">1.94e+03</td>
+<td style="text-align: left;">2.49e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KA14Hat</td>
+<td style="text-align: left;">8.2</td>
+<td style="text-align: left;">8.44</td>
+<td style="text-align: left;">1.29</td>
+<td style="text-align: left;">1.34</td>
+<td style="text-align: left;">(5.84, 9.85)</td>
+<td style="text-align: left;">2.38e+03</td>
+<td style="text-align: left;">2.44e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KA41Hat</td>
+<td style="text-align: left;">0.159</td>
+<td style="text-align: left;">0.155</td>
+<td style="text-align: left;">0.0346</td>
+<td style="text-align: left;">0.034</td>
+<td style="text-align: left;">(0.109, 0.221)</td>
+<td style="text-align: left;">2.16e+03</td>
+<td style="text-align: left;">2.45e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[1]</td>
+<td style="text-align: left;">0.49</td>
+<td style="text-align: left;">0.483</td>
+<td style="text-align: left;">0.075</td>
+<td style="text-align: left;">0.074</td>
+<td style="text-align: left;">(0.379, 0.627)</td>
+<td style="text-align: left;">2e+03</td>
+<td style="text-align: left;">2.17e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[2]</td>
+<td style="text-align: left;">0.456</td>
+<td style="text-align: left;">0.433</td>
+<td style="text-align: left;">0.14</td>
+<td style="text-align: left;">0.113</td>
+<td style="text-align: left;">(0.283, 0.704)</td>
+<td style="text-align: left;">1.37e+03</td>
+<td style="text-align: left;">843</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[3]</td>
+<td style="text-align: left;">1.35</td>
+<td style="text-align: left;">1.36</td>
+<td style="text-align: left;">0.275</td>
+<td style="text-align: left;">0.264</td>
+<td style="text-align: left;">(0.869, 1.79)</td>
+<td style="text-align: left;">705</td>
+<td style="text-align: left;">578</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[4]</td>
+<td style="text-align: left;">0.41</td>
+<td style="text-align: left;">0.398</td>
+<td style="text-align: left;">0.105</td>
+<td style="text-align: left;">0.101</td>
+<td style="text-align: left;">(0.263, 0.601)</td>
+<td style="text-align: left;">4.89e+03</td>
+<td style="text-align: left;">2.92e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[5]</td>
+<td style="text-align: left;">0.391</td>
+<td style="text-align: left;">0.381</td>
+<td style="text-align: left;">0.0947</td>
+<td style="text-align: left;">0.0914</td>
+<td style="text-align: left;">(0.255, 0.565)</td>
+<td style="text-align: left;">2.3e+03</td>
+<td style="text-align: left;">2.3e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[6]</td>
+<td style="text-align: left;">0.394</td>
+<td style="text-align: left;">0.382</td>
+<td style="text-align: left;">0.0928</td>
+<td style="text-align: left;">0.089</td>
+<td style="text-align: left;">(0.262, 0.562)</td>
+<td style="text-align: left;">2.79e+03</td>
+<td style="text-align: left;">2.45e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[7]</td>
+<td style="text-align: left;">0.515</td>
+<td style="text-align: left;">0.508</td>
+<td style="text-align: left;">0.112</td>
+<td style="text-align: left;">0.107</td>
+<td style="text-align: left;">(0.348, 0.712)</td>
+<td style="text-align: left;">2.22e+03</td>
+<td style="text-align: left;">2.46e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">0.312</td>
+<td style="text-align: left;">0.31</td>
+<td style="text-align: left;">0.0265</td>
+<td style="text-align: left;">0.0259</td>
+<td style="text-align: left;">(0.273, 0.358)</td>
+<td style="text-align: left;">3.17e+03</td>
+<td style="text-align: left;">2.95e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nu</td>
+<td style="text-align: left;">3.73</td>
+<td style="text-align: left;">3.48</td>
+<td style="text-align: left;">0.832</td>
+<td style="text-align: left;">0.495</td>
+<td style="text-align: left;">(3.04, 5.22)</td>
+<td style="text-align: left;">3.1e+03</td>
+<td style="text-align: left;">2.3e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">rho[2,1]</td>
-<td style="text-align: left;">0.0786</td>
-<td style="text-align: left;">0.0822</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">0.204</td>
-<td style="text-align: left;">(-0.247, 0.395)</td>
-<td style="text-align: left;">2.73e+03</td>
-<td style="text-align: left;">2.68e+03</td>
+<td style="text-align: left;">0.0524</td>
+<td style="text-align: left;">0.0554</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(-0.265, 0.358)</td>
+<td style="text-align: left;">3.46e+03</td>
+<td style="text-align: left;">2.74e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">rho[3,1]</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">0.216</td>
-<td style="text-align: left;">0.172</td>
-<td style="text-align: left;">0.171</td>
-<td style="text-align: left;">(-0.0945, 0.465)</td>
-<td style="text-align: left;">1.04e+03</td>
-<td style="text-align: left;">1.74e+03</td>
+<td style="text-align: left;">0.242</td>
+<td style="text-align: left;">0.248</td>
+<td style="text-align: left;">0.155</td>
+<td style="text-align: left;">0.151</td>
+<td style="text-align: left;">(-0.026, 0.481)</td>
+<td style="text-align: left;">1.17e+03</td>
+<td style="text-align: left;">893</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">rho[4,1]</td>
-<td style="text-align: left;">-0.0144</td>
-<td style="text-align: left;">-0.0173</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.195</td>
-<td style="text-align: left;">(-0.328, 0.306)</td>
-<td style="text-align: left;">3.85e+03</td>
-<td style="text-align: left;">2.66e+03</td>
+<td style="text-align: left;">-0.0174</td>
+<td style="text-align: left;">-0.0182</td>
+<td style="text-align: left;">0.187</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">(-0.322, 0.299)</td>
+<td style="text-align: left;">6.54e+03</td>
+<td style="text-align: left;">2.62e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">rho[5,1]</td>
-<td style="text-align: left;">-0.134</td>
-<td style="text-align: left;">-0.137</td>
-<td style="text-align: left;">0.183</td>
-<td style="text-align: left;">0.19</td>
-<td style="text-align: left;">(-0.433, 0.172)</td>
-<td style="text-align: left;">2.06e+03</td>
-<td style="text-align: left;">2.87e+03</td>
+<td style="text-align: left;">-0.0574</td>
+<td style="text-align: left;">-0.0586</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.366, 0.258)</td>
+<td style="text-align: left;">4.24e+03</td>
+<td style="text-align: left;">2.89e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">rho[6,1]</td>
-<td style="text-align: left;">-0.0408</td>
-<td style="text-align: left;">-0.042</td>
-<td style="text-align: left;">0.188</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.344, 0.272)</td>
-<td style="text-align: left;">2.38e+03</td>
-<td style="text-align: left;">2.64e+03</td>
+<td style="text-align: left;">0.00436</td>
+<td style="text-align: left;">0.00542</td>
+<td style="text-align: left;">0.186</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(-0.304, 0.309)</td>
+<td style="text-align: left;">5e+03</td>
+<td style="text-align: left;">2.78e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">rho[7,1]</td>
-<td style="text-align: left;">0.214</td>
-<td style="text-align: left;">0.221</td>
-<td style="text-align: left;">0.163</td>
-<td style="text-align: left;">0.171</td>
-<td style="text-align: left;">(-0.0617, 0.47)</td>
-<td style="text-align: left;">3.25e+03</td>
-<td style="text-align: left;">2.74e+03</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">0.205</td>
+<td style="text-align: left;">0.165</td>
+<td style="text-align: left;">0.169</td>
+<td style="text-align: left;">(-0.0737, 0.464)</td>
+<td style="text-align: left;">4.5e+03</td>
+<td style="text-align: left;">3.06e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">rho[1,2]</td>
-<td style="text-align: left;">0.0786</td>
-<td style="text-align: left;">0.0822</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">0.204</td>
-<td style="text-align: left;">(-0.247, 0.395)</td>
-<td style="text-align: left;">2.73e+03</td>
-<td style="text-align: left;">2.68e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[3,2]</td>
-<td style="text-align: left;">0.00738</td>
-<td style="text-align: left;">0.0085</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">(-0.306, 0.328)</td>
-<td style="text-align: left;">2.02e+03</td>
-<td style="text-align: left;">2.47e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[4,2]</td>
-<td style="text-align: left;">-0.00112</td>
-<td style="text-align: left;">0.000522</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.207</td>
-<td style="text-align: left;">(-0.326, 0.321)</td>
-<td style="text-align: left;">3.89e+03</td>
-<td style="text-align: left;">3.02e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[5,2]</td>
-<td style="text-align: left;">-0.0132</td>
-<td style="text-align: left;">-0.0184</td>
-<td style="text-align: left;">0.195</td>
-<td style="text-align: left;">0.201</td>
-<td style="text-align: left;">(-0.329, 0.307)</td>
-<td style="text-align: left;">2.16e+03</td>
-<td style="text-align: left;">2.71e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,2]</td>
-<td style="text-align: left;">0.00219</td>
-<td style="text-align: left;">0.00106</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">(-0.313, 0.322)</td>
-<td style="text-align: left;">2.79e+03</td>
-<td style="text-align: left;">2.85e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,2]</td>
-<td style="text-align: left;">0.133</td>
-<td style="text-align: left;">0.137</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">(-0.202, 0.434)</td>
-<td style="text-align: left;">1.93e+03</td>
-<td style="text-align: left;">2.43e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,3]</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">0.216</td>
-<td style="text-align: left;">0.172</td>
-<td style="text-align: left;">0.171</td>
-<td style="text-align: left;">(-0.0945, 0.465)</td>
-<td style="text-align: left;">1.04e+03</td>
-<td style="text-align: left;">1.74e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,3]</td>
-<td style="text-align: left;">0.00738</td>
-<td style="text-align: left;">0.0085</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">(-0.306, 0.328)</td>
-<td style="text-align: left;">2.02e+03</td>
-<td style="text-align: left;">2.47e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[4,3]</td>
-<td style="text-align: left;">-0.0332</td>
-<td style="text-align: left;">-0.0362</td>
-<td style="text-align: left;">0.189</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">(-0.347, 0.281)</td>
-<td style="text-align: left;">4.17e+03</td>
-<td style="text-align: left;">3.1e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[5,3]</td>
-<td style="text-align: left;">-0.164</td>
-<td style="text-align: left;">-0.171</td>
-<td style="text-align: left;">0.18</td>
-<td style="text-align: left;">0.181</td>
-<td style="text-align: left;">(-0.444, 0.149)</td>
-<td style="text-align: left;">2.69e+03</td>
-<td style="text-align: left;">2.99e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,3]</td>
-<td style="text-align: left;">-0.169</td>
-<td style="text-align: left;">-0.172</td>
-<td style="text-align: left;">0.178</td>
-<td style="text-align: left;">0.187</td>
-<td style="text-align: left;">(-0.45, 0.131)</td>
-<td style="text-align: left;">2e+03</td>
-<td style="text-align: left;">2.84e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,3]</td>
-<td style="text-align: left;">0.099</td>
-<td style="text-align: left;">0.106</td>
-<td style="text-align: left;">0.176</td>
-<td style="text-align: left;">0.177</td>
-<td style="text-align: left;">(-0.196, 0.377)</td>
-<td style="text-align: left;">1.83e+03</td>
-<td style="text-align: left;">2.42e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,4]</td>
-<td style="text-align: left;">-0.0144</td>
-<td style="text-align: left;">-0.0173</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.195</td>
-<td style="text-align: left;">(-0.328, 0.306)</td>
-<td style="text-align: left;">3.85e+03</td>
-<td style="text-align: left;">2.66e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,4]</td>
-<td style="text-align: left;">-0.00112</td>
-<td style="text-align: left;">0.000522</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.207</td>
-<td style="text-align: left;">(-0.326, 0.321)</td>
-<td style="text-align: left;">3.89e+03</td>
-<td style="text-align: left;">3.02e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[3,4]</td>
-<td style="text-align: left;">-0.0332</td>
-<td style="text-align: left;">-0.0362</td>
-<td style="text-align: left;">0.189</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">(-0.347, 0.281)</td>
-<td style="text-align: left;">4.17e+03</td>
-<td style="text-align: left;">3.1e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[5,4]</td>
-<td style="text-align: left;">0.0315</td>
-<td style="text-align: left;">0.0349</td>
-<td style="text-align: left;">0.191</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">(-0.285, 0.343)</td>
-<td style="text-align: left;">3.18e+03</td>
-<td style="text-align: left;">3.24e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,4]</td>
-<td style="text-align: left;">-0.00485</td>
-<td style="text-align: left;">-0.0068</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">(-0.329, 0.315)</td>
-<td style="text-align: left;">2.62e+03</td>
-<td style="text-align: left;">2.83e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,4]</td>
-<td style="text-align: left;">-0.028</td>
-<td style="text-align: left;">-0.0309</td>
-<td style="text-align: left;">0.195</td>
-<td style="text-align: left;">0.202</td>
-<td style="text-align: left;">(-0.352, 0.295)</td>
-<td style="text-align: left;">2.81e+03</td>
-<td style="text-align: left;">2.81e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,5]</td>
-<td style="text-align: left;">-0.134</td>
-<td style="text-align: left;">-0.137</td>
-<td style="text-align: left;">0.183</td>
-<td style="text-align: left;">0.19</td>
-<td style="text-align: left;">(-0.433, 0.172)</td>
-<td style="text-align: left;">2.06e+03</td>
-<td style="text-align: left;">2.87e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,5]</td>
-<td style="text-align: left;">-0.0132</td>
-<td style="text-align: left;">-0.0184</td>
-<td style="text-align: left;">0.195</td>
-<td style="text-align: left;">0.201</td>
-<td style="text-align: left;">(-0.329, 0.307)</td>
-<td style="text-align: left;">2.16e+03</td>
-<td style="text-align: left;">2.71e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[3,5]</td>
-<td style="text-align: left;">-0.164</td>
-<td style="text-align: left;">-0.171</td>
-<td style="text-align: left;">0.18</td>
-<td style="text-align: left;">0.181</td>
-<td style="text-align: left;">(-0.444, 0.149)</td>
-<td style="text-align: left;">2.69e+03</td>
-<td style="text-align: left;">2.99e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[4,5]</td>
-<td style="text-align: left;">0.0315</td>
-<td style="text-align: left;">0.0349</td>
-<td style="text-align: left;">0.191</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">(-0.285, 0.343)</td>
-<td style="text-align: left;">3.18e+03</td>
-<td style="text-align: left;">3.24e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,5]</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">0.21</td>
-<td style="text-align: left;">0.205</td>
-<td style="text-align: left;">0.21</td>
-<td style="text-align: left;">(-0.149, 0.526)</td>
-<td style="text-align: left;">1.09e+03</td>
-<td style="text-align: left;">1.85e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,5]</td>
-<td style="text-align: left;">-0.165</td>
-<td style="text-align: left;">-0.176</td>
-<td style="text-align: left;">0.187</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.453, 0.16)</td>
-<td style="text-align: left;">2e+03</td>
-<td style="text-align: left;">2.8e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,6]</td>
-<td style="text-align: left;">-0.0408</td>
-<td style="text-align: left;">-0.042</td>
+<td style="text-align: left;">0.0524</td>
+<td style="text-align: left;">0.0554</td>
 <td style="text-align: left;">0.188</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.344, 0.272)</td>
-<td style="text-align: left;">2.38e+03</td>
-<td style="text-align: left;">2.64e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,6]</td>
-<td style="text-align: left;">0.00219</td>
-<td style="text-align: left;">0.00106</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">(-0.313, 0.322)</td>
-<td style="text-align: left;">2.79e+03</td>
-<td style="text-align: left;">2.85e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[3,6]</td>
-<td style="text-align: left;">-0.169</td>
-<td style="text-align: left;">-0.172</td>
-<td style="text-align: left;">0.178</td>
-<td style="text-align: left;">0.187</td>
-<td style="text-align: left;">(-0.45, 0.131)</td>
-<td style="text-align: left;">2e+03</td>
-<td style="text-align: left;">2.84e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[4,6]</td>
-<td style="text-align: left;">-0.00485</td>
-<td style="text-align: left;">-0.0068</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">(-0.329, 0.315)</td>
-<td style="text-align: left;">2.62e+03</td>
-<td style="text-align: left;">2.83e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[5,6]</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">0.21</td>
-<td style="text-align: left;">0.205</td>
-<td style="text-align: left;">0.21</td>
-<td style="text-align: left;">(-0.149, 0.526)</td>
-<td style="text-align: left;">1.09e+03</td>
-<td style="text-align: left;">1.85e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,6]</td>
-<td style="text-align: left;">0.0752</td>
-<td style="text-align: left;">0.0827</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">(-0.246, 0.386)</td>
-<td style="text-align: left;">2.14e+03</td>
-<td style="text-align: left;">2.18e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,7]</td>
-<td style="text-align: left;">0.214</td>
-<td style="text-align: left;">0.221</td>
-<td style="text-align: left;">0.163</td>
-<td style="text-align: left;">0.171</td>
-<td style="text-align: left;">(-0.0617, 0.47)</td>
-<td style="text-align: left;">3.25e+03</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(-0.265, 0.358)</td>
+<td style="text-align: left;">3.46e+03</td>
 <td style="text-align: left;">2.74e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">rho[2,7]</td>
-<td style="text-align: left;">0.133</td>
-<td style="text-align: left;">0.137</td>
+<td style="text-align: left;">rho[3,2]</td>
+<td style="text-align: left;">-0.0103</td>
+<td style="text-align: left;">-0.0108</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">(-0.323, 0.306)</td>
+<td style="text-align: left;">2.26e+03</td>
+<td style="text-align: left;">3.36e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,2]</td>
+<td style="text-align: left;">-0.000206</td>
+<td style="text-align: left;">0.00382</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.205</td>
+<td style="text-align: left;">(-0.322, 0.315)</td>
+<td style="text-align: left;">6.46e+03</td>
+<td style="text-align: left;">3.48e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,2]</td>
+<td style="text-align: left;">0.00503</td>
+<td style="text-align: left;">0.00503</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.316, 0.323)</td>
+<td style="text-align: left;">4.25e+03</td>
+<td style="text-align: left;">3.31e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,2]</td>
+<td style="text-align: left;">0.0166</td>
+<td style="text-align: left;">0.0161</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.31, 0.345)</td>
+<td style="text-align: left;">4.34e+03</td>
+<td style="text-align: left;">3e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,2]</td>
+<td style="text-align: left;">0.112</td>
+<td style="text-align: left;">0.114</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.211, 0.435)</td>
+<td style="text-align: left;">2.75e+03</td>
+<td style="text-align: left;">2.45e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,3]</td>
+<td style="text-align: left;">0.242</td>
+<td style="text-align: left;">0.248</td>
+<td style="text-align: left;">0.155</td>
+<td style="text-align: left;">0.151</td>
+<td style="text-align: left;">(-0.026, 0.481)</td>
+<td style="text-align: left;">1.17e+03</td>
+<td style="text-align: left;">893</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,3]</td>
+<td style="text-align: left;">-0.0103</td>
+<td style="text-align: left;">-0.0108</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">(-0.323, 0.306)</td>
+<td style="text-align: left;">2.26e+03</td>
+<td style="text-align: left;">3.36e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,3]</td>
+<td style="text-align: left;">-0.0315</td>
+<td style="text-align: left;">-0.036</td>
+<td style="text-align: left;">0.183</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">(-0.329, 0.274)</td>
+<td style="text-align: left;">5.68e+03</td>
+<td style="text-align: left;">3.33e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,3]</td>
+<td style="text-align: left;">-0.0925</td>
+<td style="text-align: left;">-0.0949</td>
+<td style="text-align: left;">0.189</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.392, 0.231)</td>
+<td style="text-align: left;">3.32e+03</td>
+<td style="text-align: left;">3.17e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,3]</td>
+<td style="text-align: left;">-0.121</td>
+<td style="text-align: left;">-0.123</td>
+<td style="text-align: left;">0.175</td>
+<td style="text-align: left;">0.173</td>
+<td style="text-align: left;">(-0.414, 0.168)</td>
+<td style="text-align: left;">3.26e+03</td>
+<td style="text-align: left;">3.22e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,3]</td>
+<td style="text-align: left;">0.115</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.166</td>
+<td style="text-align: left;">0.168</td>
+<td style="text-align: left;">(-0.17, 0.38)</td>
+<td style="text-align: left;">2.69e+03</td>
+<td style="text-align: left;">2.62e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,4]</td>
+<td style="text-align: left;">-0.0174</td>
+<td style="text-align: left;">-0.0182</td>
+<td style="text-align: left;">0.187</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">(-0.322, 0.299)</td>
+<td style="text-align: left;">6.54e+03</td>
+<td style="text-align: left;">2.62e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,4]</td>
+<td style="text-align: left;">-0.000206</td>
+<td style="text-align: left;">0.00382</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.205</td>
+<td style="text-align: left;">(-0.322, 0.315)</td>
+<td style="text-align: left;">6.46e+03</td>
+<td style="text-align: left;">3.48e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,4]</td>
+<td style="text-align: left;">-0.0315</td>
+<td style="text-align: left;">-0.036</td>
+<td style="text-align: left;">0.183</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">(-0.329, 0.274)</td>
+<td style="text-align: left;">5.68e+03</td>
+<td style="text-align: left;">3.33e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,4]</td>
+<td style="text-align: left;">0.0242</td>
+<td style="text-align: left;">0.0256</td>
 <td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.301, 0.339)</td>
+<td style="text-align: left;">3.84e+03</td>
+<td style="text-align: left;">3.11e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,4]</td>
+<td style="text-align: left;">-0.0158</td>
+<td style="text-align: left;">-0.0148</td>
 <td style="text-align: left;">0.198</td>
-<td style="text-align: left;">(-0.202, 0.434)</td>
-<td style="text-align: left;">1.93e+03</td>
-<td style="text-align: left;">2.43e+03</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.34, 0.312)</td>
+<td style="text-align: left;">4.19e+03</td>
+<td style="text-align: left;">3.36e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,4]</td>
+<td style="text-align: left;">-0.0265</td>
+<td style="text-align: left;">-0.0241</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.347, 0.294)</td>
+<td style="text-align: left;">3.41e+03</td>
+<td style="text-align: left;">2.89e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,5]</td>
+<td style="text-align: left;">-0.0574</td>
+<td style="text-align: left;">-0.0586</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.366, 0.258)</td>
+<td style="text-align: left;">4.24e+03</td>
+<td style="text-align: left;">2.89e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,5]</td>
+<td style="text-align: left;">0.00503</td>
+<td style="text-align: left;">0.00503</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.316, 0.323)</td>
+<td style="text-align: left;">4.25e+03</td>
+<td style="text-align: left;">3.31e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,5]</td>
+<td style="text-align: left;">-0.0925</td>
+<td style="text-align: left;">-0.0949</td>
+<td style="text-align: left;">0.189</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.392, 0.231)</td>
+<td style="text-align: left;">3.32e+03</td>
+<td style="text-align: left;">3.17e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,5]</td>
+<td style="text-align: left;">0.0242</td>
+<td style="text-align: left;">0.0256</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.301, 0.339)</td>
+<td style="text-align: left;">3.84e+03</td>
+<td style="text-align: left;">3.11e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,5]</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.124</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">(-0.206, 0.431)</td>
+<td style="text-align: left;">3.83e+03</td>
+<td style="text-align: left;">3.36e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,5]</td>
+<td style="text-align: left;">-0.118</td>
+<td style="text-align: left;">-0.12</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.435, 0.209)</td>
+<td style="text-align: left;">2.94e+03</td>
+<td style="text-align: left;">3.28e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,6]</td>
+<td style="text-align: left;">0.00436</td>
+<td style="text-align: left;">0.00542</td>
+<td style="text-align: left;">0.186</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(-0.304, 0.309)</td>
+<td style="text-align: left;">5e+03</td>
+<td style="text-align: left;">2.78e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,6]</td>
+<td style="text-align: left;">0.0166</td>
+<td style="text-align: left;">0.0161</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.31, 0.345)</td>
+<td style="text-align: left;">4.34e+03</td>
+<td style="text-align: left;">3e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,6]</td>
+<td style="text-align: left;">-0.121</td>
+<td style="text-align: left;">-0.123</td>
+<td style="text-align: left;">0.175</td>
+<td style="text-align: left;">0.173</td>
+<td style="text-align: left;">(-0.414, 0.168)</td>
+<td style="text-align: left;">3.26e+03</td>
+<td style="text-align: left;">3.22e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,6]</td>
+<td style="text-align: left;">-0.0158</td>
+<td style="text-align: left;">-0.0148</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.34, 0.312)</td>
+<td style="text-align: left;">4.19e+03</td>
+<td style="text-align: left;">3.36e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[5,6]</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.124</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">(-0.206, 0.431)</td>
+<td style="text-align: left;">3.83e+03</td>
+<td style="text-align: left;">3.36e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,6]</td>
+<td style="text-align: left;">0.105</td>
+<td style="text-align: left;">0.106</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.215, 0.413)</td>
+<td style="text-align: left;">3.32e+03</td>
+<td style="text-align: left;">3.19e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,7]</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">0.205</td>
+<td style="text-align: left;">0.165</td>
+<td style="text-align: left;">0.169</td>
+<td style="text-align: left;">(-0.0737, 0.464)</td>
+<td style="text-align: left;">4.5e+03</td>
+<td style="text-align: left;">3.06e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,7]</td>
+<td style="text-align: left;">0.112</td>
+<td style="text-align: left;">0.114</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.211, 0.435)</td>
+<td style="text-align: left;">2.75e+03</td>
+<td style="text-align: left;">2.45e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">rho[3,7]</td>
-<td style="text-align: left;">0.099</td>
-<td style="text-align: left;">0.106</td>
-<td style="text-align: left;">0.176</td>
-<td style="text-align: left;">0.177</td>
-<td style="text-align: left;">(-0.196, 0.377)</td>
-<td style="text-align: left;">1.83e+03</td>
-<td style="text-align: left;">2.42e+03</td>
+<td style="text-align: left;">0.115</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.166</td>
+<td style="text-align: left;">0.168</td>
+<td style="text-align: left;">(-0.17, 0.38)</td>
+<td style="text-align: left;">2.69e+03</td>
+<td style="text-align: left;">2.62e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">rho[4,7]</td>
-<td style="text-align: left;">-0.028</td>
-<td style="text-align: left;">-0.0309</td>
+<td style="text-align: left;">-0.0265</td>
+<td style="text-align: left;">-0.0241</td>
+<td style="text-align: left;">0.194</td>
 <td style="text-align: left;">0.195</td>
-<td style="text-align: left;">0.202</td>
-<td style="text-align: left;">(-0.352, 0.295)</td>
-<td style="text-align: left;">2.81e+03</td>
-<td style="text-align: left;">2.81e+03</td>
+<td style="text-align: left;">(-0.347, 0.294)</td>
+<td style="text-align: left;">3.41e+03</td>
+<td style="text-align: left;">2.89e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">rho[5,7]</td>
-<td style="text-align: left;">-0.165</td>
-<td style="text-align: left;">-0.176</td>
-<td style="text-align: left;">0.187</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.453, 0.16)</td>
-<td style="text-align: left;">2e+03</td>
-<td style="text-align: left;">2.8e+03</td>
+<td style="text-align: left;">-0.118</td>
+<td style="text-align: left;">-0.12</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.435, 0.209)</td>
+<td style="text-align: left;">2.94e+03</td>
+<td style="text-align: left;">3.28e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">rho[6,7]</td>
-<td style="text-align: left;">0.0752</td>
-<td style="text-align: left;">0.0827</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">(-0.246, 0.386)</td>
-<td style="text-align: left;">2.14e+03</td>
-<td style="text-align: left;">2.18e+03</td>
+<td style="text-align: left;">0.105</td>
+<td style="text-align: left;">0.106</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.215, 0.413)</td>
+<td style="text-align: left;">3.32e+03</td>
+<td style="text-align: left;">3.19e+03</td>
 <td style="text-align: left;">1</td>
 </tr>
 </tbody>
@@ -2936,12 +2944,808 @@ div.csl-indent {
 </div>
 </section>
 </section>
+<section id="m3p-prior-predicitve-check.-2cmp-model-2cmp-absorption" class="level1">
+<h1>M3p: Prior predicitve check. 2cmp model + 2cmp absorption</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mod3  &lt;- read_model(file.path(model_dir, "3"))</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="co">#mod3a &lt;- copy_model_from(mod3, "3a", "ppc",.overwrite=T)</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>mod3a  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"3a"</span>))</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>mod3a_res <span class="ot">&lt;-</span> mod3a <span class="sc">%&gt;%</span> <span class="fu">submit_model</span>(<span class="at">.overwrite =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="run-stan-3" class="level2">
+<h2 class="anchored" data-anchor-id="run-stan-3">Run stan</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"3a"</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, model_name)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,model_name)</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>mod2  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, model_name))</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(mod2)</span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>xdata <span class="ot">&lt;-</span> xdata <span class="sc">%&gt;%</span></span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(OUT<span class="sc">!=</span><span class="dv">1</span>, CMT<span class="sc">!=</span><span class="dv">22</span>, CMT<span class="sc">!=</span><span class="dv">33</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TIME =</span> <span class="fu">if_else</span>(infusion<span class="sc">==</span><span class="dv">0</span>,timepostinf,TIMEh))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="parameters-3" class="level2">
+<h2 class="anchored" data-anchor-id="parameters-3">Parameters</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>,<span class="st">"rho"</span>)</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>ptable <span class="ot">&lt;-</span><span class="fu">plot_param_tables</span>(mod_to_plot, pars)</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>ptable<span class="sc">%&gt;%</span></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 19%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">parameter</th>
+<th style="text-align: left;">mean</th>
+<th style="text-align: left;">median</th>
+<th style="text-align: left;">sd</th>
+<th style="text-align: left;">mad</th>
+<th style="text-align: left;">90% CI</th>
+<th style="text-align: left;">ess_bulk</th>
+<th style="text-align: left;">ess_tail</th>
+<th style="text-align: left;">rhat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lp__</td>
+<td style="text-align: left;">-94.9</td>
+<td style="text-align: left;">-94.5</td>
+<td style="text-align: left;">9.17</td>
+<td style="text-align: left;">9.39</td>
+<td style="text-align: left;">(-110, -80.6)</td>
+<td style="text-align: left;">1.24e+03</td>
+<td style="text-align: left;">2e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CLHat</td>
+<td style="text-align: left;">46.8</td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">11.8</td>
+<td style="text-align: left;">11.3</td>
+<td style="text-align: left;">(30.1, 68)</td>
+<td style="text-align: left;">9.57e+03</td>
+<td style="text-align: left;">2.97e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">QHat</td>
+<td style="text-align: left;">39.7</td>
+<td style="text-align: left;">38.3</td>
+<td style="text-align: left;">10.4</td>
+<td style="text-align: left;">9.71</td>
+<td style="text-align: left;">(25.3, 58.3)</td>
+<td style="text-align: left;">8.9e+03</td>
+<td style="text-align: left;">2.59e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">V1Hat</td>
+<td style="text-align: left;">8.16</td>
+<td style="text-align: left;">7.93</td>
+<td style="text-align: left;">2.06</td>
+<td style="text-align: left;">1.95</td>
+<td style="text-align: left;">(5.31, 11.9)</td>
+<td style="text-align: left;">1.05e+04</td>
+<td style="text-align: left;">2.94e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">V2Hat</td>
+<td style="text-align: left;">496</td>
+<td style="text-align: left;">481</td>
+<td style="text-align: left;">130</td>
+<td style="text-align: left;">123</td>
+<td style="text-align: left;">( 314, 734)</td>
+<td style="text-align: left;">8.97e+03</td>
+<td style="text-align: left;">2.66e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KAHat</td>
+<td style="text-align: left;">1.14</td>
+<td style="text-align: left;">1.01</td>
+<td style="text-align: left;">0.606</td>
+<td style="text-align: left;">0.495</td>
+<td style="text-align: left;">(0.436, 2.32)</td>
+<td style="text-align: left;">1.13e+04</td>
+<td style="text-align: left;">2.29e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KA14Hat</td>
+<td style="text-align: left;">4.88</td>
+<td style="text-align: left;">4.58</td>
+<td style="text-align: left;">1.96</td>
+<td style="text-align: left;">1.99</td>
+<td style="text-align: left;">( 2.1, 8.61)</td>
+<td style="text-align: left;">5.73e+03</td>
+<td style="text-align: left;">2.12e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KA41Hat</td>
+<td style="text-align: left;">0.0906</td>
+<td style="text-align: left;">0.0812</td>
+<td style="text-align: left;">0.0472</td>
+<td style="text-align: left;">0.0399</td>
+<td style="text-align: left;">(0.0351, 0.177)</td>
+<td style="text-align: left;">1.16e+04</td>
+<td style="text-align: left;">2.81e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[1]</td>
+<td style="text-align: left;">0.412</td>
+<td style="text-align: left;">0.399</td>
+<td style="text-align: left;">0.101</td>
+<td style="text-align: left;">0.0986</td>
+<td style="text-align: left;">(0.271, 0.595)</td>
+<td style="text-align: left;">9.01e+03</td>
+<td style="text-align: left;">2.84e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[2]</td>
+<td style="text-align: left;">0.415</td>
+<td style="text-align: left;">0.403</td>
+<td style="text-align: left;">0.107</td>
+<td style="text-align: left;">0.103</td>
+<td style="text-align: left;">(0.263, 0.608)</td>
+<td style="text-align: left;">8.68e+03</td>
+<td style="text-align: left;">2.57e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[3]</td>
+<td style="text-align: left;">0.41</td>
+<td style="text-align: left;">0.396</td>
+<td style="text-align: left;">0.103</td>
+<td style="text-align: left;">0.0938</td>
+<td style="text-align: left;">(0.265, 0.599)</td>
+<td style="text-align: left;">8.4e+03</td>
+<td style="text-align: left;">2.43e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[4]</td>
+<td style="text-align: left;">0.413</td>
+<td style="text-align: left;">0.4</td>
+<td style="text-align: left;">0.108</td>
+<td style="text-align: left;">0.101</td>
+<td style="text-align: left;">(0.26, 0.612)</td>
+<td style="text-align: left;">1.04e+04</td>
+<td style="text-align: left;">2.42e+03</td>
+<td style="text-align: left;">0.999</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[5]</td>
+<td style="text-align: left;">0.413</td>
+<td style="text-align: left;">0.399</td>
+<td style="text-align: left;">0.104</td>
+<td style="text-align: left;">0.102</td>
+<td style="text-align: left;">(0.268, 0.598)</td>
+<td style="text-align: left;">1.01e+04</td>
+<td style="text-align: left;">2.87e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[6]</td>
+<td style="text-align: left;">0.415</td>
+<td style="text-align: left;">0.402</td>
+<td style="text-align: left;">0.106</td>
+<td style="text-align: left;">0.102</td>
+<td style="text-align: left;">(0.263, 0.607)</td>
+<td style="text-align: left;">1.01e+04</td>
+<td style="text-align: left;">2.83e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[7]</td>
+<td style="text-align: left;">0.412</td>
+<td style="text-align: left;">0.398</td>
+<td style="text-align: left;">0.106</td>
+<td style="text-align: left;">0.0985</td>
+<td style="text-align: left;">(0.265, 0.605)</td>
+<td style="text-align: left;">9.36e+03</td>
+<td style="text-align: left;">2.65e+03</td>
+<td style="text-align: left;">0.999</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.0541</td>
+<td style="text-align: left;">0.0512</td>
+<td style="text-align: left;">(0.131, 0.308)</td>
+<td style="text-align: left;">1.02e+04</td>
+<td style="text-align: left;">2.75e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nu</td>
+<td style="text-align: left;">20.6</td>
+<td style="text-align: left;">17.3</td>
+<td style="text-align: left;">13.8</td>
+<td style="text-align: left;">11.7</td>
+<td style="text-align: left;">(4.99, 48)</td>
+<td style="text-align: left;">5.21e+03</td>
+<td style="text-align: left;">2.06e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[2,1]</td>
+<td style="text-align: left;">0.00269</td>
+<td style="text-align: left;">0.00286</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.315, 0.318)</td>
+<td style="text-align: left;">1.01e+04</td>
+<td style="text-align: left;">3.01e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[3,1]</td>
+<td style="text-align: left;">0.000128</td>
+<td style="text-align: left;">0.000748</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.317, 0.315)</td>
+<td style="text-align: left;">9.76e+03</td>
+<td style="text-align: left;">2.83e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,1]</td>
+<td style="text-align: left;">0.000301</td>
+<td style="text-align: left;">-0.00123</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.313, 0.315)</td>
+<td style="text-align: left;">9.47e+03</td>
+<td style="text-align: left;">2.68e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,1]</td>
+<td style="text-align: left;">-0.000338</td>
+<td style="text-align: left;">0.00128</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.319, 0.32)</td>
+<td style="text-align: left;">8.43e+03</td>
+<td style="text-align: left;">3.01e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,1]</td>
+<td style="text-align: left;">0.00211</td>
+<td style="text-align: left;">0.000505</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.322, 0.32)</td>
+<td style="text-align: left;">9.56e+03</td>
+<td style="text-align: left;">2.65e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,1]</td>
+<td style="text-align: left;">-0.00232</td>
+<td style="text-align: left;">-0.00562</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.344, 0.336)</td>
+<td style="text-align: left;">8.39e+03</td>
+<td style="text-align: left;">2.42e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,2]</td>
+<td style="text-align: left;">0.00269</td>
+<td style="text-align: left;">0.00286</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.315, 0.318)</td>
+<td style="text-align: left;">1.01e+04</td>
+<td style="text-align: left;">3.01e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[3,2]</td>
+<td style="text-align: left;">0.000341</td>
+<td style="text-align: left;">-0.00268</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.316, 0.32)</td>
+<td style="text-align: left;">8.08e+03</td>
+<td style="text-align: left;">2.67e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,2]</td>
+<td style="text-align: left;">-0.00247</td>
+<td style="text-align: left;">-0.00226</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.339, 0.337)</td>
+<td style="text-align: left;">7.77e+03</td>
+<td style="text-align: left;">2.66e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,2]</td>
+<td style="text-align: left;">-0.000878</td>
+<td style="text-align: left;">-0.0018</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.317, 0.312)</td>
+<td style="text-align: left;">7.97e+03</td>
+<td style="text-align: left;">2.95e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,2]</td>
+<td style="text-align: left;">-0.00195</td>
+<td style="text-align: left;">-0.00496</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.317, 0.315)</td>
+<td style="text-align: left;">7.45e+03</td>
+<td style="text-align: left;">2.89e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,2]</td>
+<td style="text-align: left;">-0.000621</td>
+<td style="text-align: left;">0.00115</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.329, 0.329)</td>
+<td style="text-align: left;">8.78e+03</td>
+<td style="text-align: left;">2.74e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,3]</td>
+<td style="text-align: left;">0.000128</td>
+<td style="text-align: left;">0.000748</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.317, 0.315)</td>
+<td style="text-align: left;">9.76e+03</td>
+<td style="text-align: left;">2.83e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,3]</td>
+<td style="text-align: left;">0.000341</td>
+<td style="text-align: left;">-0.00268</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.316, 0.32)</td>
+<td style="text-align: left;">8.08e+03</td>
+<td style="text-align: left;">2.67e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,3]</td>
+<td style="text-align: left;">0.00215</td>
+<td style="text-align: left;">0.000669</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.314, 0.319)</td>
+<td style="text-align: left;">6.3e+03</td>
+<td style="text-align: left;">2.43e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,3]</td>
+<td style="text-align: left;">0.00335</td>
+<td style="text-align: left;">0.000875</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.322, 0.339)</td>
+<td style="text-align: left;">7.04e+03</td>
+<td style="text-align: left;">2.71e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,3]</td>
+<td style="text-align: left;">-0.000158</td>
+<td style="text-align: left;">0.00111</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.311, 0.315)</td>
+<td style="text-align: left;">5.99e+03</td>
+<td style="text-align: left;">2.72e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,3]</td>
+<td style="text-align: left;">-0.000372</td>
+<td style="text-align: left;">0.00361</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.333, 0.325)</td>
+<td style="text-align: left;">6.98e+03</td>
+<td style="text-align: left;">2.39e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,4]</td>
+<td style="text-align: left;">0.000301</td>
+<td style="text-align: left;">-0.00123</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.313, 0.315)</td>
+<td style="text-align: left;">9.47e+03</td>
+<td style="text-align: left;">2.68e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,4]</td>
+<td style="text-align: left;">-0.00247</td>
+<td style="text-align: left;">-0.00226</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.339, 0.337)</td>
+<td style="text-align: left;">7.77e+03</td>
+<td style="text-align: left;">2.66e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,4]</td>
+<td style="text-align: left;">0.00215</td>
+<td style="text-align: left;">0.000669</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.314, 0.319)</td>
+<td style="text-align: left;">6.3e+03</td>
+<td style="text-align: left;">2.43e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,4]</td>
+<td style="text-align: left;">0.000178</td>
+<td style="text-align: left;">-0.00224</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.316, 0.317)</td>
+<td style="text-align: left;">5.89e+03</td>
+<td style="text-align: left;">2.74e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,4]</td>
+<td style="text-align: left;">0.000876</td>
+<td style="text-align: left;">0.000558</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.21</td>
+<td style="text-align: left;">(-0.322, 0.326)</td>
+<td style="text-align: left;">7.16e+03</td>
+<td style="text-align: left;">2.83e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,4]</td>
+<td style="text-align: left;">0.00147</td>
+<td style="text-align: left;">-0.00131</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.334, 0.34)</td>
+<td style="text-align: left;">5.46e+03</td>
+<td style="text-align: left;">2.28e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,5]</td>
+<td style="text-align: left;">-0.000338</td>
+<td style="text-align: left;">0.00128</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.319, 0.32)</td>
+<td style="text-align: left;">8.43e+03</td>
+<td style="text-align: left;">3.01e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,5]</td>
+<td style="text-align: left;">-0.000878</td>
+<td style="text-align: left;">-0.0018</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.317, 0.312)</td>
+<td style="text-align: left;">7.97e+03</td>
+<td style="text-align: left;">2.95e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,5]</td>
+<td style="text-align: left;">0.00335</td>
+<td style="text-align: left;">0.000875</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.322, 0.339)</td>
+<td style="text-align: left;">7.04e+03</td>
+<td style="text-align: left;">2.71e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,5]</td>
+<td style="text-align: left;">0.000178</td>
+<td style="text-align: left;">-0.00224</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.316, 0.317)</td>
+<td style="text-align: left;">5.89e+03</td>
+<td style="text-align: left;">2.74e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,5]</td>
+<td style="text-align: left;">-0.00279</td>
+<td style="text-align: left;">-0.00159</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.336, 0.331)</td>
+<td style="text-align: left;">5.18e+03</td>
+<td style="text-align: left;">2.23e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,5]</td>
+<td style="text-align: left;">-0.00393</td>
+<td style="text-align: left;">-0.0042</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.329, 0.319)</td>
+<td style="text-align: left;">5.09e+03</td>
+<td style="text-align: left;">2.42e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,6]</td>
+<td style="text-align: left;">0.00211</td>
+<td style="text-align: left;">0.000505</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.322, 0.32)</td>
+<td style="text-align: left;">9.56e+03</td>
+<td style="text-align: left;">2.65e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,6]</td>
+<td style="text-align: left;">-0.00195</td>
+<td style="text-align: left;">-0.00496</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.317, 0.315)</td>
+<td style="text-align: left;">7.45e+03</td>
+<td style="text-align: left;">2.89e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,6]</td>
+<td style="text-align: left;">-0.000158</td>
+<td style="text-align: left;">0.00111</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.311, 0.315)</td>
+<td style="text-align: left;">5.99e+03</td>
+<td style="text-align: left;">2.72e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,6]</td>
+<td style="text-align: left;">0.000876</td>
+<td style="text-align: left;">0.000558</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.21</td>
+<td style="text-align: left;">(-0.322, 0.326)</td>
+<td style="text-align: left;">7.16e+03</td>
+<td style="text-align: left;">2.83e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[5,6]</td>
+<td style="text-align: left;">-0.00279</td>
+<td style="text-align: left;">-0.00159</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.336, 0.331)</td>
+<td style="text-align: left;">5.18e+03</td>
+<td style="text-align: left;">2.23e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,6]</td>
+<td style="text-align: left;">0.00129</td>
+<td style="text-align: left;">-0.00206</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.328, 0.334)</td>
+<td style="text-align: left;">4.04e+03</td>
+<td style="text-align: left;">2.75e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,7]</td>
+<td style="text-align: left;">-0.00232</td>
+<td style="text-align: left;">-0.00562</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.344, 0.336)</td>
+<td style="text-align: left;">8.39e+03</td>
+<td style="text-align: left;">2.42e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,7]</td>
+<td style="text-align: left;">-0.000621</td>
+<td style="text-align: left;">0.00115</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.329, 0.329)</td>
+<td style="text-align: left;">8.78e+03</td>
+<td style="text-align: left;">2.74e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,7]</td>
+<td style="text-align: left;">-0.000372</td>
+<td style="text-align: left;">0.00361</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.333, 0.325)</td>
+<td style="text-align: left;">6.98e+03</td>
+<td style="text-align: left;">2.39e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,7]</td>
+<td style="text-align: left;">0.00147</td>
+<td style="text-align: left;">-0.00131</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.334, 0.34)</td>
+<td style="text-align: left;">5.46e+03</td>
+<td style="text-align: left;">2.28e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[5,7]</td>
+<td style="text-align: left;">-0.00393</td>
+<td style="text-align: left;">-0.0042</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.329, 0.319)</td>
+<td style="text-align: left;">5.09e+03</td>
+<td style="text-align: left;">2.42e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[6,7]</td>
+<td style="text-align: left;">0.00129</td>
+<td style="text-align: left;">-0.00206</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.328, 0.334)</td>
+<td style="text-align: left;">4.04e+03</td>
+<td style="text-align: left;">2.75e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="trace-plots-3" class="level2">
+<h2 class="anchored" data-anchor-id="trace-plots-3">Trace plots</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_dens_overlay</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/trace-plots-mod3a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/trace-plots-mod3a-2.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"trace-plots.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"dense-plots.png"</span>),<span class="at">plot =</span> p2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="individual-and-population-predictions-3" class="level2">
+<h2 class="anchored" data-anchor-id="individual-and-population-predictions-3">Individual and population predictions</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>ppc1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/IPRED-PRED-mod3a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"pred-by-id.png"</span>),<span class="at">plot =</span> ppc1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="vpc-3" class="level2">
+<h2 class="anchored" data-anchor-id="vpc-3">VPC</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>vpc_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/VPC-mod3a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"vpc.png"</span>),<span class="at">plot =</span> vpc_plot, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
 <section id="session" class="level1">
 <h1>Session</h1>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.3.1 (2023-06-16 ucrt)

@@ -18,5 +18,5 @@ execute:
 
 # Results
 
-* [Nonmem results](/nonmem-analysis.html "Nonmem results")
-* [Stan/Torsten results](/bayesian-analysis.html "Stan results")
+* [Nonmem results](nonmem-analysis.html "Nonmem results")
+* [Stan/Torsten results](bayesian-analysis.html "Stan results")
