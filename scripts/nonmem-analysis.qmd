@@ -1015,9 +1015,18 @@ p_cont1
 p_cont2
 ```
 
+# References {.unnumbered}
 
-# Session
+::: {#refs}
+:::
 
-```{r sessioninfo}
+# Licenses {.unnumbered}
+
+-   Code & copy; 2025, Paweł Wiczling, licensed under BSD-3.
+-   Text & copy; 2025, Paweł Wiczling, licensed under CC-BY-NC 4.0.
+
+# Original Computing Environment {.unnumbered}
+
+```{r sessionInfo}
 sessionInfo()
 ```

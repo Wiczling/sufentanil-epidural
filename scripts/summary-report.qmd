@@ -1,7 +1,11 @@
 ---
-title: "Modeling and simulation of ASA"
+title: "Pharmacokinetics of sufentanil after epidural administration"
 author:   
   - Pawel Wiczling
+  - Agnieszka Bienert
+  - Paulina Okuńska
+  - Agnieszka Borsuk-de Moor
+  - Justyna Ber
 date: today
 date-format: long
 format:
@@ -11,103 +15,230 @@ format:
     colorlinks: true
     fig-width: 7
     fig-height: 7
+    geometry:
+      - top = 1in
+      - left = 1in
+      - right = 1in
+      - bottom = 1in
+      - heightrounded
+    include-in-header:
+      text: |
+        \usepackage{fontspec}
+        \usepackage{multirow}
+        \usepackage{multicol}
+        \usepackage{colortbl}
+        \usepackage{hhline}
+        \newlength\Oldarrayrulewidth
+        \newlength\Oldtabcolsep
+        \usepackage{longtable}
+        \usepackage{array}
+        \usepackage{hyperref}
+        \usepackage{cleveref}
+        \usepackage{float}
+        \usepackage{wrapfig}
+        \usepackage{pdflscape}
+        \usepackage{bm}
+        \usepackage[]{threeparttable}
+        \usepackage[]{scrlayer-scrpage}
+        \usepackage{typearea}
+        \renewcommand\arraystretch{1.3}
 execute:
   warning: false
 ---
 
-
-*  *  *  * 
-
-**Report prepared for: Adamed Pharma S.A.**
-**Address: Pieńków, ul. Mariana Adamkiewicza 6A, 05-152 Czosnów**
- 
-
-**Signature:**  
-
-*  *  *  *  
-
 \pagebreak
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE, message=FALSE, error=FALSE, warning=FALSE, comment=NA, out.width='95%')
+```
 
 # Introduction
 
-The data analyzed in this report were obtained in a randomized, 2-way crossover design study comparing the reference and tested formulations of ASA administered at a 100 mg dose. The purpose of the present analysis is to apply a model-based population analysis to the data in order to characterize the absorption and disposition of ASA. The developed population model will be further used to simulate the expected concentration-time profiles after administration of ASA as 100 mg QD and 50 mg BID. 
+The aim of the proposed study is to describe changes in blood concentrations of sufentanil after epidural administration in adults using a population pharmacokinetic model. Additionally, the study will investigate relationships between demographic characteristics, patients' clinical status, and their individual parameters describing sufentanil pharmacokinetics. Based on the obtained results, the absorption rate of sufentanil from the epidural space and the occurrence of flip-flop kinetics in this process, as suggested in a study conducted in the pediatric population [@aborsuk2017], will be verified.
+
+# Opis (do przetumaczenia)
+
+Sufentanyl jest przeciwbólowym opioidem, stosowanym zarówno w trakcie znieczulenia, jak również do analgezji po zabiegu chirurgicznym. Jest jednym z leków o najsilniejszym działaniu przeciwbólowym - w porównaniu do fentanylu po podaniu dożylnym wykazuje 5-10 razy silniejsze działanie, bardzo szybki początek i krótki czas działania  [2]. Zaletą sufentanylu jest lepsza stabilność hemodynamiczna pacjenta w porównaniu z innymi opiodami [3]. Ze względu na swoją charakterystykę, sufentanyl jest stosowany do znieczuleń pacjentów pediatrycznych mimo niewielkiej liczby opublikowanych badań klinicznych opisujących farmakokinetykę i farmakodynamikę sufentanylu w tej populacji [4]. W większości badań opisujących farmakokinetykę sufentanylu, zarówno u dorosłych, jak i u dzieci, podawany był on dożylnie. Istnieje kilka doniesień opisujących zastosowanie sufentanylu podawanego zewnątrzoponowo u dzieci i jedno badanie uwzględniające oszacowanie parametrów farmakokinetycznych osobno dla każdego pacjenta [5]. Nasza grupa badawcza jako pierwsza podjęła próbę stworzenia modelu populacyjnego, opisującego farmakokinetykę sufentanylu po podaniu zewnątrzoponowym w populacji pediatrycznej [1]. 
+
+Populacyjne podejście do modelowania farmakokinetyki leków ma szczególne znaczenie w praktyce klinicznej i umożliwia prowadzenie badań w tym zakresie również u najmłodszych pacjentów, czy też chorych w stanach krytycznych, zachowując zmniejszoną liczbę pobranych próbek materiału biologicznego, a więc nie naraża chorego na nadmierną utratę krwi. Zastosowanie metod populacyjnych rozszerza opis zależności stężenia leku we krwi pacjenta, a w związku z tym działania tego leku, od czasu i podanej dawki, u pojedynczego pacjenta na całą badaną populację. Pozwala na wykorzystanie danych zróżnicowanych, obejmujących pacjentów zarówno z pełnym profilem oznaczonych stężeń, jak i pacjentów z pojedynczymi oznaczeniami. Informacje brakujące model populacyjny uzupełnia na podstawie danych z całej badanej populacji. Opisuje wartości parametrów farmakokinetycznych w populacji przy pomocy rozkładów prawdopodobieństwa oraz uwzględnia zależności pomiędzy wartościami parametrów a zmiennymi charakteryzującymi danego pacjenta, takimi jak masa ciała, wiek, płeć, genotyp, etc. Podejście populacyjne do modelowania daje duże możliwości przewidywania stężeń i działania leku u zróżnicowanych grup pacjentów, którzy poddawani są rutynowej hospitalizacji.
+
+We wspomnianym, retrospektywnym badaniu przeprowadzonym przez nasz zespół [1] zauważono, że wchłanianie sufentanylu z przestrzeni zewnątrzoponowej ma charakter kinetyki flip-flop. Oznacza to, że szybkość absorpcji sufentanylu z przestrzeni zewnątrzoponowej do krążenia ogólnego może być wolniejsza niż proces eliminacji leku z organizmu pacjenta. Skutkuje to powolnym wzrostem stężeń w osoczu po podaniu leku oraz wolniejszym spadkiem stężeń po zakończeniu podawania leku w porównaniu do podania dożylnego, a także brakiem występowania nagłych wysokich stężeń w osoczu, które związane są z ryzykiem działań niepożądanych. Opublikowana analiza miała charakter retrospektywny i uwzględniała dane uzyskane z dwóch badań obserwacyjnych o nieoptymalnym schemacie pobierania próbek do oznaczania stężeń, stąd populacyjne parametry farmakokinetyczne oszacowane na jej postawie mogą być nieprecyzyjne i obarczone błędem. Szczególnie istotnym aspektem dla wyznaczenia stałej szybkości absorpcji jest bowiem schemat pobierania próbek, który w przypadku tego badania obejmował tylko jeden pomiar stężenia w fazie absorpcji. Dlatego też w celu potwierdzenia wartości stałej szybkości absorpcji sufentanylu z przestrzeni zewnątrzoponowej potrzebne jest przeprowadzenie badania z układem eksperymentalnym uwzględniającym większą ilość oznaczeń stężeń w fazie absorpcji. Ze względu na brak doniesień naukowych dotyczących populacyjnych badań farmakokinetyki sufentanylu podanego zewnątrzoponowo w populacji pacjentów dorosłych, proponuje się przeprowadzenie badania w tej populacji. 
+
+Część danych literaturowych sugeruje szybkie wchłanianie systemowe sufentanylu po podaniu zewnątrzoponowym [6, 7], niektórzy autorzy zauważają jednak niskie wchłanianie systemowe [8] oraz niższe stężenia w porównaniu z podaniem dożylnym w pierwszych godzinach po podaniu dawki [9]. Rozbieżności w dostępnych badaniach stanowią argument za przeprowadzeniem badania, które pozwoli wyznaczyć z dobrą precyzją profil wchłaniania sufentanylu z przestrzeni zewnątrzoponowej. Dodatkowo na podstawie danych charakteryzujących pacjentów pod względem demograficznym i klinicznym przeprowadzona zostanie analiza kowariancji, która poszukuje zależności pomiędzy zmiennymi opisującymi pacjenta a parametrami farmakokinetycznymi, które warunkują indywidualne profile stężenia w czasie. Opracowanie modelu populacyjnego dla sufentanylu podawanego zewnątrzoponowo pozwoli na lepsze przewidywanie stężeń w osoczu pacjentów, a co za tym idzie - efektów działania leku - zarówno analgezji, jak i działań niepożądanych, których możemy spodziewać się po określonym czasie po podaniu dawki. Wiedza ta umożliwi optymalizację dawkowania sufentanylu w podaniu zewnątrzoponowym i pomoże w zapobieganiu efektom ubocznym związanym ze stosowaniem sufentanylu, które powiązane są właśnie ze stężeniem w osoczu. 
+
+## Opis grupy badanej (wiek, płeć, stan zdrowia, liczebność grupy)
+
+Do badania zostaną włączeni pacjenci obojga płci w wieku 18-70 lat, poddawani znieczuleniu zewnątrzoponowemu do zabiegów w obrębie jamy brzusznej. Zakwalifikowani do badania zostaną pacjenci należący do klasy ryzyka okołooperacyjnego ASA 1-3. Liczebność grupy szacuje się na około 40 dorosłych pacjentów.
+
+## Metody
+
+Badanie kliniczne zostanie przeprowadzone w Oddziale Klinicznym Anestezjologii, Intensywnej Terapii i Leczenia Bólu Szpitala Klinicznego im. H. Święcickiego UM im. K. Marcinkowskiego w Poznaniu pod kierownictwem głównego badacza, lek. med. Macieja Jabłońskiego. 
+
+Pacjentom poddawanym znieczuleniu do zabiegu operacyjnego zostanie założony cewnik zewnątrzoponowy, przez który następnie podana będzie dawka inicjująca sufentanylu i substancji miejscowo znieczulającej z grupy amidów (np. ropiwakaina, bupiwakaina) do przestrzeni zewnątrzoponowej. Dawka dobrana będzie w zależności od rodzaju zabiegu, wieku pacjenta, danych antropometrycznych (waga, wzrost, BMI), ogólnego stanu zdrowia, chorób współistniejących. Następnie kontynuowany będzie wlew ciągły leków do przestrzeni zewnątrzoponowej, sterowany na podstawie odpowiedzi klinicznej, dostosowując szybkość wlewu do jakości analgezji i wystąpienia ewentualnych niekorzystnych następstw hemodynamicznych. Podaż kontynuowana będzie w bezpośrednim okresie pooperacyjnym i przez kolejne trzy doby celem leczenia ostrego bólu pooperacyjnego.
+
+Podczas zabiegu, w przebiegu leczenia bólu pooperacyjnego i po zakończeniu podawania leków od pacjentów będą pobierane próbki krwi w celu oznaczenia stężeń. Schemat pobierania próbek krwi od pacjentów będzie wyglądał następująco: 5 min od rozpoczęcia podawania leku, 30 min, 1 h, 2 h, 4 h, 6 h, 12 h od rozpoczęcia podania, następnie co 24 h, tuż przed zakończeniem wlewu i po zakończeniu wlewu 3 min, 5 min, 20 min, 40 min, 1 h, 2 h, 6 h, 12 h, 36 h, 72 h. Gęste pobieranie próbek w początkowej fazie podawania leku, jak i po zakończeniu wlewu jest kluczowe w kontekście precyzyjnego wyznaczenia szybkości absorpcji i zweryfikowania występowania kinetyki flip-flop.
+
+Próbki krwi w ilości 2 ml zostaną odwirowane bezpośrednio po pobraniu i tak uzyskane osocze będzie przechowywane w odpowiednich warunkach do czasu oznaczeń stężeń leku. Stężenia leku będą oznaczane przy użyciu zwalidowanej metody analitycznej w Katedrze Biofarmacji i Farmakodynamiki Gdańskiego Uniwersytetu Medycznego.
+
+Na podstawie uzyskanych w wyniku oznaczeń wartości stężeń zaproponowany zostanie model populacyjny farmakokinetyczny opisujący zmiany stężenia leku we krwi. Zostanie także oceniony wpływ cech demograficznych pacjenta (wiek, płeć, masa ciała) oraz stanu klinicznego (wyniki rutynowych badań laboratoryjnych) na profil stężenia leku we krwi. Model populacyjny zostanie opracowany przy użyciu nieliniowego modelowania efektów mieszanych.
+
+## Literatura
+1. 	Borsuk A, Wołoszczuk-Gębicka B, Bartkowska-Śniatkowska A, et al (2017) Flip-Flop Phenomenon in Epidural Sufentanil Pharmacokinetics: A Population Study in Children and Infants. J Clin Pharmacol 57:1194–1206. doi: 10.1002/jcph.912
+2. 	Maciejewski D Sufentanil in anaesthesiology and intensive therapy. Anaesthesiol Intensive Ther 44:35–41.
+3. 	Monk JP, Beresford R, Ward A (1988) Sufentanil. A review of its pharmacological properties and therapeutic use. Drugs 36:286–313.
+4. 	Lundeberg S, Roelofse JA (2011) Aspects of pharmacokinetics and pharmacodynamics of sufentanil in pediatric practice. Pediatr Anesth 21:274–279. doi: 10.1111/j.1460-9592.2010.03411.x
+5. 	Woloszczuk-Gebicka B, Grabowski T, Borucka B, Karas-Trzeciak M (2014) Pharmacokinetics of sufentanil administered with 0.2% ropivacaine as a continuous epidural infusion for postoperative pain relief in infants. Pediatr Anesth 24:962–967. doi: 10.1111/pan.12440
+6. 	Ionescu TI, Taverne RH, Houweling PL, et al (1991) Pharmacokinetic study of extradural and intrathecal sufentanil anaesthesia for major surgery. Br J Anaesth 66:458–64.
+7. 	Taverne RHT, Ionescu TI, Nuyten STM (1992) Comparative Absorption and Distribution Pharmacokinetics of Intravenous and Epidural Sufentanil for Major Abdominal Surgery. Clin Pharmacokinet 23:231–237. doi: 10.2165/00003088-199223030-00005
+8. 	Menigaux C, Guignard B, Fletcher D, et al (2001) More epidural than intravenous sufentanil is required to provide comparable postoperative pain relief. Anesth Analg 93:472–6, 4th contents page.
+9. 	Geller E, Chrubasik J, Graf R, et al (1993) A randomized double-blind comparison of epidural sufentanil versus intravenous sufentanil or epidural fentanyl analgesia after major abdominal surgery. Anesth Analg 76:1243–50.
+
+# Raw Data
+
+The raw data is graphically summarized in @fig-df1 and @fig-df2.
+
+![Raw Data Sphagetti](../deliv/figures/torsten/EDA/rawdata1.png){#fig-df1}
 
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(cache=TRUE, message=FALSE, error=FALSE, warning=FALSE, comment=NA, out.width='95%')
+![Raw Data By ID](../deliv/figures/torsten/EDA/rawdata2.png){#fig-df2}
+
+
+# Statistical methods
+
+Initially a population nonlinear mixed-effect modeling was done using NONMEM (Version 7.4.0, Icon Development Solutions, Ellicott City, MD, USA) and the gfortran compiler 9.0. NONMEM runs were executed using bbr package. The differential equations for the model were solved using ADVAN13 PREDPP subroutines. The NONMEM data processing and plots were performed in R Software.The minimum value of the NONMEM objective function, typical goodness-of-fit diagnostic plots, and the evaluation of the precision of pharmacokinetic parameter and variability estimates were used to discriminate between various models during the model-building process. 
+
+Later we used a Stan/Torsten approach using cmdstanr software linked with Rstudio. For the inference, we used four Markov chains with 1000 iterations after 1000 warm up iterations. Convergence diagnostics were performed using Gelman–Rubin statistics and trace plots, and the results indicated that the model results did not diverge. The R code, data, and Stan code used to analyze the data are publicly available in the GitHub repository (https://github.com/wiczling/sufentanil_epidural). 
+
+Based on the visual inspection of data initially a two-compartment disposition model with first-order absorption (model 1) was fitted to the concentration-time profiles. The other models we tested were:
+
+- Model 2: disposition: 2 cmp. model; absorption: 1-st order absorption. fr
+- Model 3: disposition: 2 cmp. model; absorption: two compartment 1-st order absorption. 
+
+Model 3 was selected as final.
+
+## Final Model Equations
+
+The model equitation are as follows:
+
+$$
+\begin{aligned}
+& \frac{dA1}{dt} = - KA \cdot  A1 - KA14 \cdot  A1 + KA41 \cdot  A4 \\
+& \frac{dA4}{dt} =  KA14 \cdot  A1 - KA41 \cdot  A4 \\
+& V_1 \cdot \frac{dC_1}{dt} =  KA \cdot  A1 - CL \cdot  C_1 - Q \cdot  C_1 + Q \cdot  C_2 \\
+& V_2 \cdot \frac{dC_2}{dt} =  Q \cdot  C1 - Q \cdot  C_2
+\end{aligned}
+$$ {#eq-odemodel}
+
+where $A_1$, and $A_2$ denote absorption compartments, $C_1$ denote concentration in central compartment an $C_2$ denote concentration in the peripheral compartment.The observed concentrations were modeled assuming proportional error model (additive on a log scale) using a t-distribution ensuring robustness to outliers:
+
+$$ 
+\begin{aligned}
+& \log C_{Obs_{i,j}} \sim student\_t(\nu,f(P_{i},t_{i,j}),\sigma) \\
+& \log P_{i} \sim \text{MVN}(\log \theta_P , \Omega) \\
+\end{aligned}
+$$ {#eq-obsmodel}
+
+where $P_i=(CL_{i}, Q_{i}, V1_{i}, V2_{i}, KA_{i}, KA_{14,i},, KA_{41,i})$ is a vector of subject-specific parameters, $f(.)$ corresponds to the above ODE equations, $MVN$ is a multivariate normal distribution, $\theta_P$ is a vector of typical values of $P_i$. In turn, $\sigma$ is the scale and $\Omega$ is the scale matrix for the random effects related to the residual and unexplained between-subject variability. For convenience $\Omega$ was decomposed to:
+
+$$
+\Omega = diag(\omega) \cdot LL' \cdot diag(\omega) 
+$$ {#eq-omega}
+
+where $\rho = LL'$ denotes correlation, $L$ is a lower triangular Cholesky factor for a correlation matrix and $\omega$ denotes standard deviation for between subject variability.
+
+The priors were specified based on parameter estimates provided by our previous work [@Bartkowska-Sniatkowska2016-hm]
+
+$$ 
+\begin{aligned}
+& \theta_{CL} \sim lognormal(log(45.3),0.25), \\
+& \theta_{Q}  \sim lognormal(log(38.3),0.25), \\
+& \theta_{V1} \sim lognormal(log(7.90),0.25), \\
+& \theta_{V2} \sim lognormal(log(481),0.25), \\
+& \theta_{KA} \sim lognormal(log(1),0.50), \\
+& \theta_{KA14} \sim lognormal(log(4.85),0.50), \\
+& \theta_{KA41} \sim lognormal(log(0.080),0.50), \\
+& \nu \sim gamma(2,0.1),\\
+& \omega_{P}\sim lognormal(log(0.4),0.25), \\
+& \sigma \sim lognormal(log(0.2),0.25), \\
+& LL' \sim  LKJ(10)
+\end{aligned}
+$$ {#eq-priors}
+
+LKJ ensure that the density is uniform over correlation matrices of order 10.
+
+## Final Model Summary
+
+Parameters are estimated precisely as shown in \cref{param_summary}. 
+```{=latex}
+\begin{table}[H]
+\begin{center}
+
+\caption{Parameter estimates.}
+\label{param_summary}
+\input{../deliv/tables/torsten/4/parameters-table.tex}
+
+\end{center}
+\end{table}
 ```
 
-## Raw Data:
 
-![](../deliv/figures/EDA/rawdata.png)
+## Final Model Fits
 
-# Run NONMEM
+The model fittings show that the final PK model accurately described the measured concentrations. 
 
-Population nonlinear mixed-effect modeling was done using NONMEM (Version 7.4.0, Icon Development Solutions, Ellicott City, MD, USA) and the gfortran compiler 9.0. NONMEM runs were executed using bbr package. The differential equations for the model were solved using ADVAN12 PREDPP subroutines. The NONMEM data processing and plots were performed in R Softwar.
+### Prior predictive check
 
-The minimum value of the NONMEM objective function, typical goodness-of-fit diagnostic plots, and the evaluation of the precision of pharmacokinetic parameter and variability estimates were used to discriminate between various models during the model-building process. 
+The individual and vpc prior predictions are shown in @fig-1a and @fig-1b.
 
-Based on the visual inspection of data a two-compartment disposition model with first-order and delayed absorption described by three transit compartment was fitted to the concentration-time profiles of ASA. The  model development steps are summarized in the Table below..
+![Prior predictive check](../deliv/figures/torsten/4a/pred-by-id.png){#fig-1a}
 
-- Model 1. 2 cmp. model, 1-st order absorption with lag time.
-- Model 2. 2 cmp. model, 1-st order absorption with lag time. Inter-occasion variability on absorption parameters
-- Model 3. 2 cmp. model. Transit compartment model. Inter-occasion variability on absorption parameters.
+![Prior predictive check. VPC](../deliv/figures/torsten/4a/vpc.png){#fig-1b}
 
-## Summary of Runs
+### Individual Predictions
 
-![](../deliv/tables/mod-summary/mod-summary_all.png)
+The individual predictions are shown in @fig-3.
 
-# Visualise key modeling steps
-
-## Model summary
-
-![](../deliv/tables/3/parameter-estimates.png)
-
-## Mean predictions
-
-![](../deliv/figures/3/fits-lin.png)
-{{< pagebreak >}}
-![](../deliv/figures/3/fits-log.png)
+![Individual Predictions. Plots of observed (symbols), population predicted (blue) and individual predicted (red) concentrations versus time.](../deliv/figures/torsten/4/pred-by-id.png){#fig-3}
 {{< pagebreak >}}
 
-## Individual predictions
 
-![](../deliv/figures/3/fits-1234567891011.png)
-{{< pagebreak >}}
-![](../deliv/figures/3/fits-131415161718192021222324.png)
-{{< pagebreak >}}
-![](../deliv/figures/3/fits-2526272930313233343536.png)
-{{< pagebreak >}}
+## GOF Plots
 
-![](../deliv/figures/3/fits-373839404142434445464748.png)
-{{< pagebreak >}}
+The typical goodness-of-fit diagnostic plots for the final model are presented in @fig-8. 
 
-![](../deliv/figures/3/fits-5051525354555657585960.png)
-{{< pagebreak >}}
+The individual and population predictions versus observed concentrations are relatively symmetrically distributed around the line of identity indicating good model performance in quantifying the available PK data.
 
-## GOF plots
+![Goodness of fit plots.](../deliv/figures/torsten/4/gof.png){#fig-8}
 
-![](../deliv/figures/3/gof.png)
+## Visual Predcitive Check
 
-# Simulations Using Mrgsolve
+The model performance was assessed by means of Visual Predictive Checks (VPC). The VPC was calculated based on 1000 datasets simulated based on posterior samples. The VPC enables the comparison of predicted versus observed data over time. In this study the 10th, 50th and 90th percentiles were used to summarize the data and VPC prediction. The VPC enables the comparison of the confidence intervals obtained from prediction with the observed data over time. When the corresponding percentile from the observed data falls outside the 95% confidence interval derived from predictions, it is an indication of a model misspecification. The final model VPC's are shown in @fig-9.
 
-## VPC
+![Visual predcitive check.](../deliv/figures/torsten/4/vpc.png){#fig-9}
 
-The model performance was assessed by means of Visual Predictive Checks (VPC). The VPC was calculated based on 500 datasets simulated with the final parameter estimates. The VPC enables the comparison of predicted versus observed data over time. In this study the 10th, 50th and 90th percentiles were used to summarize the data and VPC prediction. The VPC enables the comparison of the confidence intervals obtained from prediction with the observed data over time. When the corresponding percentile from the observed data falls outside the 95% confidence interval derived from predictions, it is an indication of a model misspecification.
+# Summary
 
-![](../deliv/figures/3/vpc.png)
+What we have learnt?
 
-## Simulations
+The prior and posterior comparisons are presented in @fig-11 and @fig-12. 
 
-The simulation of a hypothetical study was conducted to predict ASA concentrations following multiple doses under two different regimens: 100 mg once daily (QD) for R and 50 mg twice daily (BID) for T (scenario 1), and 100 mg once daily (QD) for both R and T (scenario 2). The simulations were done for the total duration of 120 h (5 days). The Monte Carlo method was used to generate individual PK profiles for n = 1000 subjects. The individual PK parameters were based on the population pharmacokinetic parameters and random inter-individual effects as predicted by the final model. The outcomes of these simulations were represented as 50th (median) and (5th-95th) percentiles to illustrate the typical PK profiles along with the expected inter-individual variabilities in ASA concentrations.
+![Prior posterior comparisons. Thatas](../deliv/figures/torsten/4/prior-posterior-1.png){#fig-11}
 
-![](../deliv/figures/3/sim1.png)
-![](../deliv/figures/3/sim2.png)
+![Prior posterior comparisons. Omegas](../deliv/figures/torsten/4/prior-posterior-2.png){#fig-12}
+\pagebreak
 
-![](../deliv/figures/3/Cmaxss1.png)
-![](../deliv/figures/3/Cmaxss2.png)
+# References {.unnumbered}
 
-Results in a tabular format:
+::: {#refs}
+:::
 
-![](../deliv/tables/sim-summary/simulation_results.tex.png){width=75%}
+# Licenses {.unnumbered}
 
+-   Code & copy; 2025, Paweł Wiczling, licensed under BSD-3.
+-   Text & copy; 2025, Paweł Wiczling, licensed under CC-BY-NC 4.0.
+
+# Original Computing Environment {.unnumbered}
+
+```{r sessionInfo}
+sessionInfo()
+```

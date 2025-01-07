@@ -183,7 +183,9 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#parameters-figure-4" id="toc-parameters-figure-4" class="nav-link" data-scroll-target="#parameters-figure-4">Parameters (figure)</a></li>
   </ul></li>
-  <li><a href="#session" id="toc-session" class="nav-link" data-scroll-target="#session">Session</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#licenses" id="toc-licenses" class="nav-link" data-scroll-target="#licenses">Licenses</a></li>
+  <li><a href="#original-computing-environment" id="toc-original-computing-environment" class="nav-link" data-scroll-target="#original-computing-environment">Original Computing Environment</a></li>
   </ul>
 </nav>
 </div>
@@ -397,7 +399,7 @@ div.csl-indent {
 <span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sim_median_alpha =</span> <span class="fl">0.25</span>)))</span>
 <span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>vpc_plot <span class="ot">&lt;-</span> vpc_plot <span class="sc">+</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Time after infusion end (h)                  Time after infusion start (h)"</span>,</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Time (h)"</span>,</span>
 <span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Sufentanil concentrations, pg/ml"</span>) </span>
 <span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>vpc_plot</span>
@@ -1294,7 +1296,12 @@ div.csl-indent {
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(ptable <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">select</span>(<span class="sc">-</span>mad,<span class="sc">-</span>ess_bulk,<span class="sc">-</span>ess_tail) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">filter</span>(<span class="fu">str_detect</span>(parameter,<span class="st">"rho"</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>)), <span class="at">format =</span> <span class="st">"latex"</span>),  </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>           here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.tex"</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -1933,7 +1940,11 @@ div.csl-indent {
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(ptable <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">select</span>(<span class="sc">-</span>mad,<span class="sc">-</span>ess_bulk,<span class="sc">-</span>ess_tail) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">filter</span>(<span class="fu">str_detect</span>(parameter,<span class="st">"rho"</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>)), <span class="at">format =</span> <span class="st">"latex"</span>),  </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>           here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.tex"</span>))</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -2830,7 +2841,11 @@ div.csl-indent {
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(ptable <span class="sc">%&gt;%</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">select</span>(<span class="sc">-</span>mad,<span class="sc">-</span>ess_bulk,<span class="sc">-</span>ess_tail) <span class="sc">%&gt;%</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">filter</span>(<span class="fu">str_detect</span>(parameter,<span class="st">"rho"</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>)), <span class="at">format =</span> <span class="st">"latex"</span>),  </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>           here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.tex"</span>))</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -3699,7 +3714,12 @@ div.csl-indent {
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(ptable <span class="sc">%&gt;%</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">select</span>(<span class="sc">-</span>mad,<span class="sc">-</span>ess_bulk,<span class="sc">-</span>ess_tail) <span class="sc">%&gt;%</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">filter</span>(<span class="fu">str_detect</span>(parameter,<span class="st">"rho"</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>)), <span class="at">format =</span> <span class="st">"latex"</span>),  </span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>           here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.tex"</span>))</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -3921,8 +3941,7 @@ div.csl-indent {
 <span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>ptable <span class="ot">&lt;-</span><span class="fu">plot_param_tables</span>(mod_to_plot, pars)</span>
 <span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>ptable<span class="sc">%&gt;%</span></span>
-<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>ptable<span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -4605,7 +4624,12 @@ div.csl-indent {
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(ptable <span class="sc">%&gt;%</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">select</span>(<span class="sc">-</span>mad,<span class="sc">-</span>ess_bulk,<span class="sc">-</span>ess_tail) <span class="sc">%&gt;%</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">filter</span>(<span class="fu">str_detect</span>(parameter,<span class="st">"rho"</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>)), <span class="at">format =</span> <span class="st">"latex"</span>),  </span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>           here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.tex"</span>))</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -4788,691 +4812,12 @@ div.csl-indent {
 <span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>ptable <span class="ot">&lt;-</span><span class="fu">plot_param_tables</span>(mod_to_plot, pars)</span>
 <span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>ptable<span class="sc">%&gt;%</span></span>
-<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 7%">
-<col style="width: 8%">
-<col style="width: 19%">
-<col style="width: 10%">
-<col style="width: 10%">
-<col style="width: 6%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">parameter</th>
-<th style="text-align: left;">mean</th>
-<th style="text-align: left;">median</th>
-<th style="text-align: left;">sd</th>
-<th style="text-align: left;">mad</th>
-<th style="text-align: left;">90% CI</th>
-<th style="text-align: left;">ess_bulk</th>
-<th style="text-align: left;">ess_tail</th>
-<th style="text-align: left;">rhat</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">lp__</td>
-<td style="text-align: left;">-94</td>
-<td style="text-align: left;">-93.5</td>
-<td style="text-align: left;">9.04</td>
-<td style="text-align: left;">8.84</td>
-<td style="text-align: left;">(-110, -80.1)</td>
-<td style="text-align: left;">1.26e+03</td>
-<td style="text-align: left;">1.81e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CLHat</td>
-<td style="text-align: left;">46.8</td>
-<td style="text-align: left;">45.3</td>
-<td style="text-align: left;">11.8</td>
-<td style="text-align: left;">11.2</td>
-<td style="text-align: left;">(29.8, 68.4)</td>
-<td style="text-align: left;">1.07e+04</td>
-<td style="text-align: left;">2.64e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">QHat</td>
-<td style="text-align: left;">39.6</td>
-<td style="text-align: left;">38.5</td>
-<td style="text-align: left;">9.98</td>
-<td style="text-align: left;">9.74</td>
-<td style="text-align: left;">(25.5, 57.4)</td>
-<td style="text-align: left;">9.39e+03</td>
-<td style="text-align: left;">2.88e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">V1Hat</td>
-<td style="text-align: left;">8.12</td>
-<td style="text-align: left;">7.86</td>
-<td style="text-align: left;">2.05</td>
-<td style="text-align: left;">1.9</td>
-<td style="text-align: left;">(5.21, 11.9)</td>
-<td style="text-align: left;">9.08e+03</td>
-<td style="text-align: left;">2.25e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">V2Hat</td>
-<td style="text-align: left;">496</td>
-<td style="text-align: left;">481</td>
-<td style="text-align: left;">125</td>
-<td style="text-align: left;">120</td>
-<td style="text-align: left;">( 318, 723)</td>
-<td style="text-align: left;">9.61e+03</td>
-<td style="text-align: left;">2.9e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KAHat</td>
-<td style="text-align: left;">1.57</td>
-<td style="text-align: left;">1.01</td>
-<td style="text-align: left;">1.72</td>
-<td style="text-align: left;">0.879</td>
-<td style="text-align: left;">(0.203, 5.05)</td>
-<td style="text-align: left;">8.63e+03</td>
-<td style="text-align: left;">2.62e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KA14Hat</td>
-<td style="text-align: left;">7.64</td>
-<td style="text-align: left;">4.78</td>
-<td style="text-align: left;">9.17</td>
-<td style="text-align: left;">4.04</td>
-<td style="text-align: left;">(0.981, 23.6)</td>
-<td style="text-align: left;">8.65e+03</td>
-<td style="text-align: left;">2.63e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KA41Hat</td>
-<td style="text-align: left;">0.133</td>
-<td style="text-align: left;">0.0817</td>
-<td style="text-align: left;">0.172</td>
-<td style="text-align: left;">0.0728</td>
-<td style="text-align: left;">(0.0161, 0.424)</td>
-<td style="text-align: left;">7.07e+03</td>
-<td style="text-align: left;">2.31e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[1]</td>
-<td style="text-align: left;">0.459</td>
-<td style="text-align: left;">0.401</td>
-<td style="text-align: left;">0.249</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(0.175, 0.961)</td>
-<td style="text-align: left;">6.82e+03</td>
-<td style="text-align: left;">1.99e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">omega[2]</td>
-<td style="text-align: left;">0.444</td>
-<td style="text-align: left;">0.399</td>
-<td style="text-align: left;">0.221</td>
-<td style="text-align: left;">0.191</td>
-<td style="text-align: left;">(0.182, 0.871)</td>
-<td style="text-align: left;">7.22e+03</td>
-<td style="text-align: left;">2.49e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[3]</td>
-<td style="text-align: left;">0.45</td>
-<td style="text-align: left;">0.399</td>
-<td style="text-align: left;">0.23</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">(0.174, 0.888)</td>
-<td style="text-align: left;">7.76e+03</td>
-<td style="text-align: left;">2.25e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">omega[4]</td>
-<td style="text-align: left;">0.45</td>
-<td style="text-align: left;">0.399</td>
-<td style="text-align: left;">0.237</td>
-<td style="text-align: left;">0.186</td>
-<td style="text-align: left;">(0.18, 0.903)</td>
-<td style="text-align: left;">8.09e+03</td>
-<td style="text-align: left;">2.28e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[5]</td>
-<td style="text-align: left;">0.452</td>
-<td style="text-align: left;">0.401</td>
-<td style="text-align: left;">0.235</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">(0.172, 0.908)</td>
-<td style="text-align: left;">7.2e+03</td>
-<td style="text-align: left;">2.49e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">omega[6]</td>
-<td style="text-align: left;">0.449</td>
-<td style="text-align: left;">0.398</td>
-<td style="text-align: left;">0.226</td>
-<td style="text-align: left;">0.188</td>
-<td style="text-align: left;">(0.179, 0.881)</td>
-<td style="text-align: left;">7.85e+03</td>
-<td style="text-align: left;">2.75e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">omega[7]</td>
-<td style="text-align: left;">0.451</td>
-<td style="text-align: left;">0.396</td>
-<td style="text-align: left;">0.23</td>
-<td style="text-align: left;">0.191</td>
-<td style="text-align: left;">(0.179, 0.886)</td>
-<td style="text-align: left;">7.77e+03</td>
-<td style="text-align: left;">2.19e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sigma</td>
-<td style="text-align: left;">0.226</td>
-<td style="text-align: left;">0.2</td>
-<td style="text-align: left;">0.12</td>
-<td style="text-align: left;">0.0964</td>
-<td style="text-align: left;">(0.0877, 0.463)</td>
-<td style="text-align: left;">9.98e+03</td>
-<td style="text-align: left;">2.96e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">nu</td>
-<td style="text-align: left;">20.7</td>
-<td style="text-align: left;">17.2</td>
-<td style="text-align: left;">14.2</td>
-<td style="text-align: left;">12</td>
-<td style="text-align: left;">(4.65, 47.9)</td>
-<td style="text-align: left;">4.8e+03</td>
-<td style="text-align: left;">2.24e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[2,1]</td>
-<td style="text-align: left;">-0.00584</td>
-<td style="text-align: left;">-0.00548</td>
-<td style="text-align: left;">0.202</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.343, 0.331)</td>
-<td style="text-align: left;">1.01e+04</td>
-<td style="text-align: left;">2.18e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[3,1]</td>
-<td style="text-align: left;">-0.00158</td>
-<td style="text-align: left;">0.000301</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.321, 0.319)</td>
-<td style="text-align: left;">9.72e+03</td>
-<td style="text-align: left;">2.86e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[4,1]</td>
-<td style="text-align: left;">-0.000168</td>
-<td style="text-align: left;">0.000132</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">(-0.324, 0.322)</td>
-<td style="text-align: left;">1.03e+04</td>
-<td style="text-align: left;">2.17e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[5,1]</td>
-<td style="text-align: left;">0.00235</td>
-<td style="text-align: left;">0.000942</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.318, 0.326)</td>
-<td style="text-align: left;">1.03e+04</td>
-<td style="text-align: left;">2.69e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,1]</td>
-<td style="text-align: left;">-0.00194</td>
-<td style="text-align: left;">-0.000135</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.201</td>
-<td style="text-align: left;">(-0.319, 0.309)</td>
-<td style="text-align: left;">1.08e+04</td>
-<td style="text-align: left;">2.71e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,1]</td>
-<td style="text-align: left;">-0.000145</td>
-<td style="text-align: left;">-0.000537</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">0.204</td>
-<td style="text-align: left;">(-0.324, 0.325)</td>
-<td style="text-align: left;">9.73e+03</td>
-<td style="text-align: left;">2.61e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,2]</td>
-<td style="text-align: left;">-0.00584</td>
-<td style="text-align: left;">-0.00548</td>
-<td style="text-align: left;">0.202</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.343, 0.331)</td>
-<td style="text-align: left;">1.01e+04</td>
-<td style="text-align: left;">2.18e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[3,2]</td>
-<td style="text-align: left;">-0.0029</td>
-<td style="text-align: left;">-0.00308</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">0.199</td>
-<td style="text-align: left;">(-0.33, 0.323)</td>
-<td style="text-align: left;">8.74e+03</td>
-<td style="text-align: left;">2.19e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[4,2]</td>
-<td style="text-align: left;">0.00119</td>
-<td style="text-align: left;">0.00131</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">0.207</td>
-<td style="text-align: left;">(-0.318, 0.321)</td>
-<td style="text-align: left;">7.71e+03</td>
-<td style="text-align: left;">2.84e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[5,2]</td>
-<td style="text-align: left;">0.00224</td>
-<td style="text-align: left;">0.0026</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">(-0.323, 0.325)</td>
-<td style="text-align: left;">8.77e+03</td>
-<td style="text-align: left;">2.95e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,2]</td>
-<td style="text-align: left;">-0.00357</td>
-<td style="text-align: left;">-0.0033</td>
-<td style="text-align: left;">0.189</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">(-0.321, 0.307)</td>
-<td style="text-align: left;">7.56e+03</td>
-<td style="text-align: left;">2.77e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,2]</td>
-<td style="text-align: left;">-0.000833</td>
-<td style="text-align: left;">-0.00245</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.2</td>
-<td style="text-align: left;">(-0.314, 0.312)</td>
-<td style="text-align: left;">8.14e+03</td>
-<td style="text-align: left;">3.13e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,3]</td>
-<td style="text-align: left;">-0.00158</td>
-<td style="text-align: left;">0.000301</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.321, 0.319)</td>
-<td style="text-align: left;">9.72e+03</td>
-<td style="text-align: left;">2.86e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,3]</td>
-<td style="text-align: left;">-0.0029</td>
-<td style="text-align: left;">-0.00308</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">0.199</td>
-<td style="text-align: left;">(-0.33, 0.323)</td>
-<td style="text-align: left;">8.74e+03</td>
-<td style="text-align: left;">2.19e+03</td>
-<td style="text-align: left;">1.01</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[4,3]</td>
-<td style="text-align: left;">-0.00283</td>
-<td style="text-align: left;">-0.000947</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">0.207</td>
-<td style="text-align: left;">(-0.328, 0.32)</td>
-<td style="text-align: left;">5.63e+03</td>
-<td style="text-align: left;">2.57e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[5,3]</td>
-<td style="text-align: left;">0.00332</td>
-<td style="text-align: left;">0.00408</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.316, 0.327)</td>
-<td style="text-align: left;">7.71e+03</td>
-<td style="text-align: left;">2.51e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,3]</td>
-<td style="text-align: left;">-0.0021</td>
-<td style="text-align: left;">-0.00118</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.325, 0.321)</td>
-<td style="text-align: left;">7.19e+03</td>
-<td style="text-align: left;">2.46e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,3]</td>
-<td style="text-align: left;">-0.000968</td>
-<td style="text-align: left;">-0.000323</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">(-0.325, 0.327)</td>
-<td style="text-align: left;">7.34e+03</td>
-<td style="text-align: left;">2.87e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,4]</td>
-<td style="text-align: left;">-0.000168</td>
-<td style="text-align: left;">0.000132</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">(-0.324, 0.322)</td>
-<td style="text-align: left;">1.03e+04</td>
-<td style="text-align: left;">2.17e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,4]</td>
-<td style="text-align: left;">0.00119</td>
-<td style="text-align: left;">0.00131</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">0.207</td>
-<td style="text-align: left;">(-0.318, 0.321)</td>
-<td style="text-align: left;">7.71e+03</td>
-<td style="text-align: left;">2.84e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[3,4]</td>
-<td style="text-align: left;">-0.00283</td>
-<td style="text-align: left;">-0.000947</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">0.207</td>
-<td style="text-align: left;">(-0.328, 0.32)</td>
-<td style="text-align: left;">5.63e+03</td>
-<td style="text-align: left;">2.57e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[5,4]</td>
-<td style="text-align: left;">-0.00301</td>
-<td style="text-align: left;">-0.00572</td>
-<td style="text-align: left;">0.2</td>
-<td style="text-align: left;">0.209</td>
-<td style="text-align: left;">(-0.336, 0.326)</td>
-<td style="text-align: left;">5.44e+03</td>
-<td style="text-align: left;">2.57e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,4]</td>
-<td style="text-align: left;">0.00224</td>
-<td style="text-align: left;">0.00188</td>
-<td style="text-align: left;">0.19</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">(-0.306, 0.326)</td>
-<td style="text-align: left;">4.9e+03</td>
-<td style="text-align: left;">2.6e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,4]</td>
-<td style="text-align: left;">-0.000147</td>
-<td style="text-align: left;">0.0016</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">0.195</td>
-<td style="text-align: left;">(-0.315, 0.315)</td>
-<td style="text-align: left;">5.49e+03</td>
-<td style="text-align: left;">2.96e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,5]</td>
-<td style="text-align: left;">0.00235</td>
-<td style="text-align: left;">0.000942</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">(-0.318, 0.326)</td>
-<td style="text-align: left;">1.03e+04</td>
-<td style="text-align: left;">2.69e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,5]</td>
-<td style="text-align: left;">0.00224</td>
-<td style="text-align: left;">0.0026</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">(-0.323, 0.325)</td>
-<td style="text-align: left;">8.77e+03</td>
-<td style="text-align: left;">2.95e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[3,5]</td>
-<td style="text-align: left;">0.00332</td>
-<td style="text-align: left;">0.00408</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.316, 0.327)</td>
-<td style="text-align: left;">7.71e+03</td>
-<td style="text-align: left;">2.51e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[4,5]</td>
-<td style="text-align: left;">-0.00301</td>
-<td style="text-align: left;">-0.00572</td>
-<td style="text-align: left;">0.2</td>
-<td style="text-align: left;">0.209</td>
-<td style="text-align: left;">(-0.336, 0.326)</td>
-<td style="text-align: left;">5.44e+03</td>
-<td style="text-align: left;">2.57e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[6,5]</td>
-<td style="text-align: left;">-0.00016</td>
-<td style="text-align: left;">0.0044</td>
-<td style="text-align: left;">0.202</td>
-<td style="text-align: left;">0.206</td>
-<td style="text-align: left;">(-0.334, 0.331)</td>
-<td style="text-align: left;">4.93e+03</td>
-<td style="text-align: left;">2.59e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,5]</td>
-<td style="text-align: left;">-0.00131</td>
-<td style="text-align: left;">-0.0036</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.315, 0.317)</td>
-<td style="text-align: left;">4.96e+03</td>
-<td style="text-align: left;">2.89e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,6]</td>
-<td style="text-align: left;">-0.00194</td>
-<td style="text-align: left;">-0.000135</td>
-<td style="text-align: left;">0.192</td>
-<td style="text-align: left;">0.201</td>
-<td style="text-align: left;">(-0.319, 0.309)</td>
-<td style="text-align: left;">1.08e+04</td>
-<td style="text-align: left;">2.71e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,6]</td>
-<td style="text-align: left;">-0.00357</td>
-<td style="text-align: left;">-0.0033</td>
-<td style="text-align: left;">0.189</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">(-0.321, 0.307)</td>
-<td style="text-align: left;">7.56e+03</td>
-<td style="text-align: left;">2.77e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[3,6]</td>
-<td style="text-align: left;">-0.0021</td>
-<td style="text-align: left;">-0.00118</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.325, 0.321)</td>
-<td style="text-align: left;">7.19e+03</td>
-<td style="text-align: left;">2.46e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[4,6]</td>
-<td style="text-align: left;">0.00224</td>
-<td style="text-align: left;">0.00188</td>
-<td style="text-align: left;">0.19</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">(-0.306, 0.326)</td>
-<td style="text-align: left;">4.9e+03</td>
-<td style="text-align: left;">2.6e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[5,6]</td>
-<td style="text-align: left;">-0.00016</td>
-<td style="text-align: left;">0.0044</td>
-<td style="text-align: left;">0.202</td>
-<td style="text-align: left;">0.206</td>
-<td style="text-align: left;">(-0.334, 0.331)</td>
-<td style="text-align: left;">4.93e+03</td>
-<td style="text-align: left;">2.59e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[7,6]</td>
-<td style="text-align: left;">0.00246</td>
-<td style="text-align: left;">0.00269</td>
-<td style="text-align: left;">0.199</td>
-<td style="text-align: left;">0.208</td>
-<td style="text-align: left;">(-0.322, 0.327)</td>
-<td style="text-align: left;">5.2e+03</td>
-<td style="text-align: left;">2.11e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[1,7]</td>
-<td style="text-align: left;">-0.000145</td>
-<td style="text-align: left;">-0.000537</td>
-<td style="text-align: left;">0.198</td>
-<td style="text-align: left;">0.204</td>
-<td style="text-align: left;">(-0.324, 0.325)</td>
-<td style="text-align: left;">9.73e+03</td>
-<td style="text-align: left;">2.61e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[2,7]</td>
-<td style="text-align: left;">-0.000833</td>
-<td style="text-align: left;">-0.00245</td>
-<td style="text-align: left;">0.193</td>
-<td style="text-align: left;">0.2</td>
-<td style="text-align: left;">(-0.314, 0.312)</td>
-<td style="text-align: left;">8.14e+03</td>
-<td style="text-align: left;">3.13e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[3,7]</td>
-<td style="text-align: left;">-0.000968</td>
-<td style="text-align: left;">-0.000323</td>
-<td style="text-align: left;">0.196</td>
-<td style="text-align: left;">0.197</td>
-<td style="text-align: left;">(-0.325, 0.327)</td>
-<td style="text-align: left;">7.34e+03</td>
-<td style="text-align: left;">2.87e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[4,7]</td>
-<td style="text-align: left;">-0.000147</td>
-<td style="text-align: left;">0.0016</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">0.195</td>
-<td style="text-align: left;">(-0.315, 0.315)</td>
-<td style="text-align: left;">5.49e+03</td>
-<td style="text-align: left;">2.96e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rho[5,7]</td>
-<td style="text-align: left;">-0.00131</td>
-<td style="text-align: left;">-0.0036</td>
-<td style="text-align: left;">0.194</td>
-<td style="text-align: left;">0.203</td>
-<td style="text-align: left;">(-0.315, 0.317)</td>
-<td style="text-align: left;">4.96e+03</td>
-<td style="text-align: left;">2.89e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">rho[6,7]</td>
-<td style="text-align: left;">0.00246</td>
-<td style="text-align: left;">0.00269</td>
-<td style="text-align: left;">0.199</td>
-<td style="text-align: left;">0.208</td>
-<td style="text-align: left;">(-0.322, 0.327)</td>
-<td style="text-align: left;">5.2e+03</td>
-<td style="text-align: left;">2.11e+03</td>
-<td style="text-align: left;">1</td>
-</tr>
-</tbody>
-</table>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(ptable <span class="sc">%&gt;%</span></span>
+<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">select</span>(<span class="sc">-</span>mad,<span class="sc">-</span>ess_bulk,<span class="sc">-</span>ess_tail) <span class="sc">%&gt;%</span></span>
+<span id="cb106-8"><a href="#cb106-8" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">filter</span>(<span class="fu">str_detect</span>(parameter,<span class="st">"rho"</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>)), <span class="at">format =</span> <span class="st">"latex"</span>),  </span>
+<span id="cb106-9"><a href="#cb106-9" aria-hidden="true" tabindex="-1"></a>           here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.tex"</span>))</span>
+<span id="cb106-10"><a href="#cb106-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-11"><a href="#cb106-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -5481,10 +4826,10 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"fr-values.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
-<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"fr-values.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/param2-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
@@ -5496,28 +4841,28 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
-<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>)</span>
-<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_dens_overlay</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-7"><a href="#cb109-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>)</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_dens_overlay</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/trace-plots-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/trace-plots-mod4a-2.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"trace-plots.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"dense-plots.png"</span>),<span class="at">plot =</span> p2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"trace-plots.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"dense-plots.png"</span>),<span class="at">plot =</span> p2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -5526,15 +4871,15 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>ppc1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>ppc1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/IPRED-PRED-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"pred-by-id.png"</span>),<span class="at">plot =</span> ppc1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"pred-by-id.png"</span>),<span class="at">plot =</span> ppc1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -5543,15 +4888,15 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>vpc_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>vpc_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/VPC-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"vpc.png"</span>),<span class="at">plot =</span> vpc_plot, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"vpc.png"</span>),<span class="at">plot =</span> vpc_plot, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -5563,103 +4908,121 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>subdir <span class="ot">=</span> <span class="st">"4"</span></span>
-<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, subdir)</span>
-<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,subdir)</span>
-<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
-<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
-<span id="cb116-7"><a href="#cb116-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-8"><a href="#cb116-8" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"4"</span>))</span>
-<span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a>mod_to_plot1 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
-<span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"4a"</span>))</span>
-<span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a>mod_to_plot2 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
-<span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-13"><a href="#cb116-13" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
-<span id="cb116-14"><a href="#cb116-14" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb116-15"><a href="#cb116-15" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb116-16"><a href="#cb116-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-17"><a href="#cb116-17" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
-<span id="cb116-18"><a href="#cb116-18" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
-<span id="cb116-19"><a href="#cb116-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-20"><a href="#cb116-20" aria-hidden="true" tabindex="-1"></a>plot1<span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
-<span id="cb116-21"><a href="#cb116-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
-<span id="cb116-22"><a href="#cb116-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb116-23"><a href="#cb116-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb116-24"><a href="#cb116-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
-<span id="cb116-25"><a href="#cb116-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
-<span id="cb116-26"><a href="#cb116-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
-<span id="cb116-27"><a href="#cb116-27" aria-hidden="true" tabindex="-1"></a>plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>subdir <span class="ot">=</span> <span class="st">"4"</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, subdir)</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,subdir)</span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"4"</span>))</span>
+<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a>mod_to_plot1 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
+<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"4a"</span>))</span>
+<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>mod_to_plot2 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
+<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-13"><a href="#cb115-13" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
+<span id="cb115-14"><a href="#cb115-14" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb115-16"><a href="#cb115-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-17"><a href="#cb115-17" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb115-18"><a href="#cb115-18" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb115-19"><a href="#cb115-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-20"><a href="#cb115-20" aria-hidden="true" tabindex="-1"></a>plot1<span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb115-21"><a href="#cb115-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb115-22"><a href="#cb115-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb115-23"><a href="#cb115-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb115-24"><a href="#cb115-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb115-25"><a href="#cb115-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb115-26"><a href="#cb115-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb115-27"><a href="#cb115-27" aria-hidden="true" tabindex="-1"></a>plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod4-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-1.png"</span>),<span class="at">plot =</span> plot1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"omega"</span>, <span class="st">"sigma"</span>, <span class="st">"nu"</span>)</span>
-<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
-<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
-<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
-<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
-<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
-<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
-<span id="cb117-16"><a href="#cb117-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
-<span id="cb117-17"><a href="#cb117-17" aria-hidden="true" tabindex="-1"></a>plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-1.png"</span>),<span class="at">plot =</span> plot1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"omega"</span>, <span class="st">"sigma"</span>, <span class="st">"nu"</span>)</span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-7"><a href="#cb116-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb116-8"><a href="#cb116-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb116-13"><a href="#cb116-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb116-14"><a href="#cb116-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb116-15"><a href="#cb116-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb116-16"><a href="#cb116-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb116-17"><a href="#cb116-17" aria-hidden="true" tabindex="-1"></a>plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod4-2.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-2.png"</span>), <span class="at">plot =</span> plot2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"rho"</span>)</span>
-<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
-<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
-<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
-<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>plot3 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
-<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
-<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
-<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
-<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
-<span id="cb118-17"><a href="#cb118-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
-<span id="cb118-18"><a href="#cb118-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
-<span id="cb118-19"><a href="#cb118-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
-<span id="cb118-20"><a href="#cb118-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
-<span id="cb118-21"><a href="#cb118-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>,<span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="st">"cm"</span>)), </span>
-<span id="cb118-22"><a href="#cb118-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
-<span id="cb118-23"><a href="#cb118-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>))</span>
-<span id="cb118-24"><a href="#cb118-24" aria-hidden="true" tabindex="-1"></a>plot3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-2.png"</span>), <span class="at">plot =</span> plot2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"rho"</span>)</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>plot3 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb117-16"><a href="#cb117-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
+<span id="cb117-17"><a href="#cb117-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb117-18"><a href="#cb117-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb117-19"><a href="#cb117-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
+<span id="cb117-20"><a href="#cb117-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
+<span id="cb117-21"><a href="#cb117-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>,<span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="st">"cm"</span>)), </span>
+<span id="cb117-22"><a href="#cb117-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb117-23"><a href="#cb117-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>))</span>
+<span id="cb117-24"><a href="#cb117-24" aria-hidden="true" tabindex="-1"></a>plot3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod4-3.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-3.png"</span>), <span class="at">plot =</span> plot3, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-3.png"</span>), <span class="at">plot =</span> plot3, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 </section>
-<section id="session" class="level1">
-<h1>Session</h1>
+<section id="references" class="level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-Bartkowska-Sniatkowska2016-hm" class="csl-entry" role="listitem">
+Bartkowska-Śniatkowska, A., Bienert, A., Wiczling, P., Rosada-Kurasińska, J., Zielińska, M., Warzybok, J., Borsuk, A., Tibboel, D., Kaliszan, R. and Grześkowiak, E. (2016) <span>“Pharmacokinetics of sufentanil during long-term infusion in critically ill pediatric patients,”</span> <em>J. Clin. Pharmacol.</em>, 56(1), pp. 109–115.
+</div>
+<div id="ref-hobbs_commensurate_2012" class="csl-entry" role="listitem">
+Hobbs, B.P., Sargent, D.J. and Carlin, B.P. (2012) <span>“Commensurate priors for incorporating historical information in clinical trials using general and generalized linear models,”</span> <em>Bayesian Analysis</em>, 7(3), pp. 639–674. Available at: <a href="https://doi.org/10.1214/12-BA722">https://doi.org/10.1214/12-BA722</a>.
+</div>
+</div>
+</section>
+<section id="licenses" class="level1 unnumbered">
+<h1 class="unnumbered">Licenses</h1>
+<ul>
+<li>Code &amp; copy; 2025, Paweł Wiczling, licensed under BSD-3.</li>
+<li>Text &amp; copy; 2025, Paweł Wiczling, licensed under CC-BY-NC 4.0.</li>
+</ul>
+</section>
+<section id="original-computing-environment" class="level1 unnumbered">
+<h1 class="unnumbered">Original Computing Environment</h1>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.3.1 (2023-06-16 ucrt)
@@ -5719,17 +5082,9 @@ loaded via a namespace (and not attached):
 [70] xfun_0.44            fs_1.6.4             pkgconfig_2.0.3     </code></pre>
 </div>
 </div>
-
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
-<div id="ref-Bartkowska-Sniatkowska2016-hm" class="csl-entry" role="listitem">
-Bartkowska-Śniatkowska, A., Bienert, A., Wiczling, P., Rosada-Kurasińska, J., Zielińska, M., Warzybok, J., Borsuk, A., Tibboel, D., Kaliszan, R. and Grześkowiak, E. (2016) <span>“Pharmacokinetics of sufentanil during long-term infusion in critically ill pediatric patients,”</span> <em>J. Clin. Pharmacol.</em>, 56(1), pp. 109–115.
-</div>
-<div id="ref-hobbs_commensurate_2012" class="csl-entry" role="listitem">
-Hobbs, B.P., Sargent, D.J. and Carlin, B.P. (2012) <span>“Commensurate priors for incorporating historical information in clinical trials using general and generalized linear models,”</span> <em>Bayesian Analysis</em>, 7(3), pp. 639–674. Available at: <a href="https://doi.org/10.1214/12-BA722">https://doi.org/10.1214/12-BA722</a>.
-</div>
-</div></section></div></main>
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

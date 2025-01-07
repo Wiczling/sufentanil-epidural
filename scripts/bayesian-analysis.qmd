@@ -186,7 +186,7 @@ vpc_plot <- vpc(sim = sim,
                  sim_median_alpha = 0.25)))
 
 vpc_plot <- vpc_plot +
-  labs(x = "Time after infusion end (h)                  Time after infusion start (h)",
+  labs(x = "Time (h)",
        y = "Sufentanil concentrations, pg/ml") 
 
 vpc_plot
@@ -479,6 +479,12 @@ pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
 
 ptable <-plot_param_tables(mod_to_plot, pars)
 ptable%>% knitr::kable()
+
+writeLines(knitr::kable(ptable %>%
+                          select(-mad,-ess_bulk,-ess_tail) %>%
+                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
+           here::here(model_tables_dir, "parameters-table.tex"))
+
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
 
@@ -592,7 +598,10 @@ ptable <-plot_param_tables(mod_to_plot, pars)
 
 ptable%>%
   knitr::kable()
-
+writeLines(knitr::kable(ptable %>%
+                          select(-mad,-ess_bulk,-ess_tail) %>%
+                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
+           here::here(model_tables_dir, "parameters-table.tex"))
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
 
@@ -713,7 +722,10 @@ ptable <-plot_param_tables(mod_to_plot, pars)
 
 ptable%>%
   knitr::kable()
-
+writeLines(knitr::kable(ptable %>%
+                          select(-mad,-ess_bulk,-ess_tail) %>%
+                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
+           here::here(model_tables_dir, "parameters-table.tex"))
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
 
@@ -813,6 +825,11 @@ ptable <-plot_param_tables(mod_to_plot, pars)
 
 ptable%>%
   knitr::kable()
+
+writeLines(knitr::kable(ptable %>%
+                          select(-mad,-ess_bulk,-ess_tail) %>%
+                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
+           here::here(model_tables_dir, "parameters-table.tex"))
 
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
@@ -961,8 +978,12 @@ pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
 
 ptable <-plot_param_tables(mod_to_plot, pars)
 
-ptable%>%
-  knitr::kable()
+ptable%>% knitr::kable()
+
+writeLines(knitr::kable(ptable %>%
+                          select(-mad,-ess_bulk,-ess_tail) %>%
+                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
+           here::here(model_tables_dir, "parameters-table.tex"))
 
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
@@ -1055,8 +1076,10 @@ pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
 
 ptable <-plot_param_tables(mod_to_plot, pars)
 
-ptable%>%
-  knitr::kable()
+writeLines(knitr::kable(ptable %>%
+                          select(-mad,-ess_bulk,-ess_tail) %>%
+                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
+           here::here(model_tables_dir, "parameters-table.tex"))
 
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
@@ -1175,8 +1198,18 @@ ggsave(filename = here::here(model_figures_dir, "prior-posterior-3.png"), plot =
 
 ```
 
-# Session
-```{r sessioninfo}
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+# Licenses {.unnumbered}
+
+-   Code & copy; 2025, Paweł Wiczling, licensed under BSD-3.
+-   Text & copy; 2025, Paweł Wiczling, licensed under CC-BY-NC 4.0.
+
+# Original Computing Environment {.unnumbered}
+
+```{r sessionInfo}
 sessionInfo()
 ```
-
