@@ -11,7 +11,7 @@
 <meta name="author" content="Paulina Okuńska">
 <meta name="author" content="Agnieszka Borsuk-de Moor">
 <meta name="author" content="Justyna Ber">
-<meta name="dcterms.date" content="2025-01-06">
+<meta name="dcterms.date" content="2025-01-07">
 
 <title>Pharmacokinetics of sufentanil after epidural administration</title>
 <style>
@@ -160,6 +160,29 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#parameters-figure-2" id="toc-parameters-figure-2" class="nav-link" data-scroll-target="#parameters-figure-2">Parameters (figure)</a></li>
   </ul></li>
+  <li><a href="#m4-m3-different-priors" id="toc-m4-m3-different-priors" class="nav-link" data-scroll-target="#m4-m3-different-priors">M4: M3 + Different Priors</a>
+  <ul class="collapse">
+  <li><a href="#run-stan-4" id="toc-run-stan-4" class="nav-link" data-scroll-target="#run-stan-4">Run stan</a></li>
+  <li><a href="#parameters-4" id="toc-parameters-4" class="nav-link" data-scroll-target="#parameters-4">Parameters</a></li>
+  <li><a href="#trace-plots-4" id="toc-trace-plots-4" class="nav-link" data-scroll-target="#trace-plots-4">Trace plots</a></li>
+  <li><a href="#individual-and-population-predictions-3" id="toc-individual-and-population-predictions-3" class="nav-link" data-scroll-target="#individual-and-population-predictions-3">Individual and population predictions</a></li>
+  <li><a href="#vpc-3" id="toc-vpc-3" class="nav-link" data-scroll-target="#vpc-3">VPC</a></li>
+  <li><a href="#gof-3" id="toc-gof-3" class="nav-link" data-scroll-target="#gof-3">GOF</a></li>
+  <li><a href="#individual-parameters-vs.-covariates-3" id="toc-individual-parameters-vs.-covariates-3" class="nav-link" data-scroll-target="#individual-parameters-vs.-covariates-3">Individual parameters vs.&nbsp;covariates</a></li>
+  </ul></li>
+  <li><a href="#m4p-prior-predicitve-check.-m3-different-priors" id="toc-m4p-prior-predicitve-check.-m3-different-priors" class="nav-link" data-scroll-target="#m4p-prior-predicitve-check.-m3-different-priors">M4p: Prior predicitve check. M3 + Different Priors</a>
+  <ul class="collapse">
+  <li><a href="#run-stan-5" id="toc-run-stan-5" class="nav-link" data-scroll-target="#run-stan-5">Run stan</a></li>
+  <li><a href="#parameters-5" id="toc-parameters-5" class="nav-link" data-scroll-target="#parameters-5">Parameters</a></li>
+  <li><a href="#parameters-figure-3" id="toc-parameters-figure-3" class="nav-link" data-scroll-target="#parameters-figure-3">Parameters (figure)</a></li>
+  <li><a href="#trace-plots-5" id="toc-trace-plots-5" class="nav-link" data-scroll-target="#trace-plots-5">Trace plots</a></li>
+  <li><a href="#individual-and-population-predictions-prior-predictive-check-1" id="toc-individual-and-population-predictions-prior-predictive-check-1" class="nav-link" data-scroll-target="#individual-and-population-predictions-prior-predictive-check-1">Individual and population predictions (Prior predictive check)</a></li>
+  <li><a href="#vpc-prior-predictive-check-1" id="toc-vpc-prior-predictive-check-1" class="nav-link" data-scroll-target="#vpc-prior-predictive-check-1">VPC (Prior predictive check)</a></li>
+  </ul></li>
+  <li><a href="#compare-1" id="toc-compare-1" class="nav-link" data-scroll-target="#compare-1">Compare</a>
+  <ul class="collapse">
+  <li><a href="#parameters-figure-4" id="toc-parameters-figure-4" class="nav-link" data-scroll-target="#parameters-figure-4">Parameters (figure)</a></li>
+  </ul></li>
   <li><a href="#session" id="toc-session" class="nav-link" data-scroll-target="#session">Session</a></li>
   </ul>
 </nav>
@@ -189,7 +212,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 6, 2025</p>
+      <p class="date">January 7, 2025</p>
     </div>
   </div>
   
@@ -3796,7 +3819,7 @@ div.csl-indent {
 <span id="cb81-27"><a href="#cb81-27" aria-hidden="true" tabindex="-1"></a>plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="bayesian-analysis_files/figure-html/prior-posterior-1.png" class="img-fluid" style="width:95.0%"></p>
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod3-1.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
@@ -3819,7 +3842,7 @@ div.csl-indent {
 <span id="cb82-17"><a href="#cb82-17" aria-hidden="true" tabindex="-1"></a>plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="bayesian-analysis_files/figure-html/prior-posterior-2.png" class="img-fluid" style="width:95.0%"></p>
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod3-2.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
@@ -3849,11 +3872,1784 @@ div.csl-indent {
 <span id="cb83-24"><a href="#cb83-24" aria-hidden="true" tabindex="-1"></a>plot3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="bayesian-analysis_files/figure-html/prior-posterior-3.png" class="img-fluid" style="width:95.0%"></p>
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod3-3.png" class="img-fluid" style="width:95.0%"></p>
 </div>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-3.png"</span>), <span class="at">plot =</span> plot3, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="m4-m3-different-priors" class="level1">
+<h1>M4: M3 + Different Priors</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>mod4  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"4"</span>))</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>mod4_res <span class="ot">&lt;-</span> mod4 <span class="sc">%&gt;%</span> <span class="fu">submit_model</span>(<span class="at">.overwrite =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="run-stan-4" class="level2">
+<h2 class="anchored" data-anchor-id="run-stan-4">Run stan</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"4"</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, model_name)</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,model_name)</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>mod2  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, model_name))</span>
+<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(mod2)</span>
+<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>xdata <span class="ot">&lt;-</span> xdata <span class="sc">%&gt;%</span></span>
+<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(OUT<span class="sc">!=</span><span class="dv">1</span>, CMT<span class="sc">!=</span><span class="dv">22</span>, CMT<span class="sc">!=</span><span class="dv">33</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TIME =</span> <span class="fu">if_else</span>(infusion<span class="sc">==</span><span class="dv">0</span>,timepostinf,TIMEh))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="parameters-4" class="level2">
+<h2 class="anchored" data-anchor-id="parameters-4">Parameters</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>,<span class="st">"rho"</span>)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>ptable <span class="ot">&lt;-</span><span class="fu">plot_param_tables</span>(mod_to_plot, pars)</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>ptable<span class="sc">%&gt;%</span></span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 20%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">parameter</th>
+<th style="text-align: left;">mean</th>
+<th style="text-align: left;">median</th>
+<th style="text-align: left;">sd</th>
+<th style="text-align: left;">mad</th>
+<th style="text-align: left;">90% CI</th>
+<th style="text-align: left;">ess_bulk</th>
+<th style="text-align: left;">ess_tail</th>
+<th style="text-align: left;">rhat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lp__</td>
+<td style="text-align: left;">-110</td>
+<td style="text-align: left;">-109</td>
+<td style="text-align: left;">11.3</td>
+<td style="text-align: left;">11.3</td>
+<td style="text-align: left;">(-129, -92.1)</td>
+<td style="text-align: left;">838</td>
+<td style="text-align: left;">1.61e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CLHat</td>
+<td style="text-align: left;">65.7</td>
+<td style="text-align: left;">65.4</td>
+<td style="text-align: left;">8.86</td>
+<td style="text-align: left;">8.67</td>
+<td style="text-align: left;">(51.6, 80.5)</td>
+<td style="text-align: left;">893</td>
+<td style="text-align: left;">1.59e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">QHat</td>
+<td style="text-align: left;">43.6</td>
+<td style="text-align: left;">42.6</td>
+<td style="text-align: left;">10.1</td>
+<td style="text-align: left;">9.83</td>
+<td style="text-align: left;">( 29, 61.7)</td>
+<td style="text-align: left;">2.79e+03</td>
+<td style="text-align: left;">2.74e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">V1Hat</td>
+<td style="text-align: left;">9.11</td>
+<td style="text-align: left;">8.88</td>
+<td style="text-align: left;">2.2</td>
+<td style="text-align: left;">2.1</td>
+<td style="text-align: left;">(5.99, 12.9)</td>
+<td style="text-align: left;">2.25e+03</td>
+<td style="text-align: left;">2.93e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">V2Hat</td>
+<td style="text-align: left;">513</td>
+<td style="text-align: left;">501</td>
+<td style="text-align: left;">117</td>
+<td style="text-align: left;">115</td>
+<td style="text-align: left;">( 344, 721)</td>
+<td style="text-align: left;">1.98e+03</td>
+<td style="text-align: left;">2.37e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KAHat</td>
+<td style="text-align: left;">3.42</td>
+<td style="text-align: left;">3.16</td>
+<td style="text-align: left;">1.34</td>
+<td style="text-align: left;">1.07</td>
+<td style="text-align: left;">(1.87, 5.8)</td>
+<td style="text-align: left;">868</td>
+<td style="text-align: left;">958</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KA14Hat</td>
+<td style="text-align: left;">18.2</td>
+<td style="text-align: left;">16.5</td>
+<td style="text-align: left;">7.22</td>
+<td style="text-align: left;">5.37</td>
+<td style="text-align: left;">( 10, 31.4)</td>
+<td style="text-align: left;">582</td>
+<td style="text-align: left;">825</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KA41Hat</td>
+<td style="text-align: left;">0.167</td>
+<td style="text-align: left;">0.163</td>
+<td style="text-align: left;">0.0404</td>
+<td style="text-align: left;">0.0371</td>
+<td style="text-align: left;">(0.11, 0.239)</td>
+<td style="text-align: left;">1.31e+03</td>
+<td style="text-align: left;">1.97e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[1]</td>
+<td style="text-align: left;">0.545</td>
+<td style="text-align: left;">0.533</td>
+<td style="text-align: left;">0.103</td>
+<td style="text-align: left;">0.0995</td>
+<td style="text-align: left;">(0.399, 0.73)</td>
+<td style="text-align: left;">1.28e+03</td>
+<td style="text-align: left;">2.03e+03</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[2]</td>
+<td style="text-align: left;">0.569</td>
+<td style="text-align: left;">0.49</td>
+<td style="text-align: left;">0.328</td>
+<td style="text-align: left;">0.251</td>
+<td style="text-align: left;">( 0.2, 1.21)</td>
+<td style="text-align: left;">400</td>
+<td style="text-align: left;">242</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[3]</td>
+<td style="text-align: left;">1.81</td>
+<td style="text-align: left;">1.85</td>
+<td style="text-align: left;">0.161</td>
+<td style="text-align: left;">0.144</td>
+<td style="text-align: left;">(1.49, 1.99)</td>
+<td style="text-align: left;">805</td>
+<td style="text-align: left;">529</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[4]</td>
+<td style="text-align: left;">0.461</td>
+<td style="text-align: left;">0.403</td>
+<td style="text-align: left;">0.243</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(0.177, 0.94)</td>
+<td style="text-align: left;">1.25e+03</td>
+<td style="text-align: left;">1.18e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[5]</td>
+<td style="text-align: left;">0.298</td>
+<td style="text-align: left;">0.281</td>
+<td style="text-align: left;">0.114</td>
+<td style="text-align: left;">0.108</td>
+<td style="text-align: left;">(0.145, 0.51)</td>
+<td style="text-align: left;">2.34e+03</td>
+<td style="text-align: left;">2.67e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[6]</td>
+<td style="text-align: left;">0.348</td>
+<td style="text-align: left;">0.328</td>
+<td style="text-align: left;">0.136</td>
+<td style="text-align: left;">0.128</td>
+<td style="text-align: left;">(0.164, 0.594)</td>
+<td style="text-align: left;">678</td>
+<td style="text-align: left;">965</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[7]</td>
+<td style="text-align: left;">0.562</td>
+<td style="text-align: left;">0.542</td>
+<td style="text-align: left;">0.184</td>
+<td style="text-align: left;">0.165</td>
+<td style="text-align: left;">(0.307, 0.881)</td>
+<td style="text-align: left;">679</td>
+<td style="text-align: left;">738</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">0.317</td>
+<td style="text-align: left;">0.315</td>
+<td style="text-align: left;">0.0307</td>
+<td style="text-align: left;">0.0303</td>
+<td style="text-align: left;">(0.27, 0.37)</td>
+<td style="text-align: left;">1.65e+03</td>
+<td style="text-align: left;">2.45e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nu</td>
+<td style="text-align: left;">4.16</td>
+<td style="text-align: left;">3.78</td>
+<td style="text-align: left;">1.35</td>
+<td style="text-align: left;">0.77</td>
+<td style="text-align: left;">(3.07, 6.29)</td>
+<td style="text-align: left;">1.99e+03</td>
+<td style="text-align: left;">1.91e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[2,1]</td>
+<td style="text-align: left;">0.046</td>
+<td style="text-align: left;">0.0478</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.284, 0.374)</td>
+<td style="text-align: left;">1.63e+03</td>
+<td style="text-align: left;">2.27e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[3,1]</td>
+<td style="text-align: left;">0.214</td>
+<td style="text-align: left;">0.224</td>
+<td style="text-align: left;">0.157</td>
+<td style="text-align: left;">0.155</td>
+<td style="text-align: left;">(-0.0562, 0.459)</td>
+<td style="text-align: left;">368</td>
+<td style="text-align: left;">296</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,1]</td>
+<td style="text-align: left;">-0.00938</td>
+<td style="text-align: left;">-0.012</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.321, 0.307)</td>
+<td style="text-align: left;">3.93e+03</td>
+<td style="text-align: left;">3.21e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,1]</td>
+<td style="text-align: left;">0.00137</td>
+<td style="text-align: left;">0.000763</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">(-0.304, 0.309)</td>
+<td style="text-align: left;">4.45e+03</td>
+<td style="text-align: left;">3.2e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,1]</td>
+<td style="text-align: left;">0.0291</td>
+<td style="text-align: left;">0.0298</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">(-0.288, 0.343)</td>
+<td style="text-align: left;">3.37e+03</td>
+<td style="text-align: left;">2.88e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,1]</td>
+<td style="text-align: left;">0.174</td>
+<td style="text-align: left;">0.18</td>
+<td style="text-align: left;">0.169</td>
+<td style="text-align: left;">0.167</td>
+<td style="text-align: left;">(-0.115, 0.443)</td>
+<td style="text-align: left;">3.05e+03</td>
+<td style="text-align: left;">2.72e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,2]</td>
+<td style="text-align: left;">0.046</td>
+<td style="text-align: left;">0.0478</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.284, 0.374)</td>
+<td style="text-align: left;">1.63e+03</td>
+<td style="text-align: left;">2.27e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[3,2]</td>
+<td style="text-align: left;">-0.0376</td>
+<td style="text-align: left;">-0.0375</td>
+<td style="text-align: left;">0.187</td>
+<td style="text-align: left;">0.187</td>
+<td style="text-align: left;">(-0.348, 0.275)</td>
+<td style="text-align: left;">1.34e+03</td>
+<td style="text-align: left;">2.19e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,2]</td>
+<td style="text-align: left;">0.00723</td>
+<td style="text-align: left;">0.00683</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.317, 0.327)</td>
+<td style="text-align: left;">3.97e+03</td>
+<td style="text-align: left;">3.19e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,2]</td>
+<td style="text-align: left;">0.00013</td>
+<td style="text-align: left;">-0.0049</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.312, 0.316)</td>
+<td style="text-align: left;">3.86e+03</td>
+<td style="text-align: left;">3.35e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,2]</td>
+<td style="text-align: left;">0.0178</td>
+<td style="text-align: left;">0.0168</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.299, 0.331)</td>
+<td style="text-align: left;">3.33e+03</td>
+<td style="text-align: left;">3.07e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,2]</td>
+<td style="text-align: left;">0.101</td>
+<td style="text-align: left;">0.107</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">(-0.224, 0.404)</td>
+<td style="text-align: left;">1.84e+03</td>
+<td style="text-align: left;">2.47e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,3]</td>
+<td style="text-align: left;">0.214</td>
+<td style="text-align: left;">0.224</td>
+<td style="text-align: left;">0.157</td>
+<td style="text-align: left;">0.155</td>
+<td style="text-align: left;">(-0.0562, 0.459)</td>
+<td style="text-align: left;">368</td>
+<td style="text-align: left;">296</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,3]</td>
+<td style="text-align: left;">-0.0376</td>
+<td style="text-align: left;">-0.0375</td>
+<td style="text-align: left;">0.187</td>
+<td style="text-align: left;">0.187</td>
+<td style="text-align: left;">(-0.348, 0.275)</td>
+<td style="text-align: left;">1.34e+03</td>
+<td style="text-align: left;">2.19e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,3]</td>
+<td style="text-align: left;">-0.0267</td>
+<td style="text-align: left;">-0.0267</td>
+<td style="text-align: left;">0.189</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(-0.338, 0.291)</td>
+<td style="text-align: left;">3.27e+03</td>
+<td style="text-align: left;">3.03e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,3]</td>
+<td style="text-align: left;">0.0444</td>
+<td style="text-align: left;">0.0489</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.277, 0.355)</td>
+<td style="text-align: left;">3.8e+03</td>
+<td style="text-align: left;">3.23e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,3]</td>
+<td style="text-align: left;">-0.0993</td>
+<td style="text-align: left;">-0.105</td>
+<td style="text-align: left;">0.181</td>
+<td style="text-align: left;">0.186</td>
+<td style="text-align: left;">(-0.39, 0.207)</td>
+<td style="text-align: left;">3.57e+03</td>
+<td style="text-align: left;">3.32e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,3]</td>
+<td style="text-align: left;">0.0795</td>
+<td style="text-align: left;">0.0827</td>
+<td style="text-align: left;">0.171</td>
+<td style="text-align: left;">0.176</td>
+<td style="text-align: left;">(-0.2, 0.353)</td>
+<td style="text-align: left;">768</td>
+<td style="text-align: left;">1.3e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,4]</td>
+<td style="text-align: left;">-0.00938</td>
+<td style="text-align: left;">-0.012</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.321, 0.307)</td>
+<td style="text-align: left;">3.93e+03</td>
+<td style="text-align: left;">3.21e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,4]</td>
+<td style="text-align: left;">0.00723</td>
+<td style="text-align: left;">0.00683</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">(-0.317, 0.327)</td>
+<td style="text-align: left;">3.97e+03</td>
+<td style="text-align: left;">3.19e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,4]</td>
+<td style="text-align: left;">-0.0267</td>
+<td style="text-align: left;">-0.0267</td>
+<td style="text-align: left;">0.189</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(-0.338, 0.291)</td>
+<td style="text-align: left;">3.27e+03</td>
+<td style="text-align: left;">3.03e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,4]</td>
+<td style="text-align: left;">0.011</td>
+<td style="text-align: left;">0.0133</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.214</td>
+<td style="text-align: left;">(-0.323, 0.34)</td>
+<td style="text-align: left;">3.38e+03</td>
+<td style="text-align: left;">3.14e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,4]</td>
+<td style="text-align: left;">-0.022</td>
+<td style="text-align: left;">-0.0238</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.348, 0.311)</td>
+<td style="text-align: left;">2.86e+03</td>
+<td style="text-align: left;">3.09e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,4]</td>
+<td style="text-align: left;">-0.0236</td>
+<td style="text-align: left;">-0.0264</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">(-0.354, 0.305)</td>
+<td style="text-align: left;">2.43e+03</td>
+<td style="text-align: left;">3.28e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,5]</td>
+<td style="text-align: left;">0.00137</td>
+<td style="text-align: left;">0.000763</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">(-0.304, 0.309)</td>
+<td style="text-align: left;">4.45e+03</td>
+<td style="text-align: left;">3.2e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,5]</td>
+<td style="text-align: left;">0.00013</td>
+<td style="text-align: left;">-0.0049</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.312, 0.316)</td>
+<td style="text-align: left;">3.86e+03</td>
+<td style="text-align: left;">3.35e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,5]</td>
+<td style="text-align: left;">0.0444</td>
+<td style="text-align: left;">0.0489</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.277, 0.355)</td>
+<td style="text-align: left;">3.8e+03</td>
+<td style="text-align: left;">3.23e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,5]</td>
+<td style="text-align: left;">0.011</td>
+<td style="text-align: left;">0.0133</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.214</td>
+<td style="text-align: left;">(-0.323, 0.34)</td>
+<td style="text-align: left;">3.38e+03</td>
+<td style="text-align: left;">3.14e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,5]</td>
+<td style="text-align: left;">0.0452</td>
+<td style="text-align: left;">0.0485</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.291, 0.367)</td>
+<td style="text-align: left;">3.35e+03</td>
+<td style="text-align: left;">2.97e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,5]</td>
+<td style="text-align: left;">-0.0734</td>
+<td style="text-align: left;">-0.0762</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.39, 0.256)</td>
+<td style="text-align: left;">2.76e+03</td>
+<td style="text-align: left;">3.26e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,6]</td>
+<td style="text-align: left;">0.0291</td>
+<td style="text-align: left;">0.0298</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">(-0.288, 0.343)</td>
+<td style="text-align: left;">3.37e+03</td>
+<td style="text-align: left;">2.88e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,6]</td>
+<td style="text-align: left;">0.0178</td>
+<td style="text-align: left;">0.0168</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">(-0.299, 0.331)</td>
+<td style="text-align: left;">3.33e+03</td>
+<td style="text-align: left;">3.07e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,6]</td>
+<td style="text-align: left;">-0.0993</td>
+<td style="text-align: left;">-0.105</td>
+<td style="text-align: left;">0.181</td>
+<td style="text-align: left;">0.186</td>
+<td style="text-align: left;">(-0.39, 0.207)</td>
+<td style="text-align: left;">3.57e+03</td>
+<td style="text-align: left;">3.32e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,6]</td>
+<td style="text-align: left;">-0.022</td>
+<td style="text-align: left;">-0.0238</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.348, 0.311)</td>
+<td style="text-align: left;">2.86e+03</td>
+<td style="text-align: left;">3.09e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[5,6]</td>
+<td style="text-align: left;">0.0452</td>
+<td style="text-align: left;">0.0485</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.291, 0.367)</td>
+<td style="text-align: left;">3.35e+03</td>
+<td style="text-align: left;">2.97e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,6]</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.129</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.204, 0.436)</td>
+<td style="text-align: left;">1.69e+03</td>
+<td style="text-align: left;">2.29e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,7]</td>
+<td style="text-align: left;">0.174</td>
+<td style="text-align: left;">0.18</td>
+<td style="text-align: left;">0.169</td>
+<td style="text-align: left;">0.167</td>
+<td style="text-align: left;">(-0.115, 0.443)</td>
+<td style="text-align: left;">3.05e+03</td>
+<td style="text-align: left;">2.72e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,7]</td>
+<td style="text-align: left;">0.101</td>
+<td style="text-align: left;">0.107</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">(-0.224, 0.404)</td>
+<td style="text-align: left;">1.84e+03</td>
+<td style="text-align: left;">2.47e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,7]</td>
+<td style="text-align: left;">0.0795</td>
+<td style="text-align: left;">0.0827</td>
+<td style="text-align: left;">0.171</td>
+<td style="text-align: left;">0.176</td>
+<td style="text-align: left;">(-0.2, 0.353)</td>
+<td style="text-align: left;">768</td>
+<td style="text-align: left;">1.3e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,7]</td>
+<td style="text-align: left;">-0.0236</td>
+<td style="text-align: left;">-0.0264</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">(-0.354, 0.305)</td>
+<td style="text-align: left;">2.43e+03</td>
+<td style="text-align: left;">3.28e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[5,7]</td>
+<td style="text-align: left;">-0.0734</td>
+<td style="text-align: left;">-0.0762</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.39, 0.256)</td>
+<td style="text-align: left;">2.76e+03</td>
+<td style="text-align: left;">3.26e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[6,7]</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.129</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.204, 0.436)</td>
+<td style="text-align: left;">1.69e+03</td>
+<td style="text-align: left;">2.29e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="trace-plots-4" class="level2">
+<h2 class="anchored" data-anchor-id="trace-plots-4">Trace plots</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_dens_overlay</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/trace-plots-mod4-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/trace-plots-mod4-2.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"trace-plots.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"dense-plots.png"</span>),<span class="at">plot =</span> p2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="individual-and-population-predictions-3" class="level2">
+<h2 class="anchored" data-anchor-id="individual-and-population-predictions-3">Individual and population predictions</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>ppc1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/IPRED-PRED-mod4-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"pred-by-id.png"</span>),<span class="at">plot =</span> ppc1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="vpc-3" class="level2">
+<h2 class="anchored" data-anchor-id="vpc-3">VPC</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>vpc_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/VPC-mod4-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"vpc.png"</span>),<span class="at">plot =</span> vpc_plot, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="gof-3" class="level2">
+<h2 class="anchored" data-anchor-id="gof-3">GOF</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>plot_gof <span class="ot">&lt;-</span><span class="fu">gof_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>plot_gof</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/GOF-mod4-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"gof.png"</span>),<span class="at">plot =</span> plot_gof, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="individual-parameters-vs.-covariates-3" class="level2">
+<h2 class="anchored" data-anchor-id="individual-parameters-vs.-covariates-3">Individual parameters vs.&nbsp;covariates</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>etaM<span class="ot">&lt;-</span><span class="fu">extract_etas_fun</span>(mod_to_plot,xdata)</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>cont_cov <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"AGE//Age,y"</span>,<span class="st">"WT//Body Weight, kg"</span>)</span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>cat_cov <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"SEXF//Sex"</span>)</span>
+<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">map</span>(cont_cov, \(x) <span class="fu">fun_cont_cov</span>(x,etaM))</span>
+<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">map</span>(cat_cov, \(x) <span class="fu">fun_cat_cov</span>(x,etaM))</span>
+<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">c</span>(p1,p2)</span>
+<span id="cb98-10"><a href="#cb98-10" aria-hidden="true" tabindex="-1"></a>plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/covariets-mod4-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[2]]</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/covariets-mod4-2.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[3]]</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/covariets-mod4-3.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(plots), \(x) <span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, </span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>                                 glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"cov-plots-{x}.png"</span>)),</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">plot =</span> plots[[x]], </span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, </span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "C:/Users/GUMed/Documents/PKPDprojects/sufentanil_epidural/deliv/figures/torsten/4/cov-plots-1.png"
+
+[[2]]
+[1] "C:/Users/GUMed/Documents/PKPDprojects/sufentanil_epidural/deliv/figures/torsten/4/cov-plots-2.png"
+
+[[3]]
+[1] "C:/Users/GUMed/Documents/PKPDprojects/sufentanil_epidural/deliv/figures/torsten/4/cov-plots-3.png"</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="m4p-prior-predicitve-check.-m3-different-priors" class="level1">
+<h1>M4p: Prior predicitve check. M3 + Different Priors</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>mod4a  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"4a"</span>))</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mod4a &lt;- copy_model_from(mod4, "4a", "prior change",.overwrite=T)</span></span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>mod4a_res <span class="ot">&lt;-</span> mod4a <span class="sc">%&gt;%</span> <span class="fu">submit_model</span>(<span class="at">.overwrite =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="run-stan-5" class="level2">
+<h2 class="anchored" data-anchor-id="run-stan-5">Run stan</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"4a"</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, model_name)</span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,model_name)</span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>mod2  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, model_name))</span>
+<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(mod2)</span>
+<span id="cb105-10"><a href="#cb105-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-11"><a href="#cb105-11" aria-hidden="true" tabindex="-1"></a>xdata <span class="ot">&lt;-</span> xdata <span class="sc">%&gt;%</span></span>
+<span id="cb105-12"><a href="#cb105-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(OUT<span class="sc">!=</span><span class="dv">1</span>, CMT<span class="sc">!=</span><span class="dv">22</span>, CMT<span class="sc">!=</span><span class="dv">33</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb105-13"><a href="#cb105-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TIME =</span> <span class="fu">if_else</span>(infusion<span class="sc">==</span><span class="dv">0</span>,timepostinf,TIMEh))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="parameters-5" class="level2">
+<h2 class="anchored" data-anchor-id="parameters-5">Parameters</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>,<span class="st">"rho"</span>)</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>ptable <span class="ot">&lt;-</span><span class="fu">plot_param_tables</span>(mod_to_plot, pars)</span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>ptable<span class="sc">%&gt;%</span></span>
+<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 19%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">parameter</th>
+<th style="text-align: left;">mean</th>
+<th style="text-align: left;">median</th>
+<th style="text-align: left;">sd</th>
+<th style="text-align: left;">mad</th>
+<th style="text-align: left;">90% CI</th>
+<th style="text-align: left;">ess_bulk</th>
+<th style="text-align: left;">ess_tail</th>
+<th style="text-align: left;">rhat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lp__</td>
+<td style="text-align: left;">-94</td>
+<td style="text-align: left;">-93.5</td>
+<td style="text-align: left;">9.04</td>
+<td style="text-align: left;">8.84</td>
+<td style="text-align: left;">(-110, -80.1)</td>
+<td style="text-align: left;">1.26e+03</td>
+<td style="text-align: left;">1.81e+03</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CLHat</td>
+<td style="text-align: left;">46.8</td>
+<td style="text-align: left;">45.3</td>
+<td style="text-align: left;">11.8</td>
+<td style="text-align: left;">11.2</td>
+<td style="text-align: left;">(29.8, 68.4)</td>
+<td style="text-align: left;">1.07e+04</td>
+<td style="text-align: left;">2.64e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">QHat</td>
+<td style="text-align: left;">39.6</td>
+<td style="text-align: left;">38.5</td>
+<td style="text-align: left;">9.98</td>
+<td style="text-align: left;">9.74</td>
+<td style="text-align: left;">(25.5, 57.4)</td>
+<td style="text-align: left;">9.39e+03</td>
+<td style="text-align: left;">2.88e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">V1Hat</td>
+<td style="text-align: left;">8.12</td>
+<td style="text-align: left;">7.86</td>
+<td style="text-align: left;">2.05</td>
+<td style="text-align: left;">1.9</td>
+<td style="text-align: left;">(5.21, 11.9)</td>
+<td style="text-align: left;">9.08e+03</td>
+<td style="text-align: left;">2.25e+03</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">V2Hat</td>
+<td style="text-align: left;">496</td>
+<td style="text-align: left;">481</td>
+<td style="text-align: left;">125</td>
+<td style="text-align: left;">120</td>
+<td style="text-align: left;">( 318, 723)</td>
+<td style="text-align: left;">9.61e+03</td>
+<td style="text-align: left;">2.9e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KAHat</td>
+<td style="text-align: left;">1.57</td>
+<td style="text-align: left;">1.01</td>
+<td style="text-align: left;">1.72</td>
+<td style="text-align: left;">0.879</td>
+<td style="text-align: left;">(0.203, 5.05)</td>
+<td style="text-align: left;">8.63e+03</td>
+<td style="text-align: left;">2.62e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KA14Hat</td>
+<td style="text-align: left;">7.64</td>
+<td style="text-align: left;">4.78</td>
+<td style="text-align: left;">9.17</td>
+<td style="text-align: left;">4.04</td>
+<td style="text-align: left;">(0.981, 23.6)</td>
+<td style="text-align: left;">8.65e+03</td>
+<td style="text-align: left;">2.63e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KA41Hat</td>
+<td style="text-align: left;">0.133</td>
+<td style="text-align: left;">0.0817</td>
+<td style="text-align: left;">0.172</td>
+<td style="text-align: left;">0.0728</td>
+<td style="text-align: left;">(0.0161, 0.424)</td>
+<td style="text-align: left;">7.07e+03</td>
+<td style="text-align: left;">2.31e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[1]</td>
+<td style="text-align: left;">0.459</td>
+<td style="text-align: left;">0.401</td>
+<td style="text-align: left;">0.249</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(0.175, 0.961)</td>
+<td style="text-align: left;">6.82e+03</td>
+<td style="text-align: left;">1.99e+03</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[2]</td>
+<td style="text-align: left;">0.444</td>
+<td style="text-align: left;">0.399</td>
+<td style="text-align: left;">0.221</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(0.182, 0.871)</td>
+<td style="text-align: left;">7.22e+03</td>
+<td style="text-align: left;">2.49e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[3]</td>
+<td style="text-align: left;">0.45</td>
+<td style="text-align: left;">0.399</td>
+<td style="text-align: left;">0.23</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(0.174, 0.888)</td>
+<td style="text-align: left;">7.76e+03</td>
+<td style="text-align: left;">2.25e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[4]</td>
+<td style="text-align: left;">0.45</td>
+<td style="text-align: left;">0.399</td>
+<td style="text-align: left;">0.237</td>
+<td style="text-align: left;">0.186</td>
+<td style="text-align: left;">(0.18, 0.903)</td>
+<td style="text-align: left;">8.09e+03</td>
+<td style="text-align: left;">2.28e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[5]</td>
+<td style="text-align: left;">0.452</td>
+<td style="text-align: left;">0.401</td>
+<td style="text-align: left;">0.235</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(0.172, 0.908)</td>
+<td style="text-align: left;">7.2e+03</td>
+<td style="text-align: left;">2.49e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">omega[6]</td>
+<td style="text-align: left;">0.449</td>
+<td style="text-align: left;">0.398</td>
+<td style="text-align: left;">0.226</td>
+<td style="text-align: left;">0.188</td>
+<td style="text-align: left;">(0.179, 0.881)</td>
+<td style="text-align: left;">7.85e+03</td>
+<td style="text-align: left;">2.75e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">omega[7]</td>
+<td style="text-align: left;">0.451</td>
+<td style="text-align: left;">0.396</td>
+<td style="text-align: left;">0.23</td>
+<td style="text-align: left;">0.191</td>
+<td style="text-align: left;">(0.179, 0.886)</td>
+<td style="text-align: left;">7.77e+03</td>
+<td style="text-align: left;">2.19e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">0.226</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.0964</td>
+<td style="text-align: left;">(0.0877, 0.463)</td>
+<td style="text-align: left;">9.98e+03</td>
+<td style="text-align: left;">2.96e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nu</td>
+<td style="text-align: left;">20.7</td>
+<td style="text-align: left;">17.2</td>
+<td style="text-align: left;">14.2</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">(4.65, 47.9)</td>
+<td style="text-align: left;">4.8e+03</td>
+<td style="text-align: left;">2.24e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[2,1]</td>
+<td style="text-align: left;">-0.00584</td>
+<td style="text-align: left;">-0.00548</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.343, 0.331)</td>
+<td style="text-align: left;">1.01e+04</td>
+<td style="text-align: left;">2.18e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[3,1]</td>
+<td style="text-align: left;">-0.00158</td>
+<td style="text-align: left;">0.000301</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.321, 0.319)</td>
+<td style="text-align: left;">9.72e+03</td>
+<td style="text-align: left;">2.86e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,1]</td>
+<td style="text-align: left;">-0.000168</td>
+<td style="text-align: left;">0.000132</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.324, 0.322)</td>
+<td style="text-align: left;">1.03e+04</td>
+<td style="text-align: left;">2.17e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,1]</td>
+<td style="text-align: left;">0.00235</td>
+<td style="text-align: left;">0.000942</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.318, 0.326)</td>
+<td style="text-align: left;">1.03e+04</td>
+<td style="text-align: left;">2.69e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,1]</td>
+<td style="text-align: left;">-0.00194</td>
+<td style="text-align: left;">-0.000135</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">(-0.319, 0.309)</td>
+<td style="text-align: left;">1.08e+04</td>
+<td style="text-align: left;">2.71e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,1]</td>
+<td style="text-align: left;">-0.000145</td>
+<td style="text-align: left;">-0.000537</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.324, 0.325)</td>
+<td style="text-align: left;">9.73e+03</td>
+<td style="text-align: left;">2.61e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,2]</td>
+<td style="text-align: left;">-0.00584</td>
+<td style="text-align: left;">-0.00548</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.343, 0.331)</td>
+<td style="text-align: left;">1.01e+04</td>
+<td style="text-align: left;">2.18e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[3,2]</td>
+<td style="text-align: left;">-0.0029</td>
+<td style="text-align: left;">-0.00308</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.33, 0.323)</td>
+<td style="text-align: left;">8.74e+03</td>
+<td style="text-align: left;">2.19e+03</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,2]</td>
+<td style="text-align: left;">0.00119</td>
+<td style="text-align: left;">0.00131</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.318, 0.321)</td>
+<td style="text-align: left;">7.71e+03</td>
+<td style="text-align: left;">2.84e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,2]</td>
+<td style="text-align: left;">0.00224</td>
+<td style="text-align: left;">0.0026</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.323, 0.325)</td>
+<td style="text-align: left;">8.77e+03</td>
+<td style="text-align: left;">2.95e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,2]</td>
+<td style="text-align: left;">-0.00357</td>
+<td style="text-align: left;">-0.0033</td>
+<td style="text-align: left;">0.189</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.321, 0.307)</td>
+<td style="text-align: left;">7.56e+03</td>
+<td style="text-align: left;">2.77e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,2]</td>
+<td style="text-align: left;">-0.000833</td>
+<td style="text-align: left;">-0.00245</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.314, 0.312)</td>
+<td style="text-align: left;">8.14e+03</td>
+<td style="text-align: left;">3.13e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,3]</td>
+<td style="text-align: left;">-0.00158</td>
+<td style="text-align: left;">0.000301</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.321, 0.319)</td>
+<td style="text-align: left;">9.72e+03</td>
+<td style="text-align: left;">2.86e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,3]</td>
+<td style="text-align: left;">-0.0029</td>
+<td style="text-align: left;">-0.00308</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">(-0.33, 0.323)</td>
+<td style="text-align: left;">8.74e+03</td>
+<td style="text-align: left;">2.19e+03</td>
+<td style="text-align: left;">1.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[4,3]</td>
+<td style="text-align: left;">-0.00283</td>
+<td style="text-align: left;">-0.000947</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.328, 0.32)</td>
+<td style="text-align: left;">5.63e+03</td>
+<td style="text-align: left;">2.57e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,3]</td>
+<td style="text-align: left;">0.00332</td>
+<td style="text-align: left;">0.00408</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.316, 0.327)</td>
+<td style="text-align: left;">7.71e+03</td>
+<td style="text-align: left;">2.51e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,3]</td>
+<td style="text-align: left;">-0.0021</td>
+<td style="text-align: left;">-0.00118</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.325, 0.321)</td>
+<td style="text-align: left;">7.19e+03</td>
+<td style="text-align: left;">2.46e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,3]</td>
+<td style="text-align: left;">-0.000968</td>
+<td style="text-align: left;">-0.000323</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.325, 0.327)</td>
+<td style="text-align: left;">7.34e+03</td>
+<td style="text-align: left;">2.87e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,4]</td>
+<td style="text-align: left;">-0.000168</td>
+<td style="text-align: left;">0.000132</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.324, 0.322)</td>
+<td style="text-align: left;">1.03e+04</td>
+<td style="text-align: left;">2.17e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,4]</td>
+<td style="text-align: left;">0.00119</td>
+<td style="text-align: left;">0.00131</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.318, 0.321)</td>
+<td style="text-align: left;">7.71e+03</td>
+<td style="text-align: left;">2.84e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,4]</td>
+<td style="text-align: left;">-0.00283</td>
+<td style="text-align: left;">-0.000947</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.207</td>
+<td style="text-align: left;">(-0.328, 0.32)</td>
+<td style="text-align: left;">5.63e+03</td>
+<td style="text-align: left;">2.57e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[5,4]</td>
+<td style="text-align: left;">-0.00301</td>
+<td style="text-align: left;">-0.00572</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.209</td>
+<td style="text-align: left;">(-0.336, 0.326)</td>
+<td style="text-align: left;">5.44e+03</td>
+<td style="text-align: left;">2.57e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,4]</td>
+<td style="text-align: left;">0.00224</td>
+<td style="text-align: left;">0.00188</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.306, 0.326)</td>
+<td style="text-align: left;">4.9e+03</td>
+<td style="text-align: left;">2.6e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,4]</td>
+<td style="text-align: left;">-0.000147</td>
+<td style="text-align: left;">0.0016</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.315, 0.315)</td>
+<td style="text-align: left;">5.49e+03</td>
+<td style="text-align: left;">2.96e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,5]</td>
+<td style="text-align: left;">0.00235</td>
+<td style="text-align: left;">0.000942</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">(-0.318, 0.326)</td>
+<td style="text-align: left;">1.03e+04</td>
+<td style="text-align: left;">2.69e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,5]</td>
+<td style="text-align: left;">0.00224</td>
+<td style="text-align: left;">0.0026</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.323, 0.325)</td>
+<td style="text-align: left;">8.77e+03</td>
+<td style="text-align: left;">2.95e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,5]</td>
+<td style="text-align: left;">0.00332</td>
+<td style="text-align: left;">0.00408</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.316, 0.327)</td>
+<td style="text-align: left;">7.71e+03</td>
+<td style="text-align: left;">2.51e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,5]</td>
+<td style="text-align: left;">-0.00301</td>
+<td style="text-align: left;">-0.00572</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0.209</td>
+<td style="text-align: left;">(-0.336, 0.326)</td>
+<td style="text-align: left;">5.44e+03</td>
+<td style="text-align: left;">2.57e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[6,5]</td>
+<td style="text-align: left;">-0.00016</td>
+<td style="text-align: left;">0.0044</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.206</td>
+<td style="text-align: left;">(-0.334, 0.331)</td>
+<td style="text-align: left;">4.93e+03</td>
+<td style="text-align: left;">2.59e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,5]</td>
+<td style="text-align: left;">-0.00131</td>
+<td style="text-align: left;">-0.0036</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.315, 0.317)</td>
+<td style="text-align: left;">4.96e+03</td>
+<td style="text-align: left;">2.89e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,6]</td>
+<td style="text-align: left;">-0.00194</td>
+<td style="text-align: left;">-0.000135</td>
+<td style="text-align: left;">0.192</td>
+<td style="text-align: left;">0.201</td>
+<td style="text-align: left;">(-0.319, 0.309)</td>
+<td style="text-align: left;">1.08e+04</td>
+<td style="text-align: left;">2.71e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,6]</td>
+<td style="text-align: left;">-0.00357</td>
+<td style="text-align: left;">-0.0033</td>
+<td style="text-align: left;">0.189</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.321, 0.307)</td>
+<td style="text-align: left;">7.56e+03</td>
+<td style="text-align: left;">2.77e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,6]</td>
+<td style="text-align: left;">-0.0021</td>
+<td style="text-align: left;">-0.00118</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.325, 0.321)</td>
+<td style="text-align: left;">7.19e+03</td>
+<td style="text-align: left;">2.46e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,6]</td>
+<td style="text-align: left;">0.00224</td>
+<td style="text-align: left;">0.00188</td>
+<td style="text-align: left;">0.19</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">(-0.306, 0.326)</td>
+<td style="text-align: left;">4.9e+03</td>
+<td style="text-align: left;">2.6e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[5,6]</td>
+<td style="text-align: left;">-0.00016</td>
+<td style="text-align: left;">0.0044</td>
+<td style="text-align: left;">0.202</td>
+<td style="text-align: left;">0.206</td>
+<td style="text-align: left;">(-0.334, 0.331)</td>
+<td style="text-align: left;">4.93e+03</td>
+<td style="text-align: left;">2.59e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[7,6]</td>
+<td style="text-align: left;">0.00246</td>
+<td style="text-align: left;">0.00269</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">0.208</td>
+<td style="text-align: left;">(-0.322, 0.327)</td>
+<td style="text-align: left;">5.2e+03</td>
+<td style="text-align: left;">2.11e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[1,7]</td>
+<td style="text-align: left;">-0.000145</td>
+<td style="text-align: left;">-0.000537</td>
+<td style="text-align: left;">0.198</td>
+<td style="text-align: left;">0.204</td>
+<td style="text-align: left;">(-0.324, 0.325)</td>
+<td style="text-align: left;">9.73e+03</td>
+<td style="text-align: left;">2.61e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[2,7]</td>
+<td style="text-align: left;">-0.000833</td>
+<td style="text-align: left;">-0.00245</td>
+<td style="text-align: left;">0.193</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">(-0.314, 0.312)</td>
+<td style="text-align: left;">8.14e+03</td>
+<td style="text-align: left;">3.13e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[3,7]</td>
+<td style="text-align: left;">-0.000968</td>
+<td style="text-align: left;">-0.000323</td>
+<td style="text-align: left;">0.196</td>
+<td style="text-align: left;">0.197</td>
+<td style="text-align: left;">(-0.325, 0.327)</td>
+<td style="text-align: left;">7.34e+03</td>
+<td style="text-align: left;">2.87e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[4,7]</td>
+<td style="text-align: left;">-0.000147</td>
+<td style="text-align: left;">0.0016</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">(-0.315, 0.315)</td>
+<td style="text-align: left;">5.49e+03</td>
+<td style="text-align: left;">2.96e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rho[5,7]</td>
+<td style="text-align: left;">-0.00131</td>
+<td style="text-align: left;">-0.0036</td>
+<td style="text-align: left;">0.194</td>
+<td style="text-align: left;">0.203</td>
+<td style="text-align: left;">(-0.315, 0.317)</td>
+<td style="text-align: left;">4.96e+03</td>
+<td style="text-align: left;">2.89e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rho[6,7]</td>
+<td style="text-align: left;">0.00246</td>
+<td style="text-align: left;">0.00269</td>
+<td style="text-align: left;">0.199</td>
+<td style="text-align: left;">0.208</td>
+<td style="text-align: left;">(-0.322, 0.327)</td>
+<td style="text-align: left;">5.2e+03</td>
+<td style="text-align: left;">2.11e+03</td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ptable, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(model_tables_dir, <span class="st">"parameters-table.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="parameters-figure-3" class="level2">
+<h2 class="anchored" data-anchor-id="parameters-figure-3">Parameters (figure)</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"fr-values.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/param2-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+</div>
+</section>
+<section id="trace-plots-5" class="level2">
+<h2 class="anchored" data-anchor-id="trace-plots-5">Trace plots</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lp__"</span>, <span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>, <span class="st">"omega"</span>, <span class="st">"sigma"</span>,<span class="st">"nu"</span>)</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_trace</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_dens_overlay</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-7"><a href="#cb109-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/trace-plots-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/trace-plots-mod4a-2.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"trace-plots.png"</span>),<span class="at">plot =</span> p1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"dense-plots.png"</span>),<span class="at">plot =</span> p2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="individual-and-population-predictions-prior-predictive-check-1" class="level2">
+<h2 class="anchored" data-anchor-id="individual-and-population-predictions-prior-predictive-check-1">Individual and population predictions (Prior predictive check)</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>ppc1 <span class="ot">&lt;-</span> <span class="fu">pred_by_id_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>ppc1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/IPRED-PRED-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"pred-by-id.png"</span>),<span class="at">plot =</span> ppc1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="vpc-prior-predictive-check-1" class="level2">
+<h2 class="anchored" data-anchor-id="vpc-prior-predictive-check-1">VPC (Prior predictive check)</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>vpc_plot<span class="ot">&lt;-</span><span class="fu">vpc_fun</span>(mod_to_plot, xdata)</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>vpc_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/VPC-mod4a-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"vpc.png"</span>),<span class="at">plot =</span> vpc_plot, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="compare-1" class="level1">
+<h1>Compare</h1>
+<section id="parameters-figure-4" class="level2">
+<h2 class="anchored" data-anchor-id="parameters-figure-4">Parameters (figure)</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>subdir <span class="ot">=</span> <span class="st">"4"</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>model_figures_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(figures_dir, subdir)</span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>model_tables_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(tables_dir,subdir)</span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_figures_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
+<span id="cb116-7"><a href="#cb116-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-8"><a href="#cb116-8" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"4"</span>))</span>
+<span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a>mod_to_plot1 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
+<span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"4a"</span>))</span>
+<span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a>mod_to_plot2 <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
+<span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-13"><a href="#cb116-13" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>,<span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
+<span id="cb116-14"><a href="#cb116-14" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb116-15"><a href="#cb116-15" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb116-16"><a href="#cb116-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-17"><a href="#cb116-17" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb116-18"><a href="#cb116-18" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb116-19"><a href="#cb116-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-20"><a href="#cb116-20" aria-hidden="true" tabindex="-1"></a>plot1<span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb116-21"><a href="#cb116-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb116-22"><a href="#cb116-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb116-23"><a href="#cb116-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb116-24"><a href="#cb116-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb116-25"><a href="#cb116-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb116-26"><a href="#cb116-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb116-27"><a href="#cb116-27" aria-hidden="true" tabindex="-1"></a>plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod4-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-1.png"</span>),<span class="at">plot =</span> plot1, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"omega"</span>, <span class="st">"sigma"</span>, <span class="st">"nu"</span>)</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb117-16"><a href="#cb117-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)</span>
+<span id="cb117-17"><a href="#cb117-17" aria-hidden="true" tabindex="-1"></a>plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod4-2.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-2.png"</span>), <span class="at">plot =</span> plot2, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"rho"</span>)</span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot1<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">=</span>bayesplot<span class="sc">::</span><span class="fu">mcmc_intervals</span>(mod_to_plot2<span class="sc">$</span><span class="fu">draws</span>(pars))</span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>p1_data <span class="ot">=</span> p1<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"posterior"</span>)</span>
+<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>p2_data <span class="ot">=</span> p2<span class="sc">$</span>plot<span class="sc">$</span>data<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"prior"</span>)</span>
+<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>plot3 <span class="ot">=</span> <span class="fu">rbind</span>(p1_data,p2_data)<span class="sc">%&gt;%</span></span>
+<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>type, <span class="at">x=</span>m))<span class="sc">+</span></span>
+<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> l, <span class="at">xmax =</span> h), <span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> ll, <span class="at">xmax =</span> hh))<span class="sc">+</span></span>
+<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>parameter, <span class="at">scales=</span><span class="st">"free_x"</span>)<span class="sc">+</span></span>
+<span id="cb118-17"><a href="#cb118-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb118-18"><a href="#cb118-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb118-19"><a href="#cb118-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
+<span id="cb118-20"><a href="#cb118-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>),</span>
+<span id="cb118-21"><a href="#cb118-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>,<span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="st">"cm"</span>)), </span>
+<span id="cb118-22"><a href="#cb118-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>),</span>
+<span id="cb118-23"><a href="#cb118-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">6</span>))</span>
+<span id="cb118-24"><a href="#cb118-24" aria-hidden="true" tabindex="-1"></a>plot3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="bayesian-analysis_files/figure-html/prior-posterior-mod4-3.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(model_figures_dir, <span class="st">"prior-posterior-3.png"</span>), <span class="at">plot =</span> plot3, <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">10</span>, <span class="at">dpi=</span><span class="dv">600</span>, <span class="at">units=</span><span class="st">"cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -3863,7 +5659,7 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.3.1 (2023-06-16 ucrt)

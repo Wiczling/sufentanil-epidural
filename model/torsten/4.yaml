@@ -1,0 +1,4 @@
+model_type: stan
+description: different priors
+based_on:
+- '3'

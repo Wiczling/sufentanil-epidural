@@ -856,9 +856,10 @@ vpc_plot
 ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
 ```
 
+
 # Compare
 ## Parameters (figure)
-```{r prior-posterior}
+```{r prior-posterior-mod3}
 subdir = "3"
 
 model_figures_dir <- here::here(figures_dir, subdir)
@@ -869,6 +870,249 @@ dir.create(model_tables_dir, recursive = T)
 modx  <- read_model(here::here(model_dir, "3"))
 mod_to_plot1 <- read_fit_model(modx)
 modx  <- read_model(here::here(model_dir, "3a"))
+mod_to_plot2 <- read_fit_model(modx)
+
+pars = c("CLHat", "QHat", "V1Hat", "V2Hat","KAHat", "KA14Hat", "KA41Hat")
+p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
+p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
+
+p1_data = p1$plot$data%>%mutate(type = "posterior")
+p2_data = p2$plot$data%>%mutate(type = "prior")
+
+plot1= rbind(p1_data,p2_data)%>%
+  ggplot(aes(y=type, x=m))+
+  geom_point(size=2)+
+  geom_linerange(aes(xmin = l, xmax = h), size=1)+
+  geom_linerange(aes(xmin = ll, xmax = hh))+
+  labs(x="",y="")+
+  facet_wrap(~parameter, scales="free_x")
+plot1
+ggsave(filename = here::here(model_figures_dir, "prior-posterior-1.png"),plot = plot1, width=12, height=10, dpi=600, units="cm")
+
+pars = c("omega", "sigma", "nu")
+p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
+p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
+
+p1_data = p1$plot$data%>%mutate(type = "posterior")
+p2_data = p2$plot$data%>%mutate(type = "prior")
+
+plot2 = rbind(p1_data,p2_data)%>%
+  ggplot(aes(y=type, x=m))+
+  geom_point(size=2)+
+  geom_linerange(aes(xmin = l, xmax = h), size=1)+
+  geom_linerange(aes(xmin = ll, xmax = hh))+
+  labs(x="",y="")+
+  facet_wrap(~parameter, scales="free_x")
+plot2
+ggsave(filename = here::here(model_figures_dir, "prior-posterior-2.png"), plot = plot2, width=12, height=10, dpi=600, units="cm")
+
+pars = c("rho")
+p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
+p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
+
+p1_data = p1$plot$data%>%mutate(type = "posterior")
+p2_data = p2$plot$data%>%mutate(type = "prior")
+
+plot3 = rbind(p1_data,p2_data)%>%
+  ggplot(aes(y=type, x=m))+
+  geom_point(size=2)+
+  geom_linerange(aes(xmin = l, xmax = h), size=1)+
+  geom_linerange(aes(xmin = ll, xmax = hh))+
+  labs(x="",y="")+
+  facet_wrap(~parameter, scales="free_x")+
+  theme(axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=6),
+        axis.text = element_text(size=10),
+        axis.title=element_text(size=10),
+        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
+        legend.text=element_text(size=6),
+        legend.title =element_text(size=6))
+plot3
+ggsave(filename = here::here(model_figures_dir, "prior-posterior-3.png"), plot = plot3, width=12, height=10, dpi=600, units="cm")
+
+```
+# M4: M3 + Different Priors
+```{r  model4, eval = FALSE}
+mod4  <- read_model(file.path(model_dir, "4"))
+mod4_res <- mod4 %>% submit_model(.overwrite = TRUE) 
+```
+
+## Run stan
+```{r load-stan-mod4}
+model_name = "4"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod2  <- read_model(here::here(model_dir, model_name))
+mod_to_plot <- read_fit_model(mod2)
+
+xdata <- xdata %>%
+    filter(OUT!=1, CMT!=22, CMT!=33) %>%
+  mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+```
+
+## Parameters
+```{r table-mod4, eval = TRUE}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu","rho")
+
+ptable <-plot_param_tables(mod_to_plot, pars)
+
+ptable%>%
+  knitr::kable()
+
+write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
+```
+
+
+## Trace plots
+```{r trace-plots-mod4}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu")
+
+p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
+p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
+
+p1
+p2
+
+ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual and population predictions
+```{r IPRED-PRED-mod4}
+ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
+ppc1
+ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+```
+
+## VPC
+```{r VPC-mod4}
+vpc_plot<-vpc_fun(mod_to_plot, xdata)
+vpc_plot
+
+ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+```
+
+## GOF
+```{r GOF-mod4, include=TRUE}
+plot_gof <-gof_fun(mod_to_plot, xdata)
+plot_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = plot_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual parameters vs. covariates
+```{r covariets-mod4, include=TRUE}
+etaM<-extract_etas_fun(mod_to_plot,xdata)
+
+cont_cov = c("AGE//Age,y","WT//Body Weight, kg")
+cat_cov = c("SEXF//Sex")
+
+p1 <- map(cont_cov, \(x) fun_cont_cov(x,etaM))
+p2 <- map(cat_cov, \(x) fun_cat_cov(x,etaM))
+
+plots <- c(p1,p2)
+plots
+map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir, 
+                                 glue::glue("cov-plots-{x}.png")),
+                                 plot = plots[[x]], 
+                                 width=12, height=10, 
+                                 dpi=600, units="cm"))
+```
+
+# M4p: Prior predicitve check.  M3 + Different Priors
+```{r  model4a, eval = FALSE}
+mod4a  <- read_model(file.path(model_dir, "4a"))
+# mod4a <- copy_model_from(mod4, "4a", "prior change",.overwrite=T)
+mod4a_res <- mod4a %>% submit_model(.overwrite = TRUE) 
+```
+
+## Run stan
+```{r load-stan-mod4a}
+model_name = "4a"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+mod2  <- read_model(here::here(model_dir, model_name))
+mod_to_plot <- read_fit_model(mod2)
+
+xdata <- xdata %>%
+    filter(OUT!=1, CMT!=22, CMT!=33) %>%
+  mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+```
+
+## Parameters
+```{r table-mod4a, eval = TRUE}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu","rho")
+
+ptable <-plot_param_tables(mod_to_plot, pars)
+
+ptable%>%
+  knitr::kable()
+
+write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
+```
+
+## Parameters (figure)
+
+```{r param2-mod4a}
+pars = c("CLHat", "QHat", "V1Hat", "V2Hat","KAHat", "KA14Hat", "KA41Hat")
+p1=bayesplot::mcmc_intervals(mod_to_plot$draws(pars))
+ggsave(filename = here::here(model_figures_dir, "fr-values.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+p1
+```
+
+## Trace plots
+```{r trace-plots-mod4a}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu")
+
+p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
+p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
+
+p1
+p2
+
+ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual and population predictions (Prior predictive check)
+```{r IPRED-PRED-mod4a}
+ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
+ppc1
+ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+```
+
+## VPC (Prior predictive check)
+```{r VPC-mod4a}
+vpc_plot<-vpc_fun(mod_to_plot, xdata)
+vpc_plot
+
+ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+```
+
+# Compare
+## Parameters (figure)
+```{r prior-posterior-mod4}
+subdir = "4"
+
+model_figures_dir <- here::here(figures_dir, subdir)
+model_tables_dir <- here::here(tables_dir,subdir)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+modx  <- read_model(here::here(model_dir, "4"))
+mod_to_plot1 <- read_fit_model(modx)
+modx  <- read_model(here::here(model_dir, "4a"))
 mod_to_plot2 <- read_fit_model(modx)
 
 pars = c("CLHat", "QHat", "V1Hat", "V2Hat","KAHat", "KA14Hat", "KA41Hat")
