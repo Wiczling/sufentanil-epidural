@@ -186,7 +186,7 @@ vpc_plot <- vpc(sim = sim,
                  sim_median_alpha = 0.25)))
 
 vpc_plot <- vpc_plot +
-  labs(x = "Time after infusion start (h)                  Time after infusion end (h)",
+  labs(x = "Time after infusion end (h)                  Time after infusion start (h)",
        y = "Sufentanil concentrations, pg/ml") 
 
 vpc_plot

@@ -1,0 +1,113 @@
+---
+title: "Modeling and simulation of ASA"
+author:   
+  - Pawel Wiczling
+date: today
+date-format: long
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
+    fig-width: 7
+    fig-height: 7
+execute:
+  warning: false
+---
+
+
+*  *  *  * 
+
+**Report prepared for: Adamed Pharma S.A.**
+**Address: Pieńków, ul. Mariana Adamkiewicza 6A, 05-152 Czosnów**
+ 
+
+**Signature:**  
+
+*  *  *  *  
+
+\pagebreak
+
+# Introduction
+
+The data analyzed in this report were obtained in a randomized, 2-way crossover design study comparing the reference and tested formulations of ASA administered at a 100 mg dose. The purpose of the present analysis is to apply a model-based population analysis to the data in order to characterize the absorption and disposition of ASA. The developed population model will be further used to simulate the expected concentration-time profiles after administration of ASA as 100 mg QD and 50 mg BID. 
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, message=FALSE, error=FALSE, warning=FALSE, comment=NA, out.width='95%')
+```
+
+## Raw Data:
+
+![](../deliv/figures/EDA/rawdata.png)
+
+# Run NONMEM
+
+Population nonlinear mixed-effect modeling was done using NONMEM (Version 7.4.0, Icon Development Solutions, Ellicott City, MD, USA) and the gfortran compiler 9.0. NONMEM runs were executed using bbr package. The differential equations for the model were solved using ADVAN12 PREDPP subroutines. The NONMEM data processing and plots were performed in R Softwar.
+
+The minimum value of the NONMEM objective function, typical goodness-of-fit diagnostic plots, and the evaluation of the precision of pharmacokinetic parameter and variability estimates were used to discriminate between various models during the model-building process. 
+
+Based on the visual inspection of data a two-compartment disposition model with first-order and delayed absorption described by three transit compartment was fitted to the concentration-time profiles of ASA. The  model development steps are summarized in the Table below..
+
+- Model 1. 2 cmp. model, 1-st order absorption with lag time.
+- Model 2. 2 cmp. model, 1-st order absorption with lag time. Inter-occasion variability on absorption parameters
+- Model 3. 2 cmp. model. Transit compartment model. Inter-occasion variability on absorption parameters.
+
+## Summary of Runs
+
+![](../deliv/tables/mod-summary/mod-summary_all.png)
+
+# Visualise key modeling steps
+
+## Model summary
+
+![](../deliv/tables/3/parameter-estimates.png)
+
+## Mean predictions
+
+![](../deliv/figures/3/fits-lin.png)
+{{< pagebreak >}}
+![](../deliv/figures/3/fits-log.png)
+{{< pagebreak >}}
+
+## Individual predictions
+
+![](../deliv/figures/3/fits-1234567891011.png)
+{{< pagebreak >}}
+![](../deliv/figures/3/fits-131415161718192021222324.png)
+{{< pagebreak >}}
+![](../deliv/figures/3/fits-2526272930313233343536.png)
+{{< pagebreak >}}
+
+![](../deliv/figures/3/fits-373839404142434445464748.png)
+{{< pagebreak >}}
+
+![](../deliv/figures/3/fits-5051525354555657585960.png)
+{{< pagebreak >}}
+
+## GOF plots
+
+![](../deliv/figures/3/gof.png)
+
+# Simulations Using Mrgsolve
+
+## VPC
+
+The model performance was assessed by means of Visual Predictive Checks (VPC). The VPC was calculated based on 500 datasets simulated with the final parameter estimates. The VPC enables the comparison of predicted versus observed data over time. In this study the 10th, 50th and 90th percentiles were used to summarize the data and VPC prediction. The VPC enables the comparison of the confidence intervals obtained from prediction with the observed data over time. When the corresponding percentile from the observed data falls outside the 95% confidence interval derived from predictions, it is an indication of a model misspecification.
+
+![](../deliv/figures/3/vpc.png)
+
+## Simulations
+
+The simulation of a hypothetical study was conducted to predict ASA concentrations following multiple doses under two different regimens: 100 mg once daily (QD) for R and 50 mg twice daily (BID) for T (scenario 1), and 100 mg once daily (QD) for both R and T (scenario 2). The simulations were done for the total duration of 120 h (5 days). The Monte Carlo method was used to generate individual PK profiles for n = 1000 subjects. The individual PK parameters were based on the population pharmacokinetic parameters and random inter-individual effects as predicted by the final model. The outcomes of these simulations were represented as 50th (median) and (5th-95th) percentiles to illustrate the typical PK profiles along with the expected inter-individual variabilities in ASA concentrations.
+
+![](../deliv/figures/3/sim1.png)
+![](../deliv/figures/3/sim2.png)
+
+![](../deliv/figures/3/Cmaxss1.png)
+![](../deliv/figures/3/Cmaxss2.png)
+
+Results in a tabular format:
+
+![](../deliv/tables/sim-summary/simulation_results.tex.png){width=75%}
+
