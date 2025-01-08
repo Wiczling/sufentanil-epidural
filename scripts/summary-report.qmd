@@ -54,7 +54,7 @@ knitr::opts_chunk$set(cache=FALSE, message=FALSE, error=FALSE, warning=FALSE, co
 
 # Introduction
 
-The aim of the proposed study is to describe changes in blood concentrations of sufentanil after epidural administration in adults using a population pharmacokinetic model. Additionally, the study will investigate relationships between demographic characteristics, patients' clinical status, and their individual parameters describing sufentanil pharmacokinetics. Based on the obtained results, the absorption rate of sufentanil from the epidural space and the occurrence of flip-flop kinetics in this process, as suggested in a study conducted in the pediatric population [@aborsuk2017], will be verified.
+The aim of this study was to describe changes in plasma concentrations of sufentanil after epidural administration in adults using a population pharmacokinetic model. The main facus was to assess the absorption of sufentanil from the epidural space and confirm the occurrence of flip-flop kinetics in  as suggested in a previous tudy conducted in the pediatric population [@aborsuk2017]. Additionally, the study investigated relationships between body weight, age and sex and the individual parameters describing sufentanil pharmacokinetics. 
 
 # Opis (do przetumaczenia)
 
@@ -95,13 +95,12 @@ Na podstawie uzyskanych w wyniku oznaczeń wartości stężeń zaproponowany zos
 
 # Raw Data
 
-The raw data is graphically summarized in @fig-df1 and @fig-df2.
+The raw data is graphically summarized in @fig-1 and @fig-2.
 
-![Raw Data Sphagetti](../deliv/figures/torsten/EDA/rawdata1.png){#fig-df1}
+![Raw data. Sphagetti plot.](../deliv/figures/torsten/EDA/rawdata1.png){#fig-1}
 
 
-![Raw Data By ID](../deliv/figures/torsten/EDA/rawdata2.png){#fig-df2}
-
+![Raw data by ID.](../deliv/figures/torsten/EDA/rawdata2.png){#fig-2}
 
 # Statistical methods
 
@@ -109,14 +108,9 @@ Initially a population nonlinear mixed-effect modeling was done using NONMEM (Ve
 
 Later we used a Stan/Torsten approach using cmdstanr software linked with Rstudio. For the inference, we used four Markov chains with 1000 iterations after 1000 warm up iterations. Convergence diagnostics were performed using Gelman–Rubin statistics and trace plots, and the results indicated that the model results did not diverge. The R code, data, and Stan code used to analyze the data are publicly available in the GitHub repository (https://github.com/wiczling/sufentanil_epidural). 
 
-Based on the visual inspection of data initially a two-compartment disposition model with first-order absorption (model 1) was fitted to the concentration-time profiles. The other models we tested were:
+Following an initial visual inspection of the data, a two-compartment disposition model with first-order absorption was fitted to the concentration-time profiles. However, this model exhibited a significant lack of fit. To address this, the model was modified to allow the disposition parameters to deviate slightly from the assumed priors. Both approaches indicated a more complex absorption process. Ultimately, we adopted a two-compartment model with first-order absorption, which provided a satisfactory description of the data.
 
-- Model 2: disposition: 2 cmp. model; absorption: 1-st order absorption. fr
-- Model 3: disposition: 2 cmp. model; absorption: two compartment 1-st order absorption. 
-
-Model 3 was selected as final.
-
-## Final Model Equations
+## Final model equations
 
 The model equitation are as follows:
 
@@ -129,7 +123,7 @@ $$
 \end{aligned}
 $$ {#eq-odemodel}
 
-where $A_1$, and $A_2$ denote absorption compartments, $C_1$ denote concentration in central compartment an $C_2$ denote concentration in the peripheral compartment.The observed concentrations were modeled assuming proportional error model (additive on a log scale) using a t-distribution ensuring robustness to outliers:
+where $A_1$, and $A_2$ denote absorption compartments, $C_1$ denote concentration in central compartment an $C_2$ denote concentration in the peripheral compartment.The observed concentrations were modeled assuming proportional error model (additive on a log scale) using a t-distribution to esure robustness to outliers:
 
 $$ 
 \begin{aligned}
@@ -138,7 +132,7 @@ $$
 \end{aligned}
 $$ {#eq-obsmodel}
 
-where $P_i=(CL_{i}, Q_{i}, V1_{i}, V2_{i}, KA_{i}, KA_{14,i},, KA_{41,i})$ is a vector of subject-specific parameters, $f(.)$ corresponds to the above ODE equations, $MVN$ is a multivariate normal distribution, $\theta_P$ is a vector of typical values of $P_i$. In turn, $\sigma$ is the scale and $\Omega$ is the scale matrix for the random effects related to the residual and unexplained between-subject variability. For convenience $\Omega$ was decomposed to:
+where $P_i=(CL_{i}, Q_{i}, V1_{i}, V2_{i}, KA_{i}, KA14_{i}, KA41_{i})$ is a vector of subject-specific parameters, $f(.)$ corresponds to the above ODE equations, $MVN$ is a multivariate normal distribution, $\theta_P$ is a vector of typical values of $P_i$. In turn, $\sigma$ is the scale and $\Omega$ is the scale matrix for the random effects related to the residual and unexplained between-subject variability. For convenience $\Omega$ was decomposed to:
 
 $$
 \Omega = diag(\omega) \cdot LL' \cdot diag(\omega) 
@@ -146,7 +140,7 @@ $$ {#eq-omega}
 
 where $\rho = LL'$ denotes correlation, $L$ is a lower triangular Cholesky factor for a correlation matrix and $\omega$ denotes standard deviation for between subject variability.
 
-The priors were specified based on parameter estimates provided by our previous work [@Bartkowska-Sniatkowska2016-hm]
+The Bayesian model requires the specification of priors, which define a plausible range for model parameters based on expectations before observing the data. Priors also establish appropriate scales for the analysis and introduce regularization to enhance model robustness. In this study, weakly informative priors were chosen to align with known facts about sufentanil disposition  [@Bartkowska-Sniatkowska2016-hm]. The standard deviations for disposition and absorption related parameters were assumed to ensure CV of about 25% and 50%. The weakly informative prior were used to model between-subject variability and residual variability that assumed a %CV of about 40% and 20% with fairly wide uncertainty. Please note that the prior uncertainty is slightly higher than reported in the literature and was used mainly to provide marginal information about model parameters. Consequently, it allowed stabilization of the estimation of model parameters.
 
 $$ 
 \begin{aligned}
@@ -164,11 +158,24 @@ $$
 \end{aligned}
 $$ {#eq-priors}
 
-LKJ ensure that the density is uniform over correlation matrices of order 10.
+LKJ is the Stan default prior for correlation matrices.
 
-## Final Model Summary
+## Prior predictive check
 
-Parameters are estimated precisely as shown in \cref{param_summary}. 
+The prior information was evaluated using prior predictive checks. Prior predictive checking works by simulating new replicated data sets based on the assumed prior information and comparing statistics applied to the replicated data set with the same statistic applied to the original data set. The individual and population prior predictions are shown in @fig-3 and @fig-4. This figures confirm that priors are well shaped and located.
+
+![Individual prior predictive check. Plots of observed (symbols), population predicted (blue) and individual predicted (red) concentrations versus time.](../deliv/figures/torsten/3a/pred-by-id.png){#fig-3}
+
+
+![Population prior predictive check.](../deliv/figures/torsten/3a/vpc.png){#fig-4}
+
+\pagebreak
+
+# Results
+
+## Final model parameter estimates
+
+The summary of posterior distribution of model parameters is shown in \cref{param_summary}. 
 ```{=latex}
 \begin{table}[H]
 \begin{center}
@@ -181,50 +188,46 @@ Parameters are estimated precisely as shown in \cref{param_summary}.
 \end{table}
 ```
 
+## Posterior predictive check
 
-## Final Model Fits
+The model performance was assessed by means of Visual Posterior Predictive Checks (VPC). The VPC was calculated based on 1000 datasets simulated based on posterior samples. In this study the 10th, 50th and 90th percentiles were used to summarize the data and VPC prediction. The VPC enables the comparison of the confidence intervals obtained from prediction with the observed data over time. When the corresponding percentile from the observed data falls outside the 95% confidence interval derived from predictions, it is an indication of a model misspecification.
 
-The model fittings show that the final PK model accurately described the measured concentrations. 
+The individual and population predictions are shown in @fig-5. The final model VPC's are shown in @fig-6. The model fittings show that the final PK model accurately described the measured concentrations. 
 
-### Prior predictive check
+![Individual Predictions. Plots of observed (symbols), population predicted (blue) and individual predicted (red) concentrations versus time.](../deliv/figures/torsten/3/pred-by-id.png){#fig-5}
 
-The individual and vpc prior predictions are shown in @fig-1a and @fig-1b.
-
-![Prior predictive check](../deliv/figures/torsten/4a/pred-by-id.png){#fig-1a}
-
-![Prior predictive check. VPC](../deliv/figures/torsten/4a/vpc.png){#fig-1b}
-
-### Individual Predictions
-
-The individual predictions are shown in @fig-3.
-
-![Individual Predictions. Plots of observed (symbols), population predicted (blue) and individual predicted (red) concentrations versus time.](../deliv/figures/torsten/4/pred-by-id.png){#fig-3}
-{{< pagebreak >}}
-
+![Visual predcitive check.](../deliv/figures/torsten/3/vpc.png){#fig-6}
 
 ## GOF Plots
 
-The typical goodness-of-fit diagnostic plots for the final model are presented in @fig-8. 
+The individual and population predictions versus observed concentrations are relatively symmetrically distributed around the line of identity indicating good model performance in quantifying the available PK data.The typical goodness-of-fit diagnostic plots for the final model are presented in @fig-7. 
 
-The individual and population predictions versus observed concentrations are relatively symmetrically distributed around the line of identity indicating good model performance in quantifying the available PK data.
+![Goodness of fit plots.](../deliv/figures/torsten/3/gof.png){#fig-7}
 
-![Goodness of fit plots.](../deliv/figures/torsten/4/gof.png){#fig-8}
+## Covariates
 
-## Visual Predcitive Check
+To evaluate the relationship between individual pharmacokinetic parameters and covariates such as age, body weight, and sex, ETA values were plotted against these variables (@fig-8, @fig-9, @fig-10). This exploratory analysis was limited by the small sample size and substantial uncertainty in individual parameter estimates, leading to high shrinkage.
 
-The model performance was assessed by means of Visual Predictive Checks (VPC). The VPC was calculated based on 1000 datasets simulated based on posterior samples. The VPC enables the comparison of predicted versus observed data over time. In this study the 10th, 50th and 90th percentiles were used to summarize the data and VPC prediction. The VPC enables the comparison of the confidence intervals obtained from prediction with the observed data over time. When the corresponding percentile from the observed data falls outside the 95% confidence interval derived from predictions, it is an indication of a model misspecification. The final model VPC's are shown in @fig-9.
+![Eta plots for age](../deliv/figures/torsten/3/cov-plots-1.png){#fig-8}
 
-![Visual predcitive check.](../deliv/figures/torsten/4/vpc.png){#fig-9}
+![Eta plots for body weight](../deliv/figures/torsten/3/cov-plots-2.png){#fig-9}
+
+![Eta plots for sex](../deliv/figures/torsten/3/cov-plots-3.png){#fig-10}
+
+\pagebreak
 
 # Summary
 
 What we have learnt?
 
-The prior and posterior comparisons are presented in @fig-11 and @fig-12. 
+@fig-11 and @fig-12 summarize the marginal posterior distributions of population-level parameters, between-subject variability (BSV), and residual variability, compared to prior assumptions. The final model pharmacokinetic (PK) parameters that align well with existing literature and assumed priors, which is expected given the availability of sufentanil PK data in the literature. The main finding highlights that the absorption rate (to the plasma and peripheral compartment) constant is fast, whereas the redistribution withing the epidural space is slow. This suggests that the rate of absorption after the infusion is stopped is primarily governed by the slow redistribution process.
 
-![Prior posterior comparisons. Thatas](../deliv/figures/torsten/4/prior-posterior-1.png){#fig-11}
 
-![Prior posterior comparisons. Omegas](../deliv/figures/torsten/4/prior-posterior-2.png){#fig-12}
+![Prior posterior comparisons for population-level parameters.](../deliv/figures/torsten/3/prior-posterior-1.png){#fig-11}
+
+
+![Prior posterior comparisons for random effects](../deliv/figures/torsten/3/prior-posterior-2.png){#fig-12}
+
 \pagebreak
 
 # References {.unnumbered}
