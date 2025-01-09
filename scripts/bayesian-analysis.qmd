@@ -183,7 +183,7 @@ vpc_plot <- vpc(sim = sim,
                  obs_median_color = "royalblue",
                  obs_ci_linetype = 1,
                  sim_median_fill = "royalblue",
-                 sim_median_alpha = 0.25)))
+                 sim_median_alpha = 0.25)))+theme_bw()
 
 vpc_plot <- vpc_plot +
   labs(x = "Time (h)",
@@ -731,8 +731,24 @@ write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 K10 = as.double(ptable$mean[6])
 K13 = as.double(ptable$mean[7])
 K31 = as.double(ptable$mean[8])
-beta= 0.5*(K13+K31+K10-sqrt(pow(K13+K31+K10,2)-4*K31*K10))
-alpha = K31*K10/BETA
+beta_abs= 0.5*(K13+K31+K10-sqrt((K13+K31+K10)^2-4*K31*K10))
+alpha_abs = K31*K10/beta
+
+K10 = as.double(ptable$mean[2])/as.double(ptable$mean[4])
+K13 = as.double(ptable$mean[3])/as.double(ptable$mean[4])
+K31 = as.double(ptable$mean[3])/as.double(ptable$mean[5])
+beta_dis= 0.5*(K13+K31+K10-sqrt((K13+K31+K10)^2-4*K31*K10))
+alpha_dis = K31*K10/beta
+
+thalf_beta_abs = 0.693/beta_abs
+thalf_alpha_abs = 0.693/alpha_abs
+thalf_beta_dis = 0.693/beta_dis
+thalf_alpha_dis = 0.693/alpha_dis
+
+thalf_beta_abs 
+thalf_alpha_abs 
+thalf_beta_dis
+thalf_alpha_dis 
 
 ```
 
