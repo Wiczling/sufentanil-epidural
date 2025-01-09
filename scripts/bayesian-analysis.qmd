@@ -727,6 +727,13 @@ writeLines(knitr::kable(ptable %>%
                           filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
            here::here(model_tables_dir, "parameters-table.tex"))
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
+
+K10 = as.double(ptable$mean[6])
+K13 = as.double(ptable$mean[7])
+K31 = as.double(ptable$mean[8])
+beta= 0.5*(K13+K31+K10-sqrt(pow(K13+K31+K10,2)-4*K31*K10))
+alpha = K31*K10/BETA
+
 ```
 
 
@@ -948,7 +955,8 @@ plot3
 ggsave(filename = here::here(model_figures_dir, "prior-posterior-3.png"), plot = plot3, width=12, height=10, dpi=600, units="cm")
 
 ```
-# M4: M3 + Different Priors
+
+# M4: Different Priors (Based on https://pubmed.ncbi.nlm.nih.gov/8533912/)
 ```{r  model4, eval = FALSE}
 mod4  <- read_model(file.path(model_dir, "4"))
 mod4_res <- mod4 %>% submit_model(.overwrite = TRUE) 
@@ -1045,7 +1053,7 @@ map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir,
                                  dpi=600, units="cm"))
 ```
 
-# M4p: Prior predicitve check.  M3 + Different Priors
+# M4p: Prior predicitve check.  Different Priors (Based on https://pubmed.ncbi.nlm.nih.gov/8533912/)
 ```{r  model4a, eval = FALSE}
 mod4a  <- read_model(file.path(model_dir, "4a"))
 # mod4a <- copy_model_from(mod4, "4a", "prior change",.overwrite=T)
@@ -1071,7 +1079,7 @@ xdata <- xdata %>%
 
 ## Parameters
 ```{r table-mod4a, eval = TRUE}
-pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
          "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu","rho")
 
 ptable <-plot_param_tables(mod_to_plot, pars)
@@ -1084,18 +1092,10 @@ writeLines(knitr::kable(ptable %>%
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
 
-## Parameters (figure)
-
-```{r param2-mod4a}
-pars = c("CLHat", "QHat", "V1Hat", "V2Hat","KAHat", "KA14Hat", "KA41Hat")
-p1=bayesplot::mcmc_intervals(mod_to_plot$draws(pars))
-ggsave(filename = here::here(model_figures_dir, "fr-values.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
-p1
-```
 
 ## Trace plots
 ```{r trace-plots-mod4a}
-pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
          "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu")
 
 p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))

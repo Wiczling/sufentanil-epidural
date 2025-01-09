@@ -19,17 +19,19 @@
 
 make_init <- function(.data, .args) {
   function(){
-    list(CLHat = exp(rnorm(1, log(45.3),0.25)),
-         QHat  = exp(rnorm(1, log(38.3),0.25)),
-         V1Hat = exp(rnorm(1, log(7.90),0.25)),
-         V2Hat = exp(rnorm(1, log(481),0.25)), 
+    list(CLHat = exp(rnorm(1, log(50),0.25)),
+         Q1Hat  = exp(rnorm(1, log(100),0.25)),
+         Q2Hat  = exp(rnorm(1, log(40),0.25)),
+         V1Hat = exp(rnorm(1, log(10),0.25)),
+         V2Hat = exp(rnorm(1, log(60),0.25)), 
+         V3Hat = exp(rnorm(1, log(600),0.25)), 
          KAHat = exp(rnorm(1, log(1),0.25)),
          KA14Hat = exp(rnorm(1, log(5),0.25)),
          KA41Hat = exp(rnorm(1, log(0.1),0.25)),
          nu = max(3.1,rgamma(1,2,0.1)),
-         omega = rep(0.5,7) * exp(rnorm(7, 0, 0.25)),
-         L = diag(7),
+         omega = rep(0.5,9) * exp(rnorm(9, 0, 0.25)),
+         L = diag(9),
          sigma = exp(rnorm(1,log(0.2),0.25)),
-         etaStd = matrix(0L, 7, .data$nSubjects))
+         etaStd = matrix(0L, 9, .data$nSubjects))
   }
 }
