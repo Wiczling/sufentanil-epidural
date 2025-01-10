@@ -233,7 +233,7 @@ return(p1)
 fun_cat_cov<-function(cov,etaM){
 p1<-ggplot(etaM, aes_string(x=gsub("//.*","",cov), y="medianInd")) + 
   geom_boxplot()+
-    geom_jitter()+
+  geom_jitter()+
   geom_hline(yintercept = 0, color="gray", linetype="dotted", size=1) + 
   labs(y="Etas",x=gsub(".*//","",cov))+
   facet_wrap(~type, scales = "free_y")
@@ -250,10 +250,11 @@ idata = xdata %>%
   
 etaM <-  posterior::as_draws_df(mod_to_plot$draws("etaM")) %>% 
   tidybayes::spread_draws(etaM[i,type])%>%
-  group_by(i,type) %>%
   mutate(etaM = log(etaM)) %>%
+  group_by(i,type) %>%
   summarize(lbInd = quantile(etaM, probs = 0.05, na.rm = TRUE),
             medianInd = quantile(etaM, probs = 0.5, na.rm = TRUE),
+            meanInd = mean(etaM, na.rm = TRUE),
             ubInd = quantile(etaM, probs = 0.95, na.rm = TRUE)) %>%
   mutate(type = case_when(
     type == "1" ~ "CL",
@@ -263,7 +264,6 @@ etaM <-  posterior::as_draws_df(mod_to_plot$draws("etaM")) %>%
     type == "5" ~ "Ka",
     type == "6" ~ "Ka14",
     type == "7" ~ "Ka41"))%>%
-  mutate() %>%
   left_join(idata)
 }
 ```
@@ -732,13 +732,13 @@ K10 = as.double(ptable$mean[6])
 K13 = as.double(ptable$mean[7])
 K31 = as.double(ptable$mean[8])
 beta_abs= 0.5*(K13+K31+K10-sqrt((K13+K31+K10)^2-4*K31*K10))
-alpha_abs = K31*K10/beta
+alpha_abs = K31*K10/beta_abs
 
 K10 = as.double(ptable$mean[2])/as.double(ptable$mean[4])
 K13 = as.double(ptable$mean[3])/as.double(ptable$mean[4])
 K31 = as.double(ptable$mean[3])/as.double(ptable$mean[5])
 beta_dis= 0.5*(K13+K31+K10-sqrt((K13+K31+K10)^2-4*K31*K10))
-alpha_dis = K31*K10/beta
+alpha_dis = K31*K10/beta_dis
 
 thalf_beta_abs = 0.693/beta_abs
 thalf_alpha_abs = 0.693/alpha_abs
@@ -996,8 +996,8 @@ xdata <- xdata %>%
 ```
 
 ## Parameters
-```{r table-mod4, eval = TRUE}
-pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+```{r table-mod4, eval = F}
+pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
          "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu","rho")
 
 ptable <-plot_param_tables(mod_to_plot, pars)
@@ -1015,7 +1015,7 @@ write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 
 ## Trace plots
 ```{r trace-plots-mod4}
-pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
          "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu")
 
 p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
@@ -1026,47 +1026,6 @@ p2
 
 ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
 ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
-```
-
-## Individual and population predictions
-```{r IPRED-PRED-mod4}
-ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
-ppc1
-ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
-```
-
-## VPC
-```{r VPC-mod4}
-vpc_plot<-vpc_fun(mod_to_plot, xdata)
-vpc_plot
-
-ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
-```
-
-## GOF
-```{r GOF-mod4, include=TRUE}
-plot_gof <-gof_fun(mod_to_plot, xdata)
-plot_gof
-ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = plot_gof, width=12, height=10, dpi=600, units="cm")
-```
-
-## Individual parameters vs. covariates
-```{r covariets-mod4, include=TRUE}
-etaM<-extract_etas_fun(mod_to_plot,xdata)
-
-cont_cov = c("AGE//Age,y","WT//Body Weight, kg")
-cat_cov = c("SEXF//Sex")
-
-p1 <- map(cont_cov, \(x) fun_cont_cov(x,etaM))
-p2 <- map(cat_cov, \(x) fun_cat_cov(x,etaM))
-
-plots <- c(p1,p2)
-plots
-map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir, 
-                                 glue::glue("cov-plots-{x}.png")),
-                                 plot = plots[[x]], 
-                                 width=12, height=10, 
-                                 dpi=600, units="cm"))
 ```
 
 # M4p: Prior predicitve check.  Different Priors (Based on https://pubmed.ncbi.nlm.nih.gov/8533912/)
@@ -1139,79 +1098,185 @@ vpc_plot
 ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
 ```
 
-# Compare
-## Parameters (figure)
-```{r prior-posterior-mod4}
-subdir = "4"
+# M5: 2cmp model + 2cmp absorption + KA41~SEX
 
-model_figures_dir <- here::here(figures_dir, subdir)
-model_tables_dir <- here::here(tables_dir,subdir)
+$$
+\begin{aligned}
+& \frac{dA1}{dt} = - KA \cdot  A1 - KA14 \cdot  A1 + KA41 \cdot  A4 \\
+& \frac{dA4}{dt} =  KA14 \cdot  A1 - KA41 \cdot  A4 \\
+& V_1 \cdot \frac{dC_1}{dt} =  KA \cdot  A1 - CL \cdot  C_1 - Q \cdot  C_1 + Q \cdot  C_2 \\
+& V_2 \cdot \frac{dC_2}{dt} =  Q \cdot  C1 - Q \cdot  C_2
+\end{aligned}
+$$
+$$ 
+\begin{aligned}
+& \theta_{KA} \sim lognormal(log(1),0.50), \\
+& \theta_{KA14} \sim lognormal(log(4.85),0.50), \\
+& \theta_{KA41} \sim lognormal(log(0.080),0.50), \\
+& \theta_{LOGKA41SEX} \sim normal(0,0.25), \\
+\end{aligned}
+$$
+
+```{r  model5, eval = FALSE}
+mod5  <- read_model(file.path(model_dir, "5"))
+mod5_res <- mod5 %>% submit_model(.overwrite = TRUE) 
+```
+
+## Run stan
+```{r load-stan-mod5}
+model_name = "5"
+
+model_figures_dir <- here::here(figures_dir, model_name)
+model_tables_dir <- here::here(tables_dir,model_name)
 dir.create(model_figures_dir, recursive = T)
 dir.create(model_tables_dir, recursive = T)
 
-modx  <- read_model(here::here(model_dir, "4"))
-mod_to_plot1 <- read_fit_model(modx)
-modx  <- read_model(here::here(model_dir, "4a"))
-mod_to_plot2 <- read_fit_model(modx)
+mod2  <- read_model(here::here(model_dir, model_name))
+mod_to_plot <- read_fit_model(mod2)
 
-pars = c("CLHat", "QHat", "V1Hat", "V2Hat","KAHat", "KA14Hat", "KA41Hat")
-p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
-p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
+xdata <- xdata %>%
+    filter(OUT!=1, CMT!=22, CMT!=33) %>%
+  mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+```
 
-p1_data = p1$plot$data%>%mutate(type = "posterior")
-p2_data = p2$plot$data%>%mutate(type = "prior")
+## Parameters
+```{r table-mod5, eval = TRUE}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "logKA14SEXHat", "omega", "sigma","nu","rho")
 
-plot1= rbind(p1_data,p2_data)%>%
-  ggplot(aes(y=type, x=m))+
-  geom_point(size=2)+
-  geom_linerange(aes(xmin = l, xmax = h), size=1)+
-  geom_linerange(aes(xmin = ll, xmax = hh))+
-  labs(x="",y="")+
-  facet_wrap(~parameter, scales="free_x")
-plot1
-ggsave(filename = here::here(model_figures_dir, "prior-posterior-1.png"),plot = plot1, width=12, height=10, dpi=600, units="cm")
+ptable <-plot_param_tables(mod_to_plot, pars)
 
-pars = c("omega", "sigma", "nu")
-p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
-p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
+ptable%>% knitr::kable()
 
-p1_data = p1$plot$data%>%mutate(type = "posterior")
-p2_data = p2$plot$data%>%mutate(type = "prior")
+writeLines(knitr::kable(ptable %>%
+                          select(-mad,-ess_bulk,-ess_tail) %>%
+                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
+           here::here(model_tables_dir, "parameters-table.tex"))
 
-plot2 = rbind(p1_data,p2_data)%>%
-  ggplot(aes(y=type, x=m))+
-  geom_point(size=2)+
-  geom_linerange(aes(xmin = l, xmax = h), size=1)+
-  geom_linerange(aes(xmin = ll, xmax = hh))+
-  labs(x="",y="")+
-  facet_wrap(~parameter, scales="free_x")
-plot2
-ggsave(filename = here::here(model_figures_dir, "prior-posterior-2.png"), plot = plot2, width=12, height=10, dpi=600, units="cm")
+write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
+```
 
-pars = c("rho")
-p1=bayesplot::mcmc_intervals(mod_to_plot1$draws(pars))
-p2=bayesplot::mcmc_intervals(mod_to_plot2$draws(pars))
 
-p1_data = p1$plot$data%>%mutate(type = "posterior")
-p2_data = p2$plot$data%>%mutate(type = "prior")
+## Trace plots
+```{r trace-plots-mod5}
+pars = c("lp__", "CLHat", "QHat", "V1Hat", "V2Hat",
+         "KAHat", "KA14Hat", "KA41Hat", "logKA14SEXHat", "omega", "sigma","nu")
 
-plot3 = rbind(p1_data,p2_data)%>%
-  ggplot(aes(y=type, x=m))+
-  geom_point(size=2)+
-  geom_linerange(aes(xmin = l, xmax = h), size=1)+
-  geom_linerange(aes(xmin = ll, xmax = hh))+
-  labs(x="",y="")+
-  facet_wrap(~parameter, scales="free_x")+
-  theme(axis.text.x = element_text(size=6),
-        axis.text.y = element_text(size=6),
-        axis.text = element_text(size=10),
-        axis.title=element_text(size=10),
-        strip.text.x = element_text(size = 6,margin = margin(0,0,0,0, "cm")), 
-        legend.text=element_text(size=6),
-        legend.title =element_text(size=6))
-plot3
-ggsave(filename = here::here(model_figures_dir, "prior-posterior-3.png"), plot = plot3, width=12, height=10, dpi=600, units="cm")
+p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
+p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
 
+p1
+p2
+
+ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual and population predictions
+```{r IPRED-PRED-mod5}
+ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
+ppc1
+ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+```
+
+## VPC
+```{r VPC-mod5}
+vpc_plot<-vpc_fun(mod_to_plot, xdata)
+vpc_plot
+
+ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+```
+
+## GOF
+```{r GOF-mod5, include=TRUE}
+plot_gof <-gof_fun(mod_to_plot, xdata)
+plot_gof
+ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = plot_gof, width=12, height=10, dpi=600, units="cm")
+```
+
+## Individual parameters vs. covariates
+```{r covariets-mod5, include=TRUE}
+etaM<-extract_etas_fun(mod_to_plot,xdata)
+
+cont_cov = c("AGE//Age,y","WT//Body Weight, kg")
+cat_cov = c("SEXF//Sex")
+
+p1 <- map(cont_cov, \(x) fun_cont_cov(x,etaM))
+p2 <- map(cat_cov, \(x) fun_cat_cov(x,etaM))
+
+plots <- c(p1,p2)
+plots
+map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir, 
+                                 glue::glue("cov-plots-{x}.png")),
+                                 plot = plots[[x]], 
+                                 width=12, height=10, 
+                                 dpi=600, units="cm"))
+```
+
+# Compare models 
+
+## LOO-based
+```{r compare-models-log-lik, eval=FALSE}
+  # mod5  <- read_model(file.path(model_dir, "5"))
+  # mod5_gq <- copy_model_as_stan_gq(mod5, .overwrite = TRUE)
+
+mod1_gq  <- read_model(file.path(model_dir, "1_gq"))
+mod1_gq <- submit_model(mod1_gq,.overwrite = TRUE)
+
+mod2_gq  <- read_model(file.path(model_dir, "2_gq"))
+mod2_gq <- submit_model(mod2_gq,.overwrite = TRUE)
+
+mod3_gq  <- read_model(file.path(model_dir, "3_gq"))
+mod3_gq <- submit_model(mod3_gq,.overwrite = TRUE)
+
+mod5_gq  <- read_model(file.path(model_dir, "5_gq"))
+mod5_gq <- submit_model(mod5_gq,.overwrite = TRUE)
+```
+
+```{r, model-comparison}
+
+library(loo)
+mod1_gq  <- read_model(file.path(model_dir, "1_gq"))
+mod2_gq  <- read_model(file.path(model_dir, "2_gq"))
+mod3_gq  <- read_model(file.path(model_dir, "3_gq"))
+mod5_gq  <- read_model(file.path(model_dir, "5_gq"))
+
+files <- list.files(path = here::here(mod1_gq$absolute_model_path,"1_gq-output"),
+                    pattern = "\\.csv$", 
+                    ignore.case = TRUE, full.names=TRUE)
+
+temp <- cmdstanr::read_cmdstan_csv(files)
+ll1 <- as_draws_array(temp$generated_quantities)
+
+files <- list.files(path = here::here(mod2_gq$absolute_model_path,"2_gq-output"),
+                    pattern = "\\.csv$", 
+                    ignore.case = TRUE, full.names=TRUE)
+
+temp <- cmdstanr::read_cmdstan_csv(files)
+ll2 <- as_draws_array(temp$generated_quantities)
+
+files <- list.files(path = here::here(mod3_gq$absolute_model_path,"3_gq-output"),
+                    pattern = "\\.csv$", 
+                    ignore.case = TRUE, full.names=TRUE)
+
+temp <- cmdstanr::read_cmdstan_csv(files)
+ll3 <- as_draws_array(temp$generated_quantities)
+
+files <- list.files(path = here::here(mod5_gq$absolute_model_path,"5_gq-output"),
+                    pattern = "\\.csv$", 
+                    ignore.case = TRUE, full.names=TRUE)
+
+temp <- cmdstanr::read_cmdstan_csv(files)
+ll5 <- as_draws_array(temp$generated_quantities)
+
+loo1 <- loo(ll1) 
+loo2 <- loo(ll2)
+loo3 <- loo(ll3)  
+loo5 <- loo(ll5)  
+
+comp <- loo_compare(list("2cmpdisp-1compabs" = loo1, 
+                         "2cmpdisp-2cmpabs"=loo3))
+print(comp, digits = 2)
 ```
 
 # References {.unnumbered}

@@ -26,6 +26,7 @@ make_init <- function(.data, .args) {
          KAHat = exp(rnorm(1, log(1),0.25)),
          KA14Hat = exp(rnorm(1, log(5),0.25)),
          KA41Hat = exp(rnorm(1, log(0.1),0.25)),
+         logKA14SEXHat = rnorm(1, 0,0.25),
          nu = max(3.1,rgamma(1,2,0.1)),
          omega = rep(0.5,7) * exp(rnorm(7, 0, 0.25)),
          L = diag(7),

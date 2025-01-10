@@ -13,6 +13,7 @@ data {
   array[nt] real time;
   array[nt] real rate;
   array[nt] real ii;
+  array[nt] real sex;
   vector<lower=0>[nObs] cObs;
   int<lower=0, upper=1> runestimation; //   a switch to evaluate the likelihood
 }
@@ -33,8 +34,9 @@ parameters {
   real<lower=0, upper=3500> V1Hat;
   real<lower=0, upper=3500> V2Hat;
   real<lower=0, upper=10> KAHat;
-    real<lower=0, upper=10> KA14Hat;
-      real<lower=0, upper=10> KA41Hat;
+  real<lower=0, upper=10> KA14Hat;
+  real<lower=0, upper=10> KA41Hat;
+  real<lower=-2, upper=2>    logKA14SEXHat;
   real<lower=0> sigma;
   real<lower=3> nu; // normality constant
   // Inter-Individual variability
@@ -76,7 +78,7 @@ transformed parameters {
     theta[3] = thetaHat[3] * etaM[j, 3] ; // V1
     theta[4] = thetaHat[4] * etaM[j, 4] ; // V2
     theta[5] = thetaHat[5] * etaM[j, 5] ; // KA
-    theta[6] = thetaHat[6] * etaM[j, 6] ; // KA14
+    theta[6] = thetaHat[6] * exp(logKA14SEXHat*sex[j]) * etaM[j, 6] ; // KA14
     theta[7] = thetaHat[7] * etaM[j, 7] ; // KA41
     
     k10 = theta[1]/theta[3];
@@ -123,6 +125,7 @@ model{
   KAHat ~ lognormal(log(1),0.5);
   KA14Hat ~ lognormal(log(4.85),0.5);
   KA41Hat ~ lognormal(log(0.080),0.5);
+  logKA14SEXHat ~ normal(0,0.25);
   L~lkj_corr_cholesky(10);
   nu ~ gamma(2,0.1);
   to_vector(etaStd) ~ normal(0, 1);
@@ -168,9 +171,9 @@ generated quantities{
     thetaPred[3] = thetaHat[3] * etaPredM[j, 3] ; // V1
     thetaPred[4] = thetaHat[4] * etaPredM[j, 4] ; // V2
     thetaPred[5] = thetaHat[5] * etaPredM[j, 5] ; // KA
-    thetaPred[6] = thetaHat[6] * etaPredM[j, 6] ; // KA14
+    thetaPred[6] = thetaHat[6] * exp(logKA14SEXHat*sex[j]) * etaPredM[j, 6] ; // KA14
     thetaPred[7] = thetaHat[7] * etaPredM[j, 7] ; // KA41 
-      
+     
     k10Pred = thetaPred[1]/thetaPred[3];
     k12Pred = thetaPred[2]/thetaPred[3];
     k21Pred = thetaPred[2]/thetaPred[4];

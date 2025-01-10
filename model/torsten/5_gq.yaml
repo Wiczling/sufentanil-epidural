@@ -1,0 +1,4 @@
+model_type: stan_gq
+based_on:
+- '5'
+gq_parent: '5'
