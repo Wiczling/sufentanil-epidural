@@ -48,7 +48,7 @@ library(nmrec)
 library(cmdstanr)
 library(gridExtra)
 library(posterior)
-
+library(ggh4x)
 set_cmdstan_path("C:/Users/GUMed/Documents/.cmdstan/Torsten-0.91.0/cmdstan")
 
 #' helper functions
@@ -359,6 +359,8 @@ ggsave(filename = here::here(eda_figures_dir, "rawdata2.png"),plot = plot2, widt
 
 print(plot12)
 print(plot2)
+
+figure_2<-plot12
 ```
 
 ## Patients demographics
@@ -515,6 +517,7 @@ ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, w
 vpc_plot<-vpc_fun(mod_to_plot, xdata)
 vpc_plot
 ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+figure_4a<-vpc_plot
 ```
 
 ## GOF
@@ -773,6 +776,7 @@ ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, wi
 ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
 ppc1
 ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+figure_3<-ppc1
 ```
 
 ## VPC
@@ -781,6 +785,7 @@ vpc_plot<-vpc_fun(mod_to_plot, xdata)
 vpc_plot
 
 ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
+figure_4b<-vpc_plot
 ```
 
 ## GOF
@@ -788,6 +793,7 @@ ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, widt
 plot_gof <-gof_fun(mod_to_plot, xdata)
 plot_gof
 ggsave(filename = here::here(model_figures_dir, "gof.png"),plot = plot_gof, width=12, height=10, dpi=600, units="cm")
+figure_5<-plot_gof
 ```
 
 ## Individual parameters vs. covariates
@@ -809,9 +815,13 @@ map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir,
                                  dpi=600, units="cm"))
 ```
 
+## shrinkage ?
+```{r}
+errors <-  posterior::as_draws_df(mod_to_plot$draws("etaM"))%>%
+  mutate(across(starts_with("eta"), ~log(.x)))
 
-
-
+bbr.bayes::shrinkage(errors=errors,"etaM",group_idx = 1, use_sd = TRUE)
+```
 # M3p: Prior predicitve check. 2cmp model + 2cmp absorption
 
 ```{r  model3a, eval = FALSE}
@@ -886,6 +896,8 @@ ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, wi
 ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
 ppc1
 ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
+
+figure_1 <-ppc1
 ```
 
 ## VPC (Prior predictive check)
@@ -1011,7 +1023,6 @@ writeLines(knitr::kable(ptable %>%
 
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ```
-
 
 ## Trace plots
 ```{r trace-plots-mod4}
@@ -1277,6 +1288,46 @@ loo5 <- loo(ll5)
 comp <- loo_compare(list("2cmpdisp-1compabs" = loo1, 
                          "2cmpdisp-2cmpabs"=loo3))
 print(comp, digits = 2)
+```
+
+# Manuscript
+```{r manuscript-figures}
+manuscript_figures_dir <- here::here(figures_dir, "manuscript")
+dir.create(manuscript_figures_dir, recursive = T)
+
+inf_labs <- c("TRUE" = "During infusion",
+  "FALSE" = "Post infusion")
+
+figure_4a <- figure_4a +
+  facet_manual(~infusion, design = "BA",
+               labeller = labeller(infusion = inf_labs),
+                scales = "free_x")+
+  scale_x_facet(infusion == TRUE, limits = c(0, 60))
+
+figure_4b <- figure_4b +
+  facet_manual(~infusion, design = "BA", 
+               labeller = labeller(infusion = inf_labs)) +
+  scale_x_facet(infusion == TRUE, limits = c(0, 60))
+
+figure_1 <- figure_1 + theme(legend.position="none")
+figure_4 <- figure_4a/figure_4b+
+  plot_layout(guides = "collect")+
+  plot_annotation(tag_levels = 'A')&
+                  theme(plot.title = element_text(size = 8),
+                                axis.title = element_text(size = 8),
+                                axis.text  = element_text(size = 6))
+
+ggsave(filename = here::here(manuscript_figures_dir, "figure1.png"),plot = figure_1, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure2.png"),plot = figure_2, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure3.png"),plot = figure_3, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure4.png"),plot = figure_4, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure5.png"),plot = figure_5, width=12, height=10, dpi=600, units="cm")
+
+figure_1
+figure_2
+figure_3
+figure_4
+figure_5
 ```
 
 # References {.unnumbered}
