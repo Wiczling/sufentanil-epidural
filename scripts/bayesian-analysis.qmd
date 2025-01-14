@@ -49,6 +49,8 @@ library(cmdstanr)
 library(gridExtra)
 library(posterior)
 library(ggh4x)
+library(loo)
+
 set_cmdstan_path("C:/Users/GUMed/Documents/.cmdstan/Torsten-0.91.0/cmdstan")
 
 #' helper functions
@@ -398,8 +400,7 @@ tab3$data%>% kableExtra::kable()
 
 # Stan
 
-# M1: 2cmp model.
-The data was analyzed using a 2 comp. PK model.
+# M1: 2cmp disposition model + 1 comp abs
 
 $$
 \begin{aligned}
@@ -456,7 +457,6 @@ mod1  <- read_model(file.path(model_dir, "1"))
 #check_stan_model(mod1)
 mod1_res <- mod1 %>% submit_model(.overwrite = TRUE) 
 ```
-
 ## Run stan
 ```{r load-stan-mod1}
 model_name = "1"
@@ -472,6 +472,8 @@ mod_to_plot <- read_fit_model(mod1)
 xdata <- xdata %>%
     filter(OUT!=1, CMT!=22, CMT!=33) %>%
   mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+
+loo1 = mod_to_plot$loo()
 ```
 
 ## Parameters
@@ -550,9 +552,9 @@ map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir,
                                  dpi=600, units="cm"))
 ```
 
-# M2: 2cmp model + fr
+# M2: 2cmp disposition model + 1 comp abs. Wider prior distribution
 
-The statistical model now allows for the between-study difference in PK parameters reflected vy $\theta_{fr}$
+The statistical model now allows for the between-study difference in PK parameters reflected by $\theta_{fr}$
 
 $$ 
 \begin{aligned}
@@ -673,8 +675,6 @@ map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir,
 
 # M3: 2cmp model + 2cmp absorption
 
-A two compartment absorption model
-
 $$
 \begin{aligned}
 & \frac{dA1}{dt} = - KA \cdot  A1 - KA14 \cdot  A1 + KA41 \cdot  A4 \\
@@ -714,6 +714,8 @@ mod_to_plot <- read_fit_model(mod2)
 xdata <- xdata %>%
     filter(OUT!=1, CMT!=22, CMT!=33) %>%
   mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+
+loo3 = mod_to_plot$loo()
 ```
 
 ## Parameters
@@ -730,31 +732,38 @@ writeLines(knitr::kable(ptable %>%
                           filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
            here::here(model_tables_dir, "parameters-table.tex"))
 write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
-
-K10 = as.double(ptable$mean[6])
-K13 = as.double(ptable$mean[7])
-K31 = as.double(ptable$mean[8])
-beta_abs= 0.5*(K13+K31+K10-sqrt((K13+K31+K10)^2-4*K31*K10))
-alpha_abs = K31*K10/beta_abs
-
-K10 = as.double(ptable$mean[2])/as.double(ptable$mean[4])
-K13 = as.double(ptable$mean[3])/as.double(ptable$mean[4])
-K31 = as.double(ptable$mean[3])/as.double(ptable$mean[5])
-beta_dis= 0.5*(K13+K31+K10-sqrt((K13+K31+K10)^2-4*K31*K10))
-alpha_dis = K31*K10/beta_dis
-
-thalf_beta_abs = 0.693/beta_abs
-thalf_alpha_abs = 0.693/alpha_abs
-thalf_beta_dis = 0.693/beta_dis
-thalf_alpha_dis = 0.693/alpha_dis
-
-thalf_beta_abs 
-thalf_alpha_abs 
-thalf_beta_dis
-thalf_alpha_dis 
-
 ```
 
+### Half-lifes
+```{r half-life}
+
+thetaHat <- posterior::as_draws_df(mod_to_plot$draws(variables = c("thetaHat"))) %>% 
+  mutate(
+K10 = `thetaHat[5]`,
+K14 = `thetaHat[6]`,
+K41 = `thetaHat[7]`,
+K20 = `thetaHat[1]`/`thetaHat[3]`,
+K23 = `thetaHat[2]`/`thetaHat[3]`,
+K32 = `thetaHat[2]`/`thetaHat[4]`,
+beta_abs= 0.5*(K14+K41+K10-sqrt((K14+K41+K10)^2-4*K41*K10)),
+alpha_abs = K41*K10/beta_abs,
+beta_dis= 0.5*(K23+K32+K20-sqrt((K23+K32+K20)^2-4*K32*K20)),
+alpha_dis = K32*K20/beta_dis,
+thalf_beta_abs = 0.693/beta_abs,
+thalf_alpha_abs = 0.693/alpha_abs,
+thalf_beta_dis = 0.693/beta_dis,
+thalf_alpha_dis = 0.693/alpha_dis) %>%
+  summarise(mthalf_beta_abs = mean(thalf_beta_abs),
+            sdthalf_beta_abs = sd(thalf_beta_abs),
+mthalf_alpha_abs = mean(thalf_alpha_abs),
+sdthalf_alpha_abs = sd(thalf_alpha_abs),
+mthalf_beta_dis = mean(thalf_beta_dis),
+sdthalf_beta_dis = sd(thalf_beta_dis),
+mthalf_alpha_dis = mean(thalf_alpha_dis),
+sdthalf_alpha_dis = sd(thalf_alpha_dis))
+
+thetaHat
+```
 
 ## Trace plots
 ```{r trace-plots-mod3}
@@ -769,6 +778,15 @@ p2
 
 ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
 ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
+```
+
+## Pairs plots
+```{r}
+pars = c("CLHat", "QHat", "V1Hat", "V2Hat", "KAHat", "KA14Hat", "KA41Hat")
+
+p1<-bayesplot::mcmc_pairs(mod_to_plot$draws(pars), pars, off_diag_args = list(size = 1, alpha = 0.5))
+
+ggsave(filename = here::here(model_figures_dir, "dense-pairs.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
 ```
 
 ## Individual and population predictions
@@ -815,13 +833,16 @@ map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir,
                                  dpi=600, units="cm"))
 ```
 
-## shrinkage ?
+## Shrinkage
 ```{r}
-errors <-  posterior::as_draws_df(mod_to_plot$draws("etaM"))%>%
+etas <-  posterior::as_draws_df(mod_to_plot$draws("etaM"))%>%
   mutate(across(starts_with("eta"), ~log(.x)))
+errors <-  posterior::as_draws_df(mod_to_plot$draws("errors"))
 
-bbr.bayes::shrinkage(errors=errors,"etaM",group_idx = 1, use_sd = TRUE)
+bbr.bayes::shrinkage(etas,"etaM",group_idx = 1, use_sd = TRUE)
+bbr.bayes::shrinkage(errors,"errors", use_sd = TRUE)
 ```
+
 # M3p: Prior predicitve check. 2cmp model + 2cmp absorption
 
 ```{r  model3a, eval = FALSE}
@@ -909,8 +930,8 @@ ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, widt
 ```
 
 
-# Compare
-## Parameters (figure)
+## Compare  M3p
+### Parameters (figure)
 ```{r prior-posterior-mod3}
 subdir = "3"
 
@@ -984,7 +1005,7 @@ ggsave(filename = here::here(model_figures_dir, "prior-posterior-3.png"), plot =
 
 ```
 
-# M4: Different Priors (Based on https://pubmed.ncbi.nlm.nih.gov/8533912/)
+# M4: 3 comp. model Different Priors (Based on https://pubmed.ncbi.nlm.nih.gov/8533912/)
 ```{r  model4, eval = FALSE}
 mod4  <- read_model(file.path(model_dir, "4"))
 mod4_res <- mod4 %>% submit_model(.overwrite = TRUE) 
@@ -1148,6 +1169,8 @@ mod_to_plot <- read_fit_model(mod2)
 xdata <- xdata %>%
     filter(OUT!=1, CMT!=22, CMT!=33) %>%
   mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
+
+loo5 = mod_to_plot$loo()
 ```
 
 ## Parameters
@@ -1225,32 +1248,16 @@ map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir,
 ```
 
 # Compare models 
-
-## LOO-based
-```{r compare-models-log-lik, eval=FALSE}
-  # mod5  <- read_model(file.path(model_dir, "5"))
-  # mod5_gq <- copy_model_as_stan_gq(mod5, .overwrite = TRUE)
-
+## Based on generated-quantities
+```{r compare-models-log-lik - gq, eval=FALSE}
+# mod5  <- read_model(file.path(model_dir, "5"))
+# mod5_gq <- copy_model_as_stan_gq(mod5, .overwrite = TRUE)
 mod1_gq  <- read_model(file.path(model_dir, "1_gq"))
 mod1_gq <- submit_model(mod1_gq,.overwrite = TRUE)
-
-mod2_gq  <- read_model(file.path(model_dir, "2_gq"))
-mod2_gq <- submit_model(mod2_gq,.overwrite = TRUE)
-
 mod3_gq  <- read_model(file.path(model_dir, "3_gq"))
 mod3_gq <- submit_model(mod3_gq,.overwrite = TRUE)
-
 mod5_gq  <- read_model(file.path(model_dir, "5_gq"))
 mod5_gq <- submit_model(mod5_gq,.overwrite = TRUE)
-```
-
-```{r, model-comparison}
-
-library(loo)
-mod1_gq  <- read_model(file.path(model_dir, "1_gq"))
-mod2_gq  <- read_model(file.path(model_dir, "2_gq"))
-mod3_gq  <- read_model(file.path(model_dir, "3_gq"))
-mod5_gq  <- read_model(file.path(model_dir, "5_gq"))
 
 files <- list.files(path = here::here(mod1_gq$absolute_model_path,"1_gq-output"),
                     pattern = "\\.csv$", 
@@ -1258,13 +1265,6 @@ files <- list.files(path = here::here(mod1_gq$absolute_model_path,"1_gq-output")
 
 temp <- cmdstanr::read_cmdstan_csv(files)
 ll1 <- as_draws_array(temp$generated_quantities)
-
-files <- list.files(path = here::here(mod2_gq$absolute_model_path,"2_gq-output"),
-                    pattern = "\\.csv$", 
-                    ignore.case = TRUE, full.names=TRUE)
-
-temp <- cmdstanr::read_cmdstan_csv(files)
-ll2 <- as_draws_array(temp$generated_quantities)
 
 files <- list.files(path = here::here(mod3_gq$absolute_model_path,"3_gq-output"),
                     pattern = "\\.csv$", 
@@ -1281,15 +1281,40 @@ temp <- cmdstanr::read_cmdstan_csv(files)
 ll5 <- as_draws_array(temp$generated_quantities)
 
 loo1 <- loo(ll1) 
-loo2 <- loo(ll2)
 loo3 <- loo(ll3)  
-loo5 <- loo(ll5)  
-
-comp <- loo_compare(list("2cmpdisp-1compabs" = loo1, 
-                         "2cmpdisp-2cmpabs"=loo3))
-print(comp, digits = 2)
+loo5 <- loo(ll5)
 ```
 
+## Direct method
+```{r cmdstanr-loo, model-comparison}
+comp <- loo_compare(list("2cmpdisp-1compabs" = loo1, 
+                         "2cmpdisp-2cmpabs"=loo3,
+                         "2cmpdisp-2cmpabs-cov"=loo5))
+print(comp, digits = 2)
+```
+## Moment matched 
+
+```{r, eval=FALSE}
+mod1 <- read_fit_model(read_model(here::here(model_dir, "1")))
+mod3 <- read_fit_model(read_model(here::here(model_dir, "3")))
+mod5 <- read_fit_model(read_model(here::here(model_dir, "5")))
+
+loo1 = mod1$loo(r_eff = 1,moment_match = T, cores = getOption("mc.cores", 10))
+loo3 = mod3$loo(r_eff = 1,moment_match = T, cores = getOption("mc.cores", 10))
+loo5 = mod5$loo(r_eff = 1,moment_match = T, cores = getOption("mc.cores", 10))
+
+comp <- loo_compare(list("2cmpdisp-1compabs" = loo1, 
+                         "2cmpdisp-2cmpabs"=loo3,
+                         "2cmpdisp-2cmpabs-cov"=loo5))
+
+print(comp, digits = 2)
+
+stacking_wts <- stacking_weights(cbind(loo1$pointwise[, "elpd_loo"], 
+                                       loo3$pointwise[, "elpd_loo"],
+                                       loo5$pointwise[, "elpd_loo"]))
+
+stacking_wts
+```
 # Manuscript
 ```{r manuscript-figures}
 manuscript_figures_dir <- here::here(figures_dir, "manuscript")
@@ -1306,7 +1331,8 @@ figure_4a <- figure_4a +
 
 figure_4b <- figure_4b +
   facet_manual(~infusion, design = "BA", 
-               labeller = labeller(infusion = inf_labs)) +
+               labeller = labeller(infusion = inf_labs),
+                scales = "free_x") +
   scale_x_facet(infusion == TRUE, limits = c(0, 60))
 
 figure_1 <- figure_1 + theme(legend.position="none")
@@ -1317,11 +1343,11 @@ figure_4 <- figure_4a/figure_4b+
                                 axis.title = element_text(size = 8),
                                 axis.text  = element_text(size = 6))
 
-ggsave(filename = here::here(manuscript_figures_dir, "figure1.png"),plot = figure_1, width=12, height=10, dpi=600, units="cm")
-ggsave(filename = here::here(manuscript_figures_dir, "figure2.png"),plot = figure_2, width=12, height=10, dpi=600, units="cm")
-ggsave(filename = here::here(manuscript_figures_dir, "figure3.png"),plot = figure_3, width=12, height=10, dpi=600, units="cm")
-ggsave(filename = here::here(manuscript_figures_dir, "figure4.png"),plot = figure_4, width=12, height=10, dpi=600, units="cm")
-ggsave(filename = here::here(manuscript_figures_dir, "figure5.png"),plot = figure_5, width=12, height=10, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure1.png"),plot = figure_1, width=16, height=12, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure2.png"),plot = figure_2, width=16, height=12, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure3.png"),plot = figure_3, width=16, height=12, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure4.png"),plot = figure_4, width=16, height=18, dpi=600, units="cm")
+ggsave(filename = here::here(manuscript_figures_dir, "figure5.png"),plot = figure_5, width=16, height=12, dpi=600, units="cm")
 
 figure_1
 figure_2

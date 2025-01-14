@@ -34,7 +34,7 @@ parameters {
   real<lower=0, upper=3500> V1Hat;
   real<lower=0, upper=3500> V2Hat;
   real<lower=0, upper=10> KAHat;
-  real<lower=0, upper=10> KA14Hat;
+  real<lower=0, upper=50> KA14Hat;
   real<lower=0, upper=10> KA41Hat;
   real<lower=-2, upper=2>    logKA14SEXHat;
   real<lower=0> sigma;
@@ -153,7 +153,8 @@ generated quantities{
   real k10Pred;
   real k12Pred;
   real k21Pred;
-  
+  vector[nObs] log_lik;
+  vector[nObs] errors;
   rho = L * L';
 
     for(i in 1:nSubjects){
@@ -210,6 +211,11 @@ generated quantities{
   for(i in 1:nt){
       cCond[i] = exp(student_t_rng(nu,log(fmax(machine_precision(),cHat[i])), sigma));     // individual predictions
       cPred[i] = exp(student_t_rng(nu,log(fmax(machine_precision(),cHatPred[i])), sigma)); // population predictions
-
  }
+ 
+    for(i in 1:nObs){
+   errors[i] = logCObs[i]-log(fmax(machine_precision(),cHatObs[i]));
+   log_lik[i] = student_t_lpdf(logCObs[i] | nu, log(fmax(machine_precision(),cHatObs[i])), sigma);
+ }
+ 
 }

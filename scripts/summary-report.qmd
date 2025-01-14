@@ -177,7 +177,7 @@ The summary of posterior distribution of model parameters is shown in \cref{para
 
 \caption{Parameter estimates.}
 \label{param_summary}
-\input{../deliv/tables/torsten/4/parameters-table.tex}
+\input{../deliv/tables/torsten/3/parameters-table.tex}
 
 \end{center}
 \end{table}

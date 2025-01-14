@@ -104,7 +104,9 @@ model{
 
 generated quantities{
   vector[nObs] log_lik;
+  vector[nObs] errors;
   for(i in 1:nObs){
-   log_lik[i] = student_t_lpdf(cObs[i] | nu, log(fmax(machine_precision(),cHatObs[i])), sigma);
+   errors[i] = logCObs[i]-log(fmax(machine_precision(),cHatObs[i]));
+   log_lik[i] = student_t_lpdf(logCObs[i] | nu, log(fmax(machine_precision(),cHatObs[i])), sigma);
  }
 }

@@ -1,0 +1,210 @@
+---
+title: "Pharmacokinetics of sufentanil after epidural administration"
+author:   
+  - Pawel Wiczling
+  - Agnieszka Bienert
+  - Paulina Okuńska
+  - Agnieszka Borsuk-de Moor
+  - Justyna Ber
+date: today
+date-format: long
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=F, message=FALSE, error=FALSE, warning=FALSE, comment=NA, out.width='95%')
+```
+
+# Introduction
+
+Pharmacokinetics of sufentanil after epidural administration.
+
+```{r load-libraries}
+library(pracma)
+library(bbr)
+library(bbr.bayes)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(mrgsolve)
+library(vpc)
+library(pmplots)
+library(naniar)
+library(knitr)
+library(data.table)
+library(tidyverse)
+library(glue)
+library(whisker)
+library(here)
+library(scales)
+library(pmplots)
+library(pmtables)
+library(nmrec)
+library(cmdstanr)
+library(gridExtra)
+library(posterior)
+library(ggh4x)
+library(mrgsolve)
+
+set_cmdstan_path("C:/Users/GUMed/Documents/.cmdstan/Torsten-0.91.0/cmdstan")
+
+#' helper functions
+source(here::here("scripts","functions","functions-tables.R"))
+
+# table summary 
+sigfun = function(.x){sig(.x,digits=3)}
+
+#for the future:
+#remotes::install_github("metrumresearchgroup/nmrec")
+#devtools::install_github("metrumresearchgroup/bbr", ref = "main")
+# https://github.com/metrumresearchgroup/NMBayesTutorial/tree/main
+thisScript <- "bayesian-analysis.qmd"
+```
+
+# Settings
+```{r settings}
+figures_dir <- here::here("deliv","figures")
+tables_dir <- here::here("deliv","tables")
+sim_model_dir <- here::here("model","mrgsolve")  
+folder_name = "sim"
+model_figures_dir <- here::here(figures_dir, folder_name)
+model_tables_dir <- here::here(tables_dir,folder_name)
+dir.create(model_figures_dir, recursive = T)
+dir.create(model_tables_dir, recursive = T)
+
+#----
+model_name = "2cmpabs-2cmpdisp"
+pkmod3 <- mread(here::here(sim_model_dir, model_name))
+model_dir <- here::here("model","torsten") 
+modx  <- read_model(here::here(model_dir, "3"))
+mod_to_plot <- read_fit_model(modx)
+pars = c("CLHat", "QHat", "V1Hat", "V2Hat", "KAHat", "KA14Hat", "KA41Hat")
+ptable3 <- posterior::as_draws_df(mod_to_plot$draws(c(pars))) %>%
+  mutate(ID=1:n()) %>%
+  rename(THETA1=CLHat,
+         THETA2=QHat,
+         THETA3=V1Hat,
+         THETA4=V2Hat,
+         THETA5=KAHat,
+         THETA6=KA14Hat,
+         THETA7=KA41Hat)
+
+#----
+model_name = "2cmpabs-1cmpdisp"
+pkmod1 <- mread(here::here(sim_model_dir, model_name))
+model_dir <- here::here("model","torsten") 
+modx  <- read_model(here::here(model_dir, "1"))
+mod_to_plot <- read_fit_model(modx)
+pars = c("CLHat", "QHat", "V1Hat", "V2Hat", "KAHat")
+ptable1 <- posterior::as_draws_df(mod_to_plot$draws(c(pars))) %>%
+  mutate(ID=1:n()) %>%
+  rename(THETA1=CLHat,
+         THETA2=QHat,
+         THETA3=V1Hat,
+         THETA4=V2Hat,
+         THETA5=KAHat)
+```
+
+
+```{r plots}
+data5_1<-pkmod1 %>% 
+  idata_set(ptable1)%>%
+  ev(amt = 50, rate = 10) %>% 
+  mrgsim(start=0, end = 200, delta = 0.1) %>%
+  as.data.frame() %>%
+  group_by(time) %>%
+  summarize(absq0.5 =  quantile(ABS,probs=c(0.5)),
+            absq0.05 = quantile(ABS,probs=c(0.05)),
+            absq0.95  =quantile(ABS,probs=c(0.95)),
+            contq0.5 =  quantile(CENT,probs=c(0.5)),
+            contq0.05 = quantile(CENT,probs=c(0.05)),
+            contq0.95  =quantile(CENT,probs=c(0.95))) %>%
+  mutate(tinf = "5-1cmp")
+
+data50_1<-pkmod1 %>% 
+  idata_set(ptable1)%>%
+  ev(amt = 500, rate = 10) %>% 
+  mrgsim(start=0, end = 200, delta = 0.1) %>%
+  as.data.frame() %>%
+  group_by(time) %>%
+  summarize(absq0.5 =  quantile(ABS,probs=c(0.5)),
+            absq0.05 = quantile(ABS,probs=c(0.05)),
+            absq0.95  =quantile(ABS,probs=c(0.95)),
+            contq0.5 =  quantile(CENT,probs=c(0.5)),
+            contq0.05 = quantile(CENT,probs=c(0.05)),
+            contq0.95  =quantile(CENT,probs=c(0.95))) %>%
+  mutate(tinf = "50-1cmp")
+
+data5_3<-pkmod3 %>% 
+  idata_set(ptable3)%>%
+  ev(amt = 50, rate = 10) %>% 
+  mrgsim(start=0, end = 200, delta = 0.1) %>%
+  as.data.frame() %>%
+  group_by(time) %>%
+  summarize(absq0.5 =  quantile(ABS,probs=c(0.5)),
+            absq0.05 = quantile(ABS,probs=c(0.05)),
+            absq0.95  =quantile(ABS,probs=c(0.95)),
+            contq0.5 =  quantile(CENT,probs=c(0.5)),
+            contq0.05 = quantile(CENT,probs=c(0.05)),
+            contq0.95  =quantile(CENT,probs=c(0.95))) %>%
+  mutate(tinf = "5-2cmp")
+
+data50_3<-pkmod3 %>% 
+  idata_set(ptable3)%>%
+  ev(amt = 500, rate = 10) %>% 
+  mrgsim(start=0, end = 200, delta = 0.1) %>%
+  as.data.frame() %>%
+  group_by(time) %>%
+  summarize(absq0.5 =  quantile(ABS,probs=c(0.5)),
+            absq0.05 = quantile(ABS,probs=c(0.05)),
+            absq0.95  =quantile(ABS,probs=c(0.95)),
+            contq0.5 =  quantile(CENT,probs=c(0.5)),
+            contq0.05 = quantile(CENT,probs=c(0.05)),
+            contq0.95  =quantile(CENT,probs=c(0.95))) %>%
+  mutate(tinf = "50-2cmp")
+
+data = rbind(data5_1,data50_1,data5_3,data50_3)
+
+p1 <- data %>%
+  ggplot(aes(x=time, y = absq0.5, color=as.factor(tinf)))+
+  geom_line()+
+   geom_ribbon(aes(ymin = absq0.05, ymax = absq0.95, fill=as.factor(tinf)), colour = NA, alpha = 0.2) + 
+  labs(y = "Absorption comp., ng/ml", color="tinf", fill="tinf")+
+  scale_y_continuous(trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  coord_cartesian(ylim=c(0.01,200))
+
+p2 <- data %>%
+  ggplot(aes(x=time, y = contq0.5, color=as.factor(tinf)))+
+   geom_ribbon(aes(ymin = contq0.05, ymax = contq0.95, fill=as.factor(tinf)), colour = NA, alpha = 0.2) + 
+  geom_line()+
+  labs(y="Concentration, pg/ml", color="tinf", fill="tinf") +
+  scale_y_continuous(trans='log10',
+                      breaks=trans_breaks('log10', function(x) 10^x),
+                      labels=trans_format('log10', math_format(10^.x)))+
+  coord_cartesian(ylim=c(0.01,200))
+
+p1/p2
+```
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+# Licenses {.unnumbered}
+
+-   Code & copy; 2025, Paweł Wiczling, licensed under BSD-3.
+-   Text & copy; 2025, Paweł Wiczling, licensed under CC-BY-NC 4.0.
+
+# Original Computing Environment {.unnumbered}
+
+```{r sessionInfo}
+sessionInfo()
+```

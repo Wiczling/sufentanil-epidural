@@ -26,12 +26,10 @@ make_init <- function(.data, .args) {
          V2Hat = exp(rnorm(1, log(60),0.25)), 
          V3Hat = exp(rnorm(1, log(600),0.25)), 
          KAHat = exp(rnorm(1, log(1),0.25)),
-         KA14Hat = exp(rnorm(1, log(5),0.25)),
-         KA41Hat = exp(rnorm(1, log(0.1),0.25)),
-         nu = 10,# max(3.1,rgamma(1,2,0.1)),
-         omega = rep(0.5,9) * exp(rnorm(9, 0, 0.25)),
-         L = diag(9),
+         nu = max(3.1,rgamma(1,2,0.1)),
+         omega = rep(0.5,7) * exp(rnorm(7, 0, 0.25)),
+         L = diag(10),
          sigma = exp(rnorm(1,log(0.2),0.25)),
-         etaStd = matrix(0L, 9, .data$nSubjects))
+         etaStd = matrix(0L, 7, .data$nSubjects))
   }
 }
