@@ -103,10 +103,59 @@ model{
 }
 
 generated quantities{
+  array[nt] real cCond;
+  array[nt] real cPred;
+  row_vector[nt] cHatPred;
+  matrix[nCmt, nt] xPred;
+  matrix[nIIV, nSubjects] etaStdPred;
+  matrix<lower=0>[nSubjects, nIIV] etaPredM;
+  corr_matrix[nIIV] rho;
+  array[nTheta] real<lower=0> thetaPred;
   vector[nObs] log_lik;
+      vector[nObs] log_lik_pred;
   vector[nObs] errors;
+  
+    rho = L * L';
+
+    for(i in 1:nSubjects){
+      for(j in 1:nIIV){ 
+        etaStdPred[j, i] = normal_rng(0, 1);
+      }
+    }
+
+    etaPredM = exp(diag_pre_multiply(omega, L * etaStdPred))';
+
+    for(j in 1:nSubjects){
+     
+    thetaPred[1] = thetaHat[1] * etaPredM[j, 1] ; // CL
+    thetaPred[2] = thetaHat[2] * etaPredM[j, 2] ; // Q
+    thetaPred[3] = thetaHat[3] * etaPredM[j, 3] ; // V1
+    thetaPred[4] = thetaHat[4] * etaPredM[j, 4] ; // V2
+    thetaPred[5] = thetaHat[5] * etaPredM[j, 5] ; // KA
+    
+    xPred[,start[j]:end[j]] = pmx_solve_twocpt(time[start[j]:end[j]], 
+                                       amt[start[j]:end[j]],
+                                       rate[start[j]:end[j]],
+                                       ii[start[j]:end[j]],
+                                       evid[start[j]:end[j]],
+                                       cmt[start[j]:end[j]],
+                                       addl[start[j]:end[j]],
+                                       ss[start[j]:end[j]],
+                                       thetaPred, biovar, tlag);
+    
+                                       
+    cHatPred[start[j]:end[j]] = xPred[2,start[j]:end[j]] ./ thetaPred[3]*1000; // divide by V1
+  }
+
+  for(i in 1:nt){
+      cCond[i] = exp(student_t_rng(nu,log(fmax(machine_precision(),cHat[i])), sigma));     // individual predictions
+      cPred[i] = exp(student_t_rng(nu,log(fmax(machine_precision(),cHatPred[i])), sigma)); // population predictions
+
+ }
+
   for(i in 1:nObs){
-   errors[i] = logCObs[i]-log(fmax(machine_precision(),cHatObs[i]));
+   errors[i] = logCObs[i]-log(fmax(machine_precision(),cHatPred[i]));
    log_lik[i] = student_t_lpdf(logCObs[i] | nu, log(fmax(machine_precision(),cHatObs[i])), sigma);
+   log_lik_pred[i] = student_t_lpdf(logCObs[i] | nu, log(fmax(machine_precision(),cHatPred[iObs[i]])), sigma);
  }
 }

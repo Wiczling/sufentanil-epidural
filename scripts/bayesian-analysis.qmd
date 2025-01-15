@@ -1031,7 +1031,7 @@ xdata <- xdata %>%
 ## Parameters
 ```{r table-mod4, eval = F}
 pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
-         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu","rho")
+         "KAHat", "omega", "sigma","nu","rho")
 
 ptable <-plot_param_tables(mod_to_plot, pars)
 
@@ -1048,7 +1048,7 @@ write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
 ## Trace plots
 ```{r trace-plots-mod4}
 pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
-         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu")
+         "KAHat", "omega", "sigma","nu")
 
 p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
 p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
@@ -1058,76 +1058,6 @@ p2
 
 ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
 ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
-```
-
-# M4p: Prior predicitve check.  Different Priors (Based on https://pubmed.ncbi.nlm.nih.gov/8533912/)
-```{r  model4a, eval = FALSE}
-mod4a  <- read_model(file.path(model_dir, "4a"))
-# mod4a <- copy_model_from(mod4, "4a", "prior change",.overwrite=T)
-mod4a_res <- mod4a %>% submit_model(.overwrite = TRUE) 
-```
-
-## Run stan
-```{r load-stan-mod4a}
-model_name = "4a"
-
-model_figures_dir <- here::here(figures_dir, model_name)
-model_tables_dir <- here::here(tables_dir,model_name)
-dir.create(model_figures_dir, recursive = T)
-dir.create(model_tables_dir, recursive = T)
-
-mod2  <- read_model(here::here(model_dir, model_name))
-mod_to_plot <- read_fit_model(mod2)
-
-xdata <- xdata %>%
-    filter(OUT!=1, CMT!=22, CMT!=33) %>%
-  mutate(TIME = if_else(infusion==0,timepostinf,TIMEh))
-```
-
-## Parameters
-```{r table-mod4a, eval = TRUE}
-pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
-         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu","rho")
-
-ptable <-plot_param_tables(mod_to_plot, pars)
-
-writeLines(knitr::kable(ptable %>%
-                          select(-mad,-ess_bulk,-ess_tail) %>%
-                          filter(str_detect(parameter,"rho", negate = TRUE)), format = "latex"),  
-           here::here(model_tables_dir, "parameters-table.tex"))
-
-write.csv(ptable, file = here::here(model_tables_dir, "parameters-table.csv"))
-```
-
-
-## Trace plots
-```{r trace-plots-mod4a}
-pars = c("lp__", "CLHat", "Q1Hat", "Q2Hat", "V1Hat", "V2Hat", "V3Hat",
-         "KAHat", "KA14Hat", "KA41Hat", "omega", "sigma","nu")
-
-p1=bayesplot::mcmc_trace(mod_to_plot$draws(pars))
-p2=bayesplot::mcmc_dens_overlay(mod_to_plot$draws(pars))
-
-p1
-p2
-
-ggsave(filename = here::here(model_figures_dir, "trace-plots.png"),plot = p1, width=12, height=10, dpi=600, units="cm")
-ggsave(filename = here::here(model_figures_dir, "dense-plots.png"),plot = p2, width=12, height=10, dpi=600, units="cm")
-```
-
-## Individual and population predictions (Prior predictive check)
-```{r IPRED-PRED-mod4a}
-ppc1 <- pred_by_id_fun(mod_to_plot, xdata)
-ppc1
-ggsave(filename = here::here(model_figures_dir, "pred-by-id.png"),plot = ppc1, width=12, height=10, dpi=600, units="cm")
-```
-
-## VPC (Prior predictive check)
-```{r VPC-mod4a}
-vpc_plot<-vpc_fun(mod_to_plot, xdata)
-vpc_plot
-
-ggsave(filename = here::here(model_figures_dir, "vpc.png"),plot = vpc_plot, width=12, height=10, dpi=600, units="cm")
 ```
 
 # M5: 2cmp model + 2cmp absorption + KA41~SEX
@@ -1249,40 +1179,40 @@ map(1:length(plots), \(x) ggsave(filename = here::here(model_figures_dir,
 
 # Compare models 
 ## Based on generated-quantities
-```{r compare-models-log-lik - gq, eval=FALSE}
+```{r compare-models-log-lik-gq, eval=FALSE}
+# mod1  <- read_model(file.path(model_dir, "1"))
+# mod1_gq <- copy_model_as_stan_gq(mod1, .overwrite = TRUE)
+# mod3  <- read_model(file.path(model_dir, "3"))
+# mod3_gq <- copy_model_as_stan_gq(mod3, .overwrite = TRUE)
 # mod5  <- read_model(file.path(model_dir, "5"))
 # mod5_gq <- copy_model_as_stan_gq(mod5, .overwrite = TRUE)
-mod1_gq  <- read_model(file.path(model_dir, "1_gq"))
-mod1_gq <- submit_model(mod1_gq,.overwrite = TRUE)
-mod3_gq  <- read_model(file.path(model_dir, "3_gq"))
-mod3_gq <- submit_model(mod3_gq,.overwrite = TRUE)
-mod5_gq  <- read_model(file.path(model_dir, "5_gq"))
-mod5_gq <- submit_model(mod5_gq,.overwrite = TRUE)
 
-files <- list.files(path = here::here(mod1_gq$absolute_model_path,"1_gq-output"),
-                    pattern = "\\.csv$", 
-                    ignore.case = TRUE, full.names=TRUE)
+# mod1_gq  <- read_model(file.path(model_dir, "1_gq"))
+# mod1_gq <- submit_model(mod1_gq,.overwrite = TRUE)
+# mod3_gq  <- read_model(file.path(model_dir, "3_gq"))
+# mod3_gq <- submit_model(mod3_gq,.overwrite = TRUE)
+# mod5_gq  <- read_model(file.path(model_dir, "5_gq"))
+# mod5_gq <- submit_model(mod5_gq,.overwrite = TRUE)
 
-temp <- cmdstanr::read_cmdstan_csv(files)
-ll1 <- as_draws_array(temp$generated_quantities)
+mod1_gq <- read_fit_model(read_model(here::here(model_dir, "1_gq")))
+mod3_gq <- read_fit_model(read_model(here::here(model_dir, "3_gq")))
+mod5_gq <- read_fit_model(read_model(here::here(model_dir, "5_gq")))
 
-files <- list.files(path = here::here(mod3_gq$absolute_model_path,"3_gq-output"),
-                    pattern = "\\.csv$", 
-                    ignore.case = TRUE, full.names=TRUE)
+ll1<-mod1_gq$draws()
+ll3<-mod3_gq$draws()
+ll5<-mod5_gq$draws()
 
-temp <- cmdstanr::read_cmdstan_csv(files)
-ll3 <- as_draws_array(temp$generated_quantities)
+loo1 <- loo(subset_draws(ll1,  variable = "log_lik"), 
+            pars="log_lik", cores== getOption("mc.cores", 4)) 
+loo3 <- loo(subset_draws(ll3,  variable = "log_lik"), 
+            pars="log_lik$", cores== getOption("mc.cores", 4))  
+loo5 <- loo(subset_draws(ll5,  variable = "log_lik"),
+            pars="log_lik$", cores== getOption("mc.cores", 4))
 
-files <- list.files(path = here::here(mod5_gq$absolute_model_path,"5_gq-output"),
-                    pattern = "\\.csv$", 
-                    ignore.case = TRUE, full.names=TRUE)
-
-temp <- cmdstanr::read_cmdstan_csv(files)
-ll5 <- as_draws_array(temp$generated_quantities)
-
-loo1 <- loo(ll1) 
-loo3 <- loo(ll3)  
-loo5 <- loo(ll5)
+comp <- loo_compare(list("2cmpdisp-1compabs" = loo1, 
+                         "2cmpdisp-2cmpabs"=loo3,
+                         "2cmpdisp-2cmpabs-cov"=loo5))
+print(comp, digits = 2)
 ```
 
 ## Direct method
@@ -1292,8 +1222,8 @@ comp <- loo_compare(list("2cmpdisp-1compabs" = loo1,
                          "2cmpdisp-2cmpabs-cov"=loo5))
 print(comp, digits = 2)
 ```
-## Moment matched 
 
+## Moment matched 
 ```{r, eval=FALSE}
 mod1 <- read_fit_model(read_model(here::here(model_dir, "1")))
 mod3 <- read_fit_model(read_model(here::here(model_dir, "3")))
@@ -1315,6 +1245,7 @@ stacking_wts <- stacking_weights(cbind(loo1$pointwise[, "elpd_loo"],
 
 stacking_wts
 ```
+
 # Manuscript
 ```{r manuscript-figures}
 manuscript_figures_dir <- here::here(figures_dir, "manuscript")

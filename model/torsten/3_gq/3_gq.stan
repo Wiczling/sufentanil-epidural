@@ -33,8 +33,8 @@ parameters {
   real<lower=0, upper=3500> V1Hat;
   real<lower=0, upper=3500> V2Hat;
   real<lower=0, upper=10> KAHat;
-    real<lower=0, upper=50> KA14Hat;
-      real<lower=0, upper=10> KA41Hat;
+  real<lower=0, upper=50> KA14Hat;
+  real<lower=0, upper=10> KA41Hat;
   real<lower=0> sigma;
   real<lower=3> nu; // normality constant
   // Inter-Individual variability
@@ -135,10 +135,87 @@ model{
 }
 
 generated quantities{
+  array[nt] real cCond;
+  array[nt] real cPred;
+  row_vector[nt] cHatPred;
+  matrix[nCmt, nt] xPred;
+  matrix[nIIV, nSubjects] etaStdPred;
+  matrix<lower=0>[nSubjects, nIIV] etaPredM;
+  corr_matrix[nIIV] rho;
+  array[nTheta] real<lower=0> thetaPred;
+  matrix[nCmt, nCmt] KPred;
+  real kaPred;
+  real ka14Pred;
+  real ka41Pred;
+  real k10Pred;
+  real k12Pred;
+  real k21Pred;
   vector[nObs] log_lik;
+    vector[nObs] log_lik_pred;
   vector[nObs] errors;
-  for(i in 1:nObs){
+  
+  rho = L * L';
+
+    for(i in 1:nSubjects){
+      for(j in 1:nIIV){ 
+        etaStdPred[j, i] = normal_rng(0, 1);
+      }
+    }
+
+    etaPredM = exp(diag_pre_multiply(omega, L * etaStdPred))';
+
+    for(j in 1:nSubjects){
+     
+    thetaPred[1] = thetaHat[1] * etaPredM[j, 1] ; // CL
+    thetaPred[2] = thetaHat[2] * etaPredM[j, 2] ; // Q
+    thetaPred[3] = thetaHat[3] * etaPredM[j, 3] ; // V1
+    thetaPred[4] = thetaHat[4] * etaPredM[j, 4] ; // V2
+    thetaPred[5] = thetaHat[5] * etaPredM[j, 5] ; // KA
+    thetaPred[6] = thetaHat[6] * etaPredM[j, 6] ; // KA14
+    thetaPred[7] = thetaHat[7] * etaPredM[j, 7] ; // KA41 
+      
+    k10Pred = thetaPred[1]/thetaPred[3];
+    k12Pred = thetaPred[2]/thetaPred[3];
+    k21Pred = thetaPred[2]/thetaPred[4];
+    kaPred    = thetaPred[5]; 
+    ka14Pred  = thetaPred[6];
+    ka41Pred  = thetaPred[7];
+    
+    KPred = rep_matrix(0, nCmt, nCmt);
+
+    KPred[1, 1] = -(kaPred+ka14Pred);
+    KPred[1, 4] = ka41Pred;
+    KPred[2, 1] = kaPred;
+    KPred[2, 2] = -(k10Pred + k12Pred);
+    KPred[2, 3] = k21Pred;
+    KPred[3, 2] = k12Pred;
+    KPred[3, 3] = -k21Pred;
+    KPred[4, 1] = ka14Pred;
+    KPred[4, 4] = -ka41Pred;
+    
+    xPred[,start[j]:end[j]] = pmx_solve_linode(time[start[j]:end[j]], 
+                                       amt[start[j]:end[j]],
+                                       rate[start[j]:end[j]],
+                                       ii[start[j]:end[j]],
+                                       evid[start[j]:end[j]],
+                                       cmt[start[j]:end[j]],
+                                       addl[start[j]:end[j]],
+                                       ss[start[j]:end[j]],
+                                       KPred, biovar, tlag);
+    
+                                       
+    cHatPred[start[j]:end[j]] = xPred[2,start[j]:end[j]] ./ thetaPred[3]*1000; // divide by V1
+  }
+
+  for(i in 1:nt){
+      cCond[i] = exp(student_t_rng(nu,log(fmax(machine_precision(),cHat[i])), sigma));     // individual predictions
+      cPred[i] = exp(student_t_rng(nu,log(fmax(machine_precision(),cHatPred[i])), sigma)); // population predictions
+
+ }
+ 
+   for(i in 1:nObs){
    errors[i] = logCObs[i]-log(fmax(machine_precision(),cHatObs[i]));
    log_lik[i] = student_t_lpdf(logCObs[i] | nu, log(fmax(machine_precision(),cHatObs[i])), sigma);
+   log_lik_pred[i] = student_t_lpdf(logCObs[i] | nu, log(fmax(machine_precision(),cHatPred[iObs[i]])), sigma);
  }
 }
