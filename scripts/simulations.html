@@ -11,7 +11,7 @@
 <meta name="author" content="Paulina Okuńska">
 <meta name="author" content="Agnieszka Borsuk-de Moor">
 <meta name="author" content="Justyna Ber">
-<meta name="dcterms.date" content="2025-01-14">
+<meta name="dcterms.date" content="2025-01-15">
 
 <title>Pharmacokinetics of sufentanil after epidural administration</title>
 <style>
@@ -137,7 +137,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 14, 2025</p>
+      <p class="date">January 15, 2025</p>
     </div>
   </div>
   
@@ -210,43 +210,43 @@ div.csl-indent {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(model_tables_dir, <span class="at">recursive =</span> T)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#----</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"2cmpabs-2cmpdisp"</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>pkmod3 <span class="ot">&lt;-</span> <span class="fu">mread</span>(here<span class="sc">::</span><span class="fu">here</span>(sim_model_dir, model_name))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"2cmpabs-1cmpdisp"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>pkmod1 <span class="ot">&lt;-</span> <span class="fu">mread</span>(here<span class="sc">::</span><span class="fu">here</span>(sim_model_dir, model_name))</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>model_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"model"</span>,<span class="st">"torsten"</span>) </span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3"</span>))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"1"</span>))</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>, <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>ptable3 <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(pars))) <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>, <span class="st">"KAHat"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>ptable1 <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(pars))) <span class="sc">%&gt;%</span></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">THETA1=</span>CLHat,</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA2=</span>QHat,</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA3=</span>V1Hat,</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA4=</span>V2Hat,</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA5=</span>KAHat,</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA6=</span>KA14Hat,</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA7=</span>KA41Hat)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#----</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"2cmpabs-1cmpdisp"</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>pkmod1 <span class="ot">&lt;-</span> <span class="fu">mread</span>(here<span class="sc">::</span><span class="fu">here</span>(sim_model_dir, model_name))</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>model_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"model"</span>,<span class="st">"torsten"</span>) </span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"1"</span>))</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>, <span class="st">"KAHat"</span>)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>ptable1 <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(pars))) <span class="sc">%&gt;%</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">THETA1=</span>CLHat,</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA2=</span>QHat,</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA3=</span>V1Hat,</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA4=</span>V2Hat,</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA5=</span>KAHat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA5=</span>KAHat)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#----</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"2cmpabs-2cmpdisp"</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>pkmod3 <span class="ot">&lt;-</span> <span class="fu">mread</span>(here<span class="sc">::</span><span class="fu">here</span>(sim_model_dir, model_name))</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>model_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"model"</span>,<span class="st">"torsten"</span>) </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3"</span>))</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>, <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>ptable3 <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(pars))) <span class="sc">%&gt;%</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">THETA1=</span>CLHat,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA2=</span>QHat,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA3=</span>V1Hat,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA4=</span>V2Hat,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA5=</span>KAHat,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA6=</span>KA14Hat,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">THETA7=</span>KA41Hat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data5_1<span class="ot">&lt;-</span>pkmod1 <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">idata_set</span>(ptable1)<span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data5_3<span class="ot">&lt;-</span>pkmod3 <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">idata_set</span>(ptable3)<span class="sc">%&gt;%</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ev</span>(<span class="at">amt =</span> <span class="dv">50</span>, <span class="at">rate =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mrgsim</span>(<span class="at">start=</span><span class="dv">0</span>, <span class="at">end =</span> <span class="dv">200</span>, <span class="at">delta =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
@@ -257,11 +257,11 @@ div.csl-indent {
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.5 =</span>  <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.5</span>)),</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.05 =</span> <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>)),</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.95  =</span><span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.95</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tinf =</span> <span class="st">"5-1cmp"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tinf =</span> <span class="st">"5"</span>)</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>data50_1<span class="ot">&lt;-</span>pkmod1 <span class="sc">%&gt;%</span> </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">idata_set</span>(ptable1)<span class="sc">%&gt;%</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ev</span>(<span class="at">amt =</span> <span class="dv">500</span>, <span class="at">rate =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>data25_3<span class="ot">&lt;-</span>pkmod3 <span class="sc">%&gt;%</span> </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">idata_set</span>(ptable3)<span class="sc">%&gt;%</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ev</span>(<span class="at">amt =</span> <span class="dv">250</span>, <span class="at">rate =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mrgsim</span>(<span class="at">start=</span><span class="dv">0</span>, <span class="at">end =</span> <span class="dv">200</span>, <span class="at">delta =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time) <span class="sc">%&gt;%</span></span>
@@ -271,11 +271,11 @@ div.csl-indent {
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.5 =</span>  <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.5</span>)),</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.05 =</span> <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>)),</span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.95  =</span><span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.95</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tinf =</span> <span class="st">"50-1cmp"</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tinf =</span> <span class="st">"25"</span>)</span>
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>data5_3<span class="ot">&lt;-</span>pkmod3 <span class="sc">%&gt;%</span> </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>data50_3<span class="ot">&lt;-</span>pkmod3 <span class="sc">%&gt;%</span> </span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">idata_set</span>(ptable3)<span class="sc">%&gt;%</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ev</span>(<span class="at">amt =</span> <span class="dv">50</span>, <span class="at">rate =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ev</span>(<span class="at">amt =</span> <span class="dv">500</span>, <span class="at">rate =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mrgsim</span>(<span class="at">start=</span><span class="dv">0</span>, <span class="at">end =</span> <span class="dv">200</span>, <span class="at">delta =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time) <span class="sc">%&gt;%</span></span>
@@ -285,45 +285,31 @@ div.csl-indent {
 <span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.5 =</span>  <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.5</span>)),</span>
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.05 =</span> <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>)),</span>
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.95  =</span><span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.95</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tinf =</span> <span class="st">"5-2cmp"</span>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tinf =</span> <span class="st">"50"</span>)</span>
 <span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>data50_3<span class="ot">&lt;-</span>pkmod3 <span class="sc">%&gt;%</span> </span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">idata_set</span>(ptable3)<span class="sc">%&gt;%</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ev</span>(<span class="at">amt =</span> <span class="dv">500</span>, <span class="at">rate =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mrgsim</span>(<span class="at">start=</span><span class="dv">0</span>, <span class="at">end =</span> <span class="dv">200</span>, <span class="at">delta =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time) <span class="sc">%&gt;%</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">absq0.5 =</span>  <span class="fu">quantile</span>(ABS,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.5</span>)),</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>            <span class="at">absq0.05 =</span> <span class="fu">quantile</span>(ABS,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>)),</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>            <span class="at">absq0.95  =</span><span class="fu">quantile</span>(ABS,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.95</span>)),</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.5 =</span>  <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.5</span>)),</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.05 =</span> <span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>)),</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>            <span class="at">contq0.95  =</span><span class="fu">quantile</span>(CENT,<span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.95</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tinf =</span> <span class="st">"50-2cmp"</span>)</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">rbind</span>(data5_1,data50_1,data5_3,data50_3)</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y =</span> absq0<span class="fl">.5</span>, <span class="at">color=</span><span class="fu">as.factor</span>(tinf)))<span class="sc">+</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> absq0<span class="fl">.05</span>, <span class="at">ymax =</span> absq0<span class="fl">.95</span>, <span class="at">fill=</span><span class="fu">as.factor</span>(tinf)), <span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Absorption comp., ng/ml"</span>, <span class="at">color=</span><span class="st">"tinf"</span>, <span class="at">fill=</span><span class="st">"tinf"</span>)<span class="sc">+</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>,</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>                      <span class="at">breaks=</span><span class="fu">trans_breaks</span>(<span class="st">'log10'</span>, <span class="cf">function</span>(x) <span class="dv">10</span><span class="sc">^</span>x),</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels=</span><span class="fu">trans_format</span>(<span class="st">'log10'</span>, <span class="fu">math_format</span>(<span class="dv">10</span><span class="sc">^</span>.x)))<span class="sc">+</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.01</span>,<span class="dv">200</span>))</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y =</span> contq0<span class="fl">.5</span>, <span class="at">color=</span><span class="fu">as.factor</span>(tinf)))<span class="sc">+</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> contq0<span class="fl">.05</span>, <span class="at">ymax =</span> contq0<span class="fl">.95</span>, <span class="at">fill=</span><span class="fu">as.factor</span>(tinf)), <span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Concentration, pg/ml"</span>, <span class="at">color=</span><span class="st">"tinf"</span>, <span class="at">fill=</span><span class="st">"tinf"</span>) <span class="sc">+</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>,</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>                      <span class="at">breaks=</span><span class="fu">trans_breaks</span>(<span class="st">'log10'</span>, <span class="cf">function</span>(x) <span class="dv">10</span><span class="sc">^</span>x),</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels=</span><span class="fu">trans_format</span>(<span class="st">'log10'</span>, <span class="fu">math_format</span>(<span class="dv">10</span><span class="sc">^</span>.x)))<span class="sc">+</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.01</span>,<span class="dv">200</span>))</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>p1<span class="sc">/</span>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">rbind</span>(data5_3,data25_3,data50_3)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y =</span> absq0<span class="fl">.5</span>, <span class="at">color=</span><span class="fu">as.factor</span>(tinf)))<span class="sc">+</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> absq0<span class="fl">.05</span>, <span class="at">ymax =</span> absq0<span class="fl">.95</span>, <span class="at">fill=</span><span class="fu">as.factor</span>(tinf)), <span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Absorption comp., ng"</span>, <span class="at">color=</span><span class="st">"tinf"</span>, <span class="at">fill=</span><span class="st">"tinf"</span>)<span class="sc">+</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>,</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>                      <span class="at">breaks=</span><span class="fu">trans_breaks</span>(<span class="st">'log10'</span>, <span class="cf">function</span>(x) <span class="dv">10</span><span class="sc">^</span>x),</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels=</span><span class="fu">trans_format</span>(<span class="st">'log10'</span>, <span class="fu">math_format</span>(<span class="dv">10</span><span class="sc">^</span>.x)))<span class="sc">+</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.01</span>,<span class="dv">20</span>))</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y =</span> contq0<span class="fl">.5</span>, <span class="at">color=</span><span class="fu">as.factor</span>(tinf)))<span class="sc">+</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> contq0<span class="fl">.05</span>, <span class="at">ymax =</span> contq0<span class="fl">.95</span>, <span class="at">fill=</span><span class="fu">as.factor</span>(tinf)), <span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Concentration, pg/ml"</span>, <span class="at">color=</span><span class="st">"tinf"</span>, <span class="at">fill=</span><span class="st">"tinf"</span>) <span class="sc">+</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">'log10'</span>,</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>                      <span class="at">breaks=</span><span class="fu">trans_breaks</span>(<span class="st">'log10'</span>, <span class="cf">function</span>(x) <span class="dv">10</span><span class="sc">^</span>x),</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels=</span><span class="fu">trans_format</span>(<span class="st">'log10'</span>, <span class="fu">math_format</span>(<span class="dv">10</span><span class="sc">^</span>.x)))<span class="sc">+</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.01</span>,<span class="dv">200</span>))</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>p1<span class="sc">/</span>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="simulations_files/figure-html/plots-1.png" class="img-fluid" style="width:95.0%"></p>
