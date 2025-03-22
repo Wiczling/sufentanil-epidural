@@ -2,10 +2,7 @@
 title: "Pharmacokinetics of sufentanil after epidural administration"
 author:   
   - Pawel Wiczling
-  - Agnieszka Bienert
   - Paulina Okuńska
-  - Agnieszka Borsuk-de Moor
-  - Justyna Ber
 date: today
 date-format: long
 format:
@@ -18,7 +15,7 @@ execute:
 
 # Introduction
 
-Pharmacokinetics of sufentanil after epidural administration.
+Pharmacokinetics of sufentanil after epidural administration. PK analysis in NONMEM ise challenging and requires making significant assumptions. A two-compartment model with a two-compartment absorption process appears promising.
 
 ```{r lib, message=FALSE}
 
@@ -351,20 +348,7 @@ mod4 <- mod4 %>%
 
 ```
 
-## Model 5. 3 cmp dispos. model (fixed), 1-st order abs., F estimated.
-Disposition PK parameters were fixed based on <https://pubmed.ncbi.nlm.nih.gov/8533912/>:
-VC = 14.6, VP1 = 66, VP2 = 608, Cl = 52.8 L/h, and Q = 102 L/h i 40.8 L/h
-
-```{r model5, eval = FALSE}
-mod5 <- new_model(file.path(model_dir, 5),  .overwrite = TRUE)
-submit_model(mod5, .mode = "local")
-mod5 <- mod5 %>% 
-  add_tags("3 cmp dispos. model (fixed), 1-st order abs., F estimated")%>% 
-  add_tags("etas estiamted for CL/F")
-#mod5 <- mod5 %>% add_notes(" ")
-```
-
-# Compare models:
+# Compare models
 
 ```{r compare}
 log_df <- run_log(model_dir)

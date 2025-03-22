@@ -7,11 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pawel Wiczling">
-<meta name="author" content="Agnieszka Bienert">
 <meta name="author" content="Paulina Okuńska">
-<meta name="author" content="Agnieszka Borsuk-de Moor">
-<meta name="author" content="Justyna Ber">
-<meta name="dcterms.date" content="2025-01-15">
+<meta name="dcterms.date" content="2025-03-22">
 
 <title>Pharmacokinetics of sufentanil after epidural administration</title>
 <style>
@@ -209,17 +206,14 @@ div.csl-indent {
     <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
              <p>Pawel Wiczling </p>
-             <p>Agnieszka Bienert </p>
              <p>Paulina Okuńska </p>
-             <p>Agnieszka Borsuk-de Moor </p>
-             <p>Justyna Ber </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 15, 2025</p>
+      <p class="date">March 22, 2025</p>
     </div>
   </div>
   
@@ -4985,39 +4979,39 @@ div.csl-indent {
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mod5  &lt;- read_model(file.path(model_dir, "5"))</span></span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mod5_gq &lt;- copy_model_as_stan_gq(mod5, .overwrite = TRUE)</span></span>
-<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>mod1_gq  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"1_gq"</span>))</span>
-<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>mod1_gq <span class="ot">&lt;-</span> <span class="fu">submit_model</span>(mod1_gq,<span class="at">.overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>mod3_gq  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"3_gq"</span>))</span>
-<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a>mod3_gq <span class="ot">&lt;-</span> <span class="fu">submit_model</span>(mod3_gq,<span class="at">.overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>mod5_gq  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(<span class="fu">file.path</span>(model_dir, <span class="st">"5_gq"</span>))</span>
-<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>mod5_gq <span class="ot">&lt;-</span> <span class="fu">submit_model</span>(mod5_gq,<span class="at">.overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(mod1_gq<span class="sc">$</span>absolute_model_path,<span class="st">"1_gq-output"</span>),</span>
-<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>, </span>
-<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, <span class="at">full.names=</span><span class="cn">TRUE</span>)</span>
-<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> cmdstanr<span class="sc">::</span><span class="fu">read_cmdstan_csv</span>(files)</span>
-<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>ll1 <span class="ot">&lt;-</span> <span class="fu">as_draws_array</span>(temp<span class="sc">$</span>generated_quantities)</span>
-<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-17"><a href="#cb118-17" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(mod3_gq<span class="sc">$</span>absolute_model_path,<span class="st">"3_gq-output"</span>),</span>
-<span id="cb118-18"><a href="#cb118-18" aria-hidden="true" tabindex="-1"></a>                    <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>, </span>
-<span id="cb118-19"><a href="#cb118-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, <span class="at">full.names=</span><span class="cn">TRUE</span>)</span>
-<span id="cb118-20"><a href="#cb118-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-21"><a href="#cb118-21" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> cmdstanr<span class="sc">::</span><span class="fu">read_cmdstan_csv</span>(files)</span>
-<span id="cb118-22"><a href="#cb118-22" aria-hidden="true" tabindex="-1"></a>ll3 <span class="ot">&lt;-</span> <span class="fu">as_draws_array</span>(temp<span class="sc">$</span>generated_quantities)</span>
-<span id="cb118-23"><a href="#cb118-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-24"><a href="#cb118-24" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(mod5_gq<span class="sc">$</span>absolute_model_path,<span class="st">"5_gq-output"</span>),</span>
-<span id="cb118-25"><a href="#cb118-25" aria-hidden="true" tabindex="-1"></a>                    <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>, </span>
-<span id="cb118-26"><a href="#cb118-26" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, <span class="at">full.names=</span><span class="cn">TRUE</span>)</span>
-<span id="cb118-27"><a href="#cb118-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-28"><a href="#cb118-28" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> cmdstanr<span class="sc">::</span><span class="fu">read_cmdstan_csv</span>(files)</span>
-<span id="cb118-29"><a href="#cb118-29" aria-hidden="true" tabindex="-1"></a>ll5 <span class="ot">&lt;-</span> <span class="fu">as_draws_array</span>(temp<span class="sc">$</span>generated_quantities)</span>
-<span id="cb118-30"><a href="#cb118-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-31"><a href="#cb118-31" aria-hidden="true" tabindex="-1"></a>loo1 <span class="ot">&lt;-</span> <span class="fu">loo</span>(ll1) </span>
-<span id="cb118-32"><a href="#cb118-32" aria-hidden="true" tabindex="-1"></a>loo3 <span class="ot">&lt;-</span> <span class="fu">loo</span>(ll3)  </span>
-<span id="cb118-33"><a href="#cb118-33" aria-hidden="true" tabindex="-1"></a>loo5 <span class="ot">&lt;-</span> <span class="fu">loo</span>(ll5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mod1  &lt;- read_model(file.path(model_dir, "1"))</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mod1_gq &lt;- copy_model_as_stan_gq(mod1, .overwrite = TRUE)</span></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co"># mod3  &lt;- read_model(file.path(model_dir, "3"))</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mod3_gq &lt;- copy_model_as_stan_gq(mod3, .overwrite = TRUE)</span></span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co"># mod5  &lt;- read_model(file.path(model_dir, "5"))</span></span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co"># mod5_gq &lt;- copy_model_as_stan_gq(mod5, .overwrite = TRUE)</span></span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mod1_gq  &lt;- read_model(file.path(model_dir, "1_gq"))</span></span>
+<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a><span class="co"># mod1_gq &lt;- submit_model(mod1_gq,.overwrite = TRUE)</span></span>
+<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a><span class="co"># mod3_gq  &lt;- read_model(file.path(model_dir, "3_gq"))</span></span>
+<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a><span class="co"># mod3_gq &lt;- submit_model(mod3_gq,.overwrite = TRUE)</span></span>
+<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a><span class="co"># mod5_gq  &lt;- read_model(file.path(model_dir, "5_gq"))</span></span>
+<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a><span class="co"># mod5_gq &lt;- submit_model(mod5_gq,.overwrite = TRUE)</span></span>
+<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>mod1_gq <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(<span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"1_gq"</span>)))</span>
+<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a>mod3_gq <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(<span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3_gq"</span>)))</span>
+<span id="cb118-17"><a href="#cb118-17" aria-hidden="true" tabindex="-1"></a>mod5_gq <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(<span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"5_gq"</span>)))</span>
+<span id="cb118-18"><a href="#cb118-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-19"><a href="#cb118-19" aria-hidden="true" tabindex="-1"></a>ll1<span class="ot">&lt;-</span>mod1_gq<span class="sc">$</span><span class="fu">draws</span>()</span>
+<span id="cb118-20"><a href="#cb118-20" aria-hidden="true" tabindex="-1"></a>ll3<span class="ot">&lt;-</span>mod3_gq<span class="sc">$</span><span class="fu">draws</span>()</span>
+<span id="cb118-21"><a href="#cb118-21" aria-hidden="true" tabindex="-1"></a>ll5<span class="ot">&lt;-</span>mod5_gq<span class="sc">$</span><span class="fu">draws</span>()</span>
+<span id="cb118-22"><a href="#cb118-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-23"><a href="#cb118-23" aria-hidden="true" tabindex="-1"></a>loo1 <span class="ot">&lt;-</span> <span class="fu">loo</span>(<span class="fu">subset_draws</span>(ll1,  <span class="at">variable =</span> <span class="st">"log_lik"</span>), </span>
+<span id="cb118-24"><a href="#cb118-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">pars=</span><span class="st">"log_lik"</span>, cores<span class="sc">==</span> <span class="fu">getOption</span>(<span class="st">"mc.cores"</span>, <span class="dv">4</span>)) </span>
+<span id="cb118-25"><a href="#cb118-25" aria-hidden="true" tabindex="-1"></a>loo3 <span class="ot">&lt;-</span> <span class="fu">loo</span>(<span class="fu">subset_draws</span>(ll3,  <span class="at">variable =</span> <span class="st">"log_lik"</span>), </span>
+<span id="cb118-26"><a href="#cb118-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">pars=</span><span class="st">"log_lik$"</span>, cores<span class="sc">==</span> <span class="fu">getOption</span>(<span class="st">"mc.cores"</span>, <span class="dv">4</span>))  </span>
+<span id="cb118-27"><a href="#cb118-27" aria-hidden="true" tabindex="-1"></a>loo5 <span class="ot">&lt;-</span> <span class="fu">loo</span>(<span class="fu">subset_draws</span>(ll5,  <span class="at">variable =</span> <span class="st">"log_lik"</span>),</span>
+<span id="cb118-28"><a href="#cb118-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">pars=</span><span class="st">"log_lik$"</span>, cores<span class="sc">==</span> <span class="fu">getOption</span>(<span class="st">"mc.cores"</span>, <span class="dv">4</span>))</span>
+<span id="cb118-29"><a href="#cb118-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-30"><a href="#cb118-30" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">loo_compare</span>(<span class="fu">list</span>(<span class="st">"2cmpdisp-1compabs"</span> <span class="ot">=</span> loo1, </span>
+<span id="cb118-31"><a href="#cb118-31" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2cmpdisp-2cmpabs"</span><span class="ot">=</span>loo3,</span>
+<span id="cb118-32"><a href="#cb118-32" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2cmpdisp-2cmpabs-cov"</span><span class="ot">=</span>loo5))</span>
+<span id="cb118-33"><a href="#cb118-33" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(comp, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
