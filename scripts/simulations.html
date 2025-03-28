@@ -227,7 +227,7 @@ div.csl-indent {
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"2cmpabs-2cmpdisp"</span></span>
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>pkmod3 <span class="ot">&lt;-</span> <span class="fu">mread</span>(here<span class="sc">::</span><span class="fu">here</span>(sim_model_dir, model_name))</span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>model_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"model"</span>,<span class="st">"torsten"</span>) </span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3"</span>))</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3b"</span>))</span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>, <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>ptable3 <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(pars))) <span class="sc">%&gt;%</span></span>
@@ -244,7 +244,7 @@ div.csl-indent {
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>model_name <span class="ot">=</span> <span class="st">"2cmpabs-2cmpdisp-ss"</span></span>
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>pkmod3ss <span class="ot">&lt;-</span> <span class="fu">mread</span>(here<span class="sc">::</span><span class="fu">here</span>(sim_model_dir, model_name))</span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>model_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"model"</span>,<span class="st">"torsten"</span>) </span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3"</span>))</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>modx  <span class="ot">&lt;-</span> <span class="fu">read_model</span>(here<span class="sc">::</span><span class="fu">here</span>(model_dir, <span class="st">"3b"</span>))</span>
 <span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>mod_to_plot <span class="ot">&lt;-</span> <span class="fu">read_fit_model</span>(modx)</span>
 <span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"CLHat"</span>, <span class="st">"QHat"</span>, <span class="st">"V1Hat"</span>, <span class="st">"V2Hat"</span>, <span class="st">"KAHat"</span>, <span class="st">"KA14Hat"</span>, <span class="st">"KA41Hat"</span>)</span>
 <span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>ptable3ss <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(mod_to_plot<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(pars))) <span class="sc">%&gt;%</span></span>
@@ -463,22 +463,22 @@ other attached packages:
 
 loaded via a namespace (and not attached):
  [1] gtable_0.3.5         tensorA_0.36.2.1     xfun_0.50           
- [4] htmlwidgets_1.6.4    visdat_0.6.0         processx_3.8.5      
- [7] callr_3.7.6          tzdb_0.4.0           vctrs_0.6.5         
-[10] tools_4.3.1          ps_1.8.1             generics_0.1.3      
-[13] pkgconfig_2.0.3      checkmate_2.3.2      distributional_0.5.0
-[16] assertthat_0.2.1     lifecycle_1.0.4      farver_2.1.2        
-[19] compiler_4.3.1       textshaping_0.4.0    munsell_0.5.1       
-[22] htmltools_0.5.8.1    yaml_2.3.10          pillar_1.10.1       
-[25] crayon_1.5.3         abind_1.4-8          tidyselect_1.2.1    
-[28] digest_0.6.37        stringi_1.8.4        diffobj_0.3.5       
-[31] labeling_0.4.3       rprojroot_2.0.4      fastmap_1.2.0       
-[34] grid_4.3.1           colorspace_2.1-0     cli_3.6.3           
-[37] magrittr_2.0.3       withr_3.0.2          backports_1.5.0     
-[40] timechange_0.3.0     rmarkdown_2.27       ragg_1.3.2          
-[43] hms_1.1.3            evaluate_0.23        rlang_1.1.4         
-[46] Rcpp_1.0.13-1        rstudioapi_0.16.0    jsonlite_1.8.9      
-[49] R6_2.5.1             systemfonts_1.1.0    fs_1.6.5            </code></pre>
+ [4] visdat_0.6.0         processx_3.8.5       callr_3.7.6         
+ [7] tzdb_0.4.0           vctrs_0.6.5          tools_4.3.1         
+[10] ps_1.8.1             generics_0.1.3       pkgconfig_2.0.3     
+[13] checkmate_2.3.2      distributional_0.5.0 assertthat_0.2.1    
+[16] lifecycle_1.0.4      farver_2.1.2         compiler_4.3.1      
+[19] textshaping_0.4.0    munsell_0.5.1        htmltools_0.5.8.1   
+[22] yaml_2.3.10          pillar_1.10.1        crayon_1.5.3        
+[25] abind_1.4-8          tidyselect_1.2.1     digest_0.6.37       
+[28] stringi_1.8.4        diffobj_0.3.5        labeling_0.4.3      
+[31] rprojroot_2.0.4      fastmap_1.2.0        grid_4.3.1          
+[34] colorspace_2.1-0     cli_3.6.3            magrittr_2.0.3      
+[37] withr_3.0.2          backports_1.5.0      timechange_0.3.0    
+[40] rmarkdown_2.27       ragg_1.3.2           hms_1.1.3           
+[43] evaluate_0.23        rlang_1.1.4          Rcpp_1.0.13-1       
+[46] rstudioapi_0.16.0    jsonlite_1.8.9       R6_2.5.1            
+[49] systemfonts_1.1.0    fs_1.6.5            </code></pre>
 </div>
 </div>
 </section>

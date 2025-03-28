@@ -93,7 +93,7 @@ ptable1 <- posterior::as_draws_df(mod_to_plot$draws(c(pars))) %>%
 model_name = "2cmpabs-2cmpdisp"
 pkmod3 <- mread(here::here(sim_model_dir, model_name))
 model_dir <- here::here("model","torsten") 
-modx  <- read_model(here::here(model_dir, "3"))
+modx  <- read_model(here::here(model_dir, "3b"))
 mod_to_plot <- read_fit_model(modx)
 pars = c("CLHat", "QHat", "V1Hat", "V2Hat", "KAHat", "KA14Hat", "KA41Hat")
 ptable3 <- posterior::as_draws_df(mod_to_plot$draws(c(pars))) %>%
@@ -110,7 +110,7 @@ ptable3 <- posterior::as_draws_df(mod_to_plot$draws(c(pars))) %>%
 model_name = "2cmpabs-2cmpdisp-ss"
 pkmod3ss <- mread(here::here(sim_model_dir, model_name))
 model_dir <- here::here("model","torsten") 
-modx  <- read_model(here::here(model_dir, "3"))
+modx  <- read_model(here::here(model_dir, "3b"))
 mod_to_plot <- read_fit_model(modx)
 pars = c("CLHat", "QHat", "V1Hat", "V2Hat", "KAHat", "KA14Hat", "KA41Hat")
 ptable3ss <- posterior::as_draws_df(mod_to_plot$draws(c(pars))) %>%
