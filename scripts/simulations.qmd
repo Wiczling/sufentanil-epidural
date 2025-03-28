@@ -223,20 +223,14 @@ p1 <- data %>%
   geom_line()+
    geom_ribbon(aes(ymin = absq0.05, ymax = absq0.95, fill=as.factor(tinf)), colour = NA, alpha = 0.2) +
   labs(title = "Central Absorption Compartment", x = element_blank(), y = "A, mcg", color="Tinf", fill="Tinf")+
-  scale_y_continuous(trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x),
-                      labels=trans_format('log10', math_format(10^.x)))+
-  coord_cartesian(ylim=c(0.01,20))+ theme(legend.position = "none")
+  coord_cartesian(ylim=c(0,5))+ theme(legend.position = "none")
 
 p2 <- data %>%
   ggplot(aes(x=time, y = contq0.5, color=as.factor(tinf)))+
    geom_ribbon(aes(ymin = contq0.05, ymax = contq0.95, fill=as.factor(tinf)), colour = NA, alpha = 0.2) + 
   geom_line()+
   labs(title = "Plasma Concentrations", x = "Time, h", y="C, pg/ml", color="Tinf", fill="Tinf") +
-  scale_y_continuous(trans='log10',
-                      breaks=trans_breaks('log10', function(x) 10^x),
-                      labels=trans_format('log10', math_format(10^.x)))+
-  coord_cartesian(ylim=c(0.01,200))+ theme(legend.position = "none")
+  coord_cartesian(ylim=c(0,100))+ theme(legend.position = "none")
 
 pall <- p0/p1/p2+ plot_layout(guides = 'collect')
 
