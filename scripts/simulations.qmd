@@ -65,8 +65,8 @@ thisScript <- "simulations.qmd"
 
 # Settings
 ```{r settings}
-figures_dir <- here::here("deliv","figures")
-tables_dir <- here::here("deliv","tables")
+figures_dir <- here::here("deliv","figures", "torsten")
+tables_dir <- here::here("deliv","tables", "torsten")
 sim_model_dir <- here::here("model","mrgsolve")  
 folder_name = "sim"
 model_figures_dir <- here::here(figures_dir, folder_name)
@@ -199,7 +199,7 @@ p1/p2
 ```{r plot-ss}
 data<-pkmod3ss %>% 
   idata_set(ptable3ss)%>%
-  ev(amt = 3/1.99, rate = 0) %>% 
+  ev(amt = 3/3.27, rate = 0) %>% 
   mrgsim(start=0, end = 72, delta = 0.1) %>%
   as.data.frame() %>%
   group_by(time) %>%
@@ -210,12 +210,12 @@ data<-pkmod3ss %>%
             contq0.05 = quantile(CENT,probs=c(0.05)),
             contq0.95  =quantile(CENT,probs=c(0.95))) %>%
   mutate(tinf="ss")%>%
-  mutate(rate = 3+10.9/1.99*3*exp(-0.162*time))
+  mutate(rate = 3+14.9/3.27*3*exp(-0.135*time))
 
 p0 <- data %>%
   ggplot(aes(x=time, y = rate, color=as.factor(tinf)))+
   geom_line()+
-  labs(title = "Sufentanil infusion rate (Rss=3mcg/h)", x = element_blank(), y = "Rate, mcg/h", color="Tinf")+
+  labs(title = "Sufentanil infusion rate (Rss=3 mcg/h)", x = element_blank(), y = "Rate, mcg/h", color="Tinf")+
   coord_cartesian(ylim=c(0,30))+ theme(legend.position = "none")
 
 p1 <- data %>%
@@ -244,6 +244,16 @@ ggsave(filename = here::here(figures_dir, "sim", "ss-sim.png"),
        plot = pall, width=16, height=12, dpi=600, units="cm")
 
 pall
+
+figure_s6<-pall
+```
+
+# Manuscript figures
+```{r manuscript-figures}
+manuscript_figures_dir <- here::here(figures_dir, "manuscript")
+dir.create(manuscript_figures_dir, recursive = T)
+
+ggsave(filename = here::here(manuscript_figures_dir, "figureS6.png"),plot = figure_s6, width=16, height=12, dpi=600, units="cm")
 ```
 
 # References {.unnumbered}

@@ -2,13 +2,13 @@ $PROB
 # Model: 'Epidural sufentanil'
 
 $PARAM @annotated
-THETA1   : 66.2  : [L/day]
-THETA2   : 44.0  : [L/day]
-THETA3   : 9.35  : [L]
-THETA4   : 504  : [L]
-THETA5   : 1.99  : [1/day]
-THETA6 : 10.9  : [1/day]
-THETA7 : 0.162  : [1/day]
+THETA1   : 64.9  : [L/day]
+THETA2   : 48.2  : [L/day]
+THETA3   : 10.2  : [L]
+THETA4   : 506  : [L]
+THETA5   : 3.27  : [1/day]
+THETA6 : 14.9  : [1/day]
+THETA7 : 0.135  : [1/day]
 
 $OMEGA @annotated 
 ECL: 0.0 : ETA

@@ -1,4 +1,0 @@
-model_type: stan
-description: absorption2
-based_on:
-- '1'

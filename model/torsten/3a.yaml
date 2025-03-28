@@ -1,4 +1,0 @@
-model_type: stan
-description: ppc
-based_on:
-- '3'
